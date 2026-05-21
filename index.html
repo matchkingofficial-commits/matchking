@@ -2,554 +2,2158 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deriv Hacker – AI-Powered Market Analysis for Volatility Trading</title>
-  <meta name="description" content="Deriv Hacker delivers 99% accurate automated market predictions and entry signals for volatility instruments. Try a free demo today.">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" type="image/png" sizes="32x32" href="deriv hacker/icons/icon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="deriv hacker/icons/icon-16x16.png">
-  <link rel="shortcut icon" href="/favicon.ico">
+  <title>MatchKing — Deriv Match Intelligence</title>
+  <meta name="description" content="Institutional-grade Deriv match signals. MatchKing delivers precision Over/Under intelligence for serious traders.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --ink:     #0A0A0B;
+      --ink2:    #111114;
+      --ink3:    #17171C;
+      --border:  rgba(255,255,255,0.06);
+      --border2: rgba(201,168,76,0.18);
+      --gold:    #C9A84C;
+      --gold2:   #E8C96A;
+      --gold3:   #F5E09A;
+      --ivory:   #F4EFE4;
+      --muted:   rgba(244,239,228,0.45);
+      --dim:     rgba(244,239,228,0.22);
+      --red:     #C0392B;
+      --green:   #27AE60;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ink);
+      color: var(--ivory);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* ─── CUSTOM SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--ink); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+    /* ─── NOISE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.35;
+    }
+
+    /* ─── GRID LINES ─── */
+    .grid-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 0 40px;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10,10,11,0.88);
+      backdrop-filter: blur(20px);
+      transition: all 0.3s;
+    }
+
+    nav.scrolled {
+      background: rgba(10,10,11,0.97);
+      border-bottom-color: var(--border2);
+    }
+
+    .nav-brand {
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    .nav-crown {
+      font-size: 22px; line-height: 1;
+      animation: crownPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes crownPulse {
+      0%, 100% { filter: drop-shadow(0 0 4px rgba(201,168,76,0.4)); }
+      50%       { filter: drop-shadow(0 0 12px rgba(201,168,76,0.8)); }
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--ivory);
+      position: relative;
+    }
+
+    .nav-logo span { color: var(--gold); }
+
+    .nav-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 2px;
+      color: var(--gold); text-transform: uppercase;
+      border: 1px solid var(--border2);
+      padding: 2px 8px; border-radius: 2px;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+
+    .nav-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 2px;
+      color: var(--muted); text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold2); }
+
+    .nav-cta {
+      display: flex; gap: 12px; align-items: center;
+    }
+
+    .btn-outline {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gold); border: 1px solid var(--border2);
+      background: transparent; padding: 8px 20px; border-radius: 2px;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover {
+      background: rgba(201,168,76,0.08);
+      border-color: var(--gold);
+    }
+
+    .btn-gold {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--ink); background: var(--gold);
+      border: none; padding: 8px 24px; border-radius: 2px;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-gold:hover {
+      background: var(--gold2);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+    }
+
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 1.5px;
+      background: var(--ivory); transition: all 0.3s;
+    }
+
+    /* ─── TICKER ─── */
+    .ticker-bar {
+      position: fixed; top: 64px; left: 0; right: 0; z-index: 999;
+      height: 32px; background: var(--ink3);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; overflow: hidden;
+    }
+
+    .ticker-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gold); background: var(--gold);
+      color: var(--ink); padding: 0 12px; height: 100%;
+      display: flex; align-items: center; flex-shrink: 0;
+      font-weight: 700;
+    }
+
+    .ticker-track {
+      display: flex; gap: 0; overflow: hidden; flex: 1;
+    }
+
+    .ticker-inner {
+      display: flex; gap: 0;
+      animation: ticker 30s linear infinite;
+      white-space: nowrap;
+    }
+
+    @keyframes ticker {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .ticker-item {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: 1px;
+      color: var(--muted); padding: 0 24px;
+      border-right: 1px solid var(--border);
+      display: flex; align-items: center; gap: 8px; height: 32px;
+    }
+
+    .ticker-item .up   { color: var(--green); }
+    .ticker-item .down { color: var(--red); }
+    .ticker-item strong { color: var(--ivory); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      padding-top: 96px;
+      display: flex; flex-direction: column;
+      position: relative; overflow: hidden;
+    }
+
+    .hero-bg-chess {
+      position: absolute; bottom: -40px; right: -60px;
+      font-size: 380px; opacity: 0.025; line-height: 1;
+      pointer-events: none; user-select: none;
+      filter: blur(2px);
+    }
+
+    .hero-inner {
+      position: relative; z-index: 2;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0; flex: 1; min-height: calc(100vh - 96px);
+    }
+
+    .hero-left {
+      padding: 80px 60px 80px 80px;
+      display: flex; flex-direction: column; justify-content: center;
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+
+    .hero-left::after {
+      content: '';
+      position: absolute; right: -1px; top: 0; bottom: 0; width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+      opacity: 0.4;
+    }
+
+    .hero-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 28px;
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block; width: 32px; height: 1px;
+      background: var(--gold); opacity: 0.6;
+    }
+
+    .hero-h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(52px, 5.5vw, 82px);
+      font-weight: 300; line-height: 1.08;
+      letter-spacing: -1px; color: var(--ivory);
+      margin-bottom: 12px;
+    }
+
+    .hero-h1 em {
+      font-style: italic; color: var(--gold2);
+      font-weight: 300;
+    }
+
+    .hero-h1 strong {
+      font-weight: 700; display: block;
+    }
+
+    .hero-rule {
+      width: 80px; height: 1px;
+      background: linear-gradient(to right, var(--gold), transparent);
+      margin: 28px 0;
+    }
+
+    .hero-sub {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px; line-height: 1.7; font-weight: 400;
+      color: var(--muted); max-width: 440px;
+      margin-bottom: 40px;
+    }
+
+    .hero-actions {
+      display: flex; gap: 12px; flex-wrap: wrap;
+    }
+
+    .btn-primary-lg {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--ink); background: var(--gold);
+      border: none; padding: 16px 36px; border-radius: 2px;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.25s; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary-lg:hover {
+      background: var(--gold2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(201,168,76,0.35);
+    }
+
+    .btn-ghost-lg {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--ivory); background: transparent;
+      border: 1px solid var(--border); padding: 16px 36px; border-radius: 2px;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.25s; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-ghost-lg:hover {
+      border-color: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .hero-stats-strip {
+      margin-top: 60px;
+      display: flex; gap: 0;
+      border-top: 1px solid var(--border);
+      padding-top: 32px;
+    }
+
+    .hstat {
+      flex: 1; padding-right: 32px;
+      border-right: 1px solid var(--border);
+      margin-right: 32px;
+    }
+    .hstat:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+
+    .hstat-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 40px; font-weight: 700; line-height: 1;
+      color: var(--gold2); margin-bottom: 4px;
+    }
+
+    .hstat-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    /* ─── HERO RIGHT — TERMINAL CARD ─── */
+    .hero-right {
+      background: var(--ink2);
+      display: flex; flex-direction: column;
+      position: relative; overflow: hidden;
+    }
+
+    .terminal-header {
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .terminal-dots {
+      display: flex; gap: 7px;
+    }
+    .terminal-dots span {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .terminal-dots span:nth-child(1) { background: #FF5F57; }
+    .terminal-dots span:nth-child(2) { background: #FFBD2E; }
+    .terminal-dots span:nth-child(3) { background: #28C840; }
+
+    .terminal-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: 2px; color: var(--dim);
+      text-transform: uppercase;
+    }
+
+    .terminal-status {
+      display: flex; align-items: center; gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 1px; color: var(--green);
+    }
+
+    .terminal-status::before {
+      content: '';
+      display: block; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green);
+      animation: blink 1.5s ease-in-out infinite;
+    }
+
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+    .terminal-body { flex: 1; padding: 0; overflow: hidden; }
+
+    /* ─── SIGNAL TABLE ─── */
+    .signal-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .signal-table th {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--dim); padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      text-align: left; font-weight: 400;
+    }
+
+    .signal-table td {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; padding: 14px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      vertical-align: middle;
+    }
+
+    .signal-table tr { transition: background 0.15s; }
+    .signal-table tr:hover { background: rgba(201,168,76,0.04); }
+
+    .sig-market { color: var(--ivory); font-weight: 500; }
+    .sig-type   { color: var(--muted); font-size: 10px; letter-spacing: 1px; }
+
+    .sig-badge {
+      display: inline-block; padding: 3px 10px; border-radius: 2px;
+      font-size: 9px; letter-spacing: 2px; font-weight: 600;
+    }
+    .sig-badge.over  { background: rgba(39,174,96,0.15); color: #4ade80; border: 1px solid rgba(39,174,96,0.2); }
+    .sig-badge.under { background: rgba(192,57,43,0.15); color: #f87171; border: 1px solid rgba(192,57,43,0.2); }
+
+    .sig-conf {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .sig-conf-bar {
+      width: 60px; height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden;
+    }
+    .sig-conf-fill {
+      height: 100%; background: var(--gold); border-radius: 2px;
+    }
+    .sig-conf-val { color: var(--gold2); font-size: 10px; }
+
+    .sig-time { color: var(--dim); font-size: 9px; }
+
+    .terminal-footer {
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .tf-left {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 1px; color: var(--dim);
+    }
+    .tf-left span { color: var(--gold); }
+
+    .tf-accuracy {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px; font-weight: 700; color: var(--gold2);
+    }
+
+    /* ─── SECTION COMMON ─── */
+    section { position: relative; z-index: 2; }
+
+    .container {
+      max-width: 1200px; margin: 0 auto; padding: 0 40px;
+    }
+
+    .section-pad { padding: 120px 0; }
+
+    .section-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-eyebrow::before {
+      content: '';
+      display: block; width: 24px; height: 1px;
+      background: var(--gold);
+    }
+
+    .section-h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 4vw, 58px); font-weight: 300;
+      line-height: 1.1; color: var(--ivory);
+      margin-bottom: 20px;
+    }
+    .section-h2 em { font-style: italic; color: var(--gold2); }
+    .section-h2 strong { font-weight: 700; }
+
+    .section-sub {
+      font-size: 15px; color: var(--muted); line-height: 1.7;
+      max-width: 500px;
+    }
+
+    /* ─── MARQUEE BAND ─── */
+    .marquee-band {
+      border-top: 1px solid var(--border2);
+      border-bottom: 1px solid var(--border2);
+      background: rgba(201,168,76,0.03);
+      overflow: hidden; padding: 14px 0;
+    }
+
+    .marquee-inner {
+      display: flex; gap: 0;
+      animation: marquee 20s linear infinite;
+      white-space: nowrap;
+    }
+
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .mq-item {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px; font-style: italic; letter-spacing: 1px;
+      color: var(--gold); padding: 0 40px;
+      display: flex; align-items: center; gap: 20px;
+      flex-shrink: 0;
+    }
+
+    .mq-item::after {
+      content: '♛';
+      font-style: normal; font-size: 12px; opacity: 0.5;
+    }
+
+    /* ─── HOW IT WORKS ─── */
+    .hiw-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px;
+      border: 1px solid var(--border); margin-top: 60px;
+    }
+
+    .hiw-cell {
+      padding: 48px 40px;
+      background: var(--ink2);
+      position: relative; overflow: hidden;
+      transition: background 0.3s;
+    }
+    .hiw-cell:hover { background: var(--ink3); }
+
+    .hiw-cell::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .hiw-cell:hover::before { opacity: 1; }
+
+    .hiw-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 80px; font-weight: 700; line-height: 1;
+      color: rgba(201,168,76,0.08); position: absolute;
+      top: 20px; right: 24px;
+    }
+
+    .hiw-icon {
+      font-size: 32px; margin-bottom: 20px;
+    }
+
+    .hiw-h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px; font-weight: 600; color: var(--ivory);
+      margin-bottom: 12px;
+    }
+
+    .hiw-p {
+      font-size: 14px; color: var(--muted); line-height: 1.7;
+    }
+
+    /* ─── FEATURES BENTO ─── */
+    .bento {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 1px;
+      border: 1px solid var(--border);
+      margin-top: 60px;
+    }
+
+    .bento-cell {
+      background: var(--ink2);
+      padding: 40px;
+      position: relative; overflow: hidden;
+      transition: background 0.3s;
+    }
+    .bento-cell:hover { background: var(--ink3); }
+
+    .bento-cell.wide { grid-column: span 2; }
+    .bento-cell.tall { grid-row: span 2; }
+
+    .bento-icon {
+      width: 44px; height: 44px; border-radius: 4px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid var(--border2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin-bottom: 20px;
+    }
+
+    .bento-h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px; font-weight: 600; color: var(--ivory);
+      margin-bottom: 10px;
+    }
+
+    .bento-p {
+      font-size: 13px; color: var(--muted); line-height: 1.7;
+    }
+
+    .bento-tag {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 2px;
+      color: var(--gold); border: 1px solid var(--border2);
+      padding: 3px 10px; border-radius: 2px;
+      margin-top: 16px;
+    }
+
+    /* Accuracy gauge in bento */
+    .gauge-wrap {
+      position: relative; width: 160px; height: 80px;
+      margin: 20px 0;
+    }
+
+    .gauge-svg { width: 160px; height: 90px; overflow: visible; }
+
+    .gauge-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px; font-weight: 700; color: var(--gold2);
+      position: absolute; bottom: -4px; left: 0; right: 0; text-align: center;
+    }
+
+    /* Mini candlestick preview */
+    .candle-preview {
+      display: flex; align-items: flex-end; gap: 4px;
+      height: 80px; margin-top: 20px;
+    }
+
+    .candle {
+      display: flex; flex-direction: column; align-items: center; gap: 0;
+      flex: 1;
+    }
+
+    .candle-wick { width: 1px; background: rgba(255,255,255,0.2); }
+    .candle-body { width: 8px; border-radius: 1px; transition: height 0.5s; }
+    .candle.bull .candle-body { background: rgba(39,174,96,0.7); }
+    .candle.bear .candle-body { background: rgba(192,57,43,0.7); }
+
+    /* ─── CHALLENGE SECTION ─── */
+    .challenge-section {
+      background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 60%);
+      border-top: 1px solid var(--border2);
+      border-bottom: 1px solid var(--border2);
+    }
+
+    .challenge-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+
+    .challenge-left {}
+
+    .challenge-car-frame {
+      position: relative; border: 1px solid var(--border2);
+      border-radius: 4px; overflow: hidden;
+      background: var(--ink2);
+    }
+
+    .challenge-car-frame img {
+      width: 100%; display: block; opacity: 0.9;
+      transition: transform 0.6s ease;
+    }
+    .challenge-car-frame:hover img { transform: scale(1.03); }
+
+    .challenge-car-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(10,10,11,0.8) 0%, transparent 50%);
+    }
+
+    .challenge-car-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 20px 24px;
+    }
+
+    .challenge-car-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; font-weight: 700; color: var(--ivory);
+    }
+
+    .challenge-car-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase;
+    }
+
+    .challenge-progress-block {
+      margin-top: 20px;
+      background: var(--ink3);
+      border: 1px solid var(--border);
+      border-radius: 2px; padding: 16px 20px;
+    }
+
+    .prog-labels {
+      display: flex; justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 1px; color: var(--dim);
+      margin-bottom: 10px;
+    }
+    .prog-labels span:last-child { color: var(--gold); }
+
+    .prog-bar {
+      height: 4px; background: rgba(255,255,255,0.06);
+      border-radius: 2px; overflow: hidden;
+    }
+    .prog-fill {
+      height: 100%; background: linear-gradient(to right, var(--gold), var(--gold2));
+      border-radius: 2px; width: 0;
+      transition: width 2s ease;
+    }
+
+    .challenge-right {}
+
+    .challenge-meta-pills {
+      display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0;
+    }
+
+    .cpill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      border: 1px solid var(--border2); color: var(--gold);
+      padding: 6px 14px; border-radius: 2px;
+    }
+
+    /* ─── TESTIMONIALS ─── */
+    .testimonials-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px; border: 1px solid var(--border);
+      margin-top: 60px;
+    }
+
+    .testi-card {
+      background: var(--ink2); padding: 40px;
+      position: relative; overflow: hidden;
+      transition: background 0.3s;
+    }
+    .testi-card:hover { background: var(--ink3); }
+
+    .testi-quote-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 80px; font-weight: 700; line-height: 0.8;
+      color: rgba(201,168,76,0.12); margin-bottom: 8px;
+    }
+
+    .testi-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px; font-style: italic; line-height: 1.6;
+      color: var(--ivory); margin-bottom: 24px;
+    }
+
+    .testi-author {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .testi-role {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 1px;
+      color: var(--dim); margin-top: 4px;
+    }
+
+    .testi-stars {
+      color: var(--gold); font-size: 12px; margin-bottom: 16px; letter-spacing: 2px;
+    }
+
+    /* ─── PRICING ─── */
+    .pricing-split {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; border: 1px solid var(--border);
+      margin-top: 60px;
+    }
+
+    .price-card {
+      background: var(--ink2); padding: 52px 48px;
+      position: relative; overflow: hidden;
+    }
+
+    .price-card.featured {
+      background: rgba(201,168,76,0.04);
+      border-left: 1px solid var(--border2);
+    }
+
+    .price-card.featured::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+
+    .price-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--ink); background: var(--gold);
+      padding: 4px 14px; border-radius: 2px;
+      display: inline-block; margin-bottom: 28px;
+    }
+
+    .price-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px; font-weight: 600; color: var(--ivory);
+      margin-bottom: 8px;
+    }
+
+    .price-desc {
+      font-size: 13px; color: var(--muted); margin-bottom: 36px;
+    }
+
+    .price-amount {
+      display: flex; align-items: flex-start; gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .price-currency {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px; color: var(--gold); margin-top: 8px;
+    }
+
+    .price-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 72px; font-weight: 700; line-height: 1;
+      color: var(--ivory);
+    }
+
+    .price-old {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; color: var(--dim);
+      text-decoration: line-through; margin-bottom: 32px;
+    }
+
+    .price-features {
+      list-style: none; margin: 32px 0;
+    }
+
+    .price-features li {
+      font-size: 13px; color: var(--muted);
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .price-features li:last-child { border-bottom: none; }
+
+    .price-features li::before {
+      content: '♛'; color: var(--gold); font-size: 10px; flex-shrink: 0;
+    }
+
+    .price-btn {
+      width: 100%;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      padding: 18px; border-radius: 2px;
+      cursor: pointer; border: none; margin-top: 8px;
+      transition: all 0.2s; display: block; text-align: center;
+    }
+
+    .price-btn.ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--ivory);
+    }
+    .price-btn.ghost:hover {
+      border-color: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .price-btn.solid {
+      background: var(--gold); color: var(--ink);
+    }
+    .price-btn.solid:hover {
+      background: var(--gold2);
+      box-shadow: 0 8px 32px rgba(201,168,76,0.3);
+      transform: translateY(-2px);
+    }
+
+    /* ─── FAQ ─── */
+    .faq-list { margin-top: 60px; border-top: 1px solid var(--border); }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .faq-item summary {
+      list-style: none; cursor: pointer;
+      padding: 28px 0;
+      display: flex; align-items: center; justify-content: space-between;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px; font-weight: 600; color: var(--ivory);
+      transition: color 0.2s;
+    }
+    .faq-item summary:hover { color: var(--gold2); }
+
+    .faq-item summary::after {
+      content: '+'; font-family: 'JetBrains Mono', monospace;
+      font-size: 18px; color: var(--gold); flex-shrink: 0;
+      transition: transform 0.3s;
+    }
+    .faq-item[open] summary::after {
+      transform: rotate(45deg);
+    }
+
+    .faq-item p {
+      padding: 0 0 28px;
+      font-size: 14px; color: var(--muted); line-height: 1.8;
+      max-width: 720px;
+    }
+
+    /* ─── CTA BAND ─── */
+    .cta-band {
+      background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02));
+      border-top: 1px solid var(--border2);
+      border-bottom: 1px solid var(--border2);
+      padding: 100px 0; text-align: center;
+    }
+
+    .cta-band h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px, 5vw, 68px); font-weight: 300;
+      line-height: 1.1; color: var(--ivory); margin-bottom: 24px;
+    }
+    .cta-band h2 em { font-style: italic; color: var(--gold2); }
+
+    .cta-band p {
+      font-size: 15px; color: var(--muted); margin-bottom: 40px;
+    }
+
+    .cta-actions {
+      display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 60px 0 32px;
+    }
+
+    .footer-inner {
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 48px; margin-bottom: 60px;
+    }
+
+    .footer-brand p {
+      font-size: 13px; color: var(--muted); line-height: 1.7;
+      margin-top: 16px; margin-bottom: 24px; max-width: 260px;
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--ivory);
+    }
+    .footer-logo span { color: var(--gold); }
+
+    .footer-social {
+      display: flex; gap: 8px;
+    }
+
+    .social-btn {
+      width: 36px; height: 36px; border-radius: 2px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); text-decoration: none;
+      font-size: 14px; transition: all 0.2s;
+    }
+    .social-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: rgba(201,168,76,0.08);
+    }
+
+    .footer-col h4 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--dim); margin-bottom: 20px;
+    }
+
+    .footer-col a {
+      display: block; font-size: 13px; color: var(--muted);
+      text-decoration: none; padding: 6px 0;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--gold2); }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .footer-bottom p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: 1px; color: var(--dim);
+    }
+
+    .footer-bottom span { color: var(--gold); }
+
+    /* ─── MODALS ─── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 10000;
+      background: rgba(0,0,0,0.88); backdrop-filter: blur(8px);
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal-box {
+      background: var(--ink2); border: 1px solid var(--border2);
+      border-radius: 4px; width: 90%; max-width: 480px;
+      position: relative; max-height: 90vh; overflow-y: auto;
+    }
+
+    .modal-header {
+      padding: 28px 32px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 8px;
+    }
+
+    .modal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px; font-weight: 600; color: var(--ivory);
+    }
+
+    .modal-close {
+      position: absolute; top: 20px; right: 24px;
+      background: none; border: 1px solid var(--border);
+      width: 32px; height: 32px; border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); cursor: pointer; font-size: 14px;
+      transition: all 0.2s;
+    }
+    .modal-close:hover { border-color: var(--gold); color: var(--gold); }
+
+    .modal-body { padding: 28px 32px 32px; }
+
+    .modal-body p {
+      font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 20px;
+    }
+
+    .form-group { margin-bottom: 16px; }
+
+    .form-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--dim); display: block; margin-bottom: 8px;
+    }
+
+    .form-input, .form-select {
+      width: 100%; background: var(--ink3); border: 1px solid var(--border);
+      color: var(--ivory); padding: 12px 16px; border-radius: 2px;
+      font-size: 13px; font-family: 'Syne', sans-serif;
+      outline: none; transition: border-color 0.2s; appearance: none;
+    }
+    .form-input:focus, .form-select:focus { border-color: var(--gold); }
+
+    .form-input::placeholder { color: var(--dim); }
+
+    .modal-form-btn {
+      width: 100%; margin-top: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--ink); background: var(--gold);
+      border: none; padding: 16px; border-radius: 2px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .modal-form-btn:hover {
+      background: var(--gold2);
+      box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+    }
+
+    .modal-form-btn.ghost {
+      background: transparent; color: var(--muted);
+      border: 1px solid var(--border); margin-top: 10px;
+    }
+    .modal-form-btn.ghost:hover {
+      border-color: rgba(255,255,255,0.2); color: var(--ivory);
+    }
+
+    /* Social modal */
+    .social-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+      margin: 24px 0;
+    }
+
+    .social-card {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 10px; padding: 20px 16px;
+      background: var(--ink3); border: 1px solid var(--border);
+      border-radius: 2px; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .social-card:hover {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.06);
+    }
+
+    .social-card i { font-size: 22px; }
+    .social-card .sc-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--ivory);
+    }
+    .social-card .sc-hint { font-size: 11px; color: var(--dim); }
+
+    .social-card.email     i { color: #EA4335; }
+    .social-card.whatsapp  i { color: #25D366; }
+    .social-card.telegram  i { color: #229ED9; }
+    .social-card.instagram i { color: #E1306C; }
+
+    /* Buy modal */
+    .address-box {
+      background: var(--ink3); border: 1px solid var(--border2);
+      border-radius: 2px; padding: 16px; margin: 20px 0;
+    }
+
+    .address-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--dim); margin-bottom: 8px;
+    }
+
+    .address-row {
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .address-input {
+      flex: 1; background: transparent; border: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; color: var(--gold2); outline: none;
+    }
+
+    .copy-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--ink); background: var(--gold);
+      border: none; padding: 6px 12px; border-radius: 2px;
+      cursor: pointer; flex-shrink: 0; transition: background 0.2s;
+    }
+    .copy-btn:hover { background: var(--gold2); }
+
+    .warning-box {
+      background: rgba(201,168,76,0.06);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 2px; padding: 12px 16px; margin: 16px 0;
+      font-size: 12px; color: var(--muted); line-height: 1.6;
+    }
+
+    .step-indicator {
+      display: flex; gap: 0; margin-bottom: 24px;
+    }
+
+    .step-dot {
+      flex: 1; padding: 8px 12px; text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--dim); border-bottom: 2px solid var(--border);
+    }
+    .step-dot.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+    .verify-msg {
+      display: none; padding: 14px; border-radius: 2px;
+      font-size: 12px; line-height: 1.6; margin-top: 12px;
+    }
+    .verify-msg.success { background: rgba(39,174,96,0.1); border: 1px solid rgba(39,174,96,0.2); color: #4ade80; }
+    .verify-msg.error   { background: rgba(192,57,43,0.1); border: 1px solid rgba(192,57,43,0.2); color: #f87171; }
+
+    /* ─── CHALLENGE MODAL ─── */
+    .challenge-modal-img {
+      width: 100%; border-radius: 2px; display: block;
+      border: 1px solid var(--border2); margin-bottom: 20px;
+    }
+
+    .challenge-pills {
+      display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0;
+    }
+
+    .ch-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; letter-spacing: 2px;
+      color: var(--gold); border: 1px solid var(--border2);
+      padding: 5px 12px; border-radius: 2px;
+    }
+
+    .challenge-join-btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 16px;
+      background: #229ED9; border: none; border-radius: 2px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      color: white; cursor: pointer; text-decoration: none;
+      transition: all 0.2s; margin-top: 4px;
+    }
+    .challenge-join-btn:hover {
+      background: #1a8bc0;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(34,158,217,0.3);
+    }
+
+    /* ─── ANIMATIONS ─── */
+    .fade-up {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+
+      .nav-menu-mobile {
+        display: none; position: fixed; top: 64px; left: 0; right: 0;
+        background: var(--ink2); border-bottom: 1px solid var(--border);
+        padding: 20px; z-index: 999; flex-direction: column; gap: 16px;
+      }
+      .nav-menu-mobile.open { display: flex; }
+      .nav-menu-mobile a {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+        color: var(--muted); text-decoration: none; padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-menu-mobile a:last-child { border-bottom: none; }
+      .nav-cta { display: none; }
+
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-left { padding: 60px 24px; border-right: none; }
+      .hero-right { min-height: 440px; }
+      .hero-left::after { display: none; }
+      .hero-stats-strip { flex-direction: column; gap: 24px; }
+      .hstat { border-right: none; margin-right: 0; padding-right: 0; border-bottom: 1px solid var(--border); padding-bottom: 24px; }
+
+      .hiw-grid { grid-template-columns: 1fr; }
+      .bento { grid-template-columns: 1fr; }
+      .bento-cell.wide { grid-column: span 1; }
+      .challenge-inner { grid-template-columns: 1fr; gap: 40px; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .pricing-split { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .container { padding: 0 20px; }
+      .hero-h1 { font-size: 42px; }
+      .signal-table th:nth-child(4),
+      .signal-table td:nth-child(4) { display: none; }
+    }
+  </style>
 </head>
 <body>
-  <!-- Navigation -->
-  <nav class="navbar">
-    <div class="navbar-container">
-      <div class="navbar-brand">
-        <div class="logo">Deriv Hacker</div>
-        <span class="tagline">Market Intelligence</span>
+
+<div class="grid-bg"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-brand">
+    <span class="nav-crown">♛</span>
+    <span class="nav-logo">Match<span>King</span></span>
+    <span class="nav-tag">Deriv Signals</span>
+  </div>
+  <div class="nav-links">
+    <a href="#features">Intelligence</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#challenge">Challenge</a>
+    <a href="#pricing">Pricing</a>
+  </div>
+  <div class="nav-cta">
+    <a href="#" class="btn-outline" onclick="openModal('demoModal')">Book Demo</a>
+    <a href="/tool/" class="btn-gold">Access Terminal →</a>
+  </div>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="nav-menu-mobile" id="mobileMenu">
+  <a href="#features">Intelligence</a>
+  <a href="#how-it-works">How It Works</a>
+  <a href="#challenge">Challenge</a>
+  <a href="#pricing">Pricing</a>
+  <a href="#" onclick="openModal('demoModal')">Book Demo</a>
+  <a href="/tool/">Access Terminal</a>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-label">LIVE</div>
+  <div class="ticker-track">
+    <div class="ticker-inner" id="tickerInner">
+      <div class="ticker-item"><strong>V75</strong> <span>Over 9</span> <span class="up">▲ 94%</span></div>
+      <div class="ticker-item"><strong>V100</strong> <span>Under 9</span> <span class="up">▲ 91%</span></div>
+      <div class="ticker-item"><strong>V25</strong> <span>Over 9</span> <span class="up">▲ 97%</span></div>
+      <div class="ticker-item"><strong>CRASH 300</strong> <span>Under 9</span> <span class="down">▼ 88%</span></div>
+      <div class="ticker-item"><strong>BOOM 500</strong> <span>Over 9</span> <span class="up">▲ 93%</span></div>
+      <div class="ticker-item"><strong>V50</strong> <span>Under 9</span> <span class="up">▲ 96%</span></div>
+      <div class="ticker-item"><strong>STEP INDEX</strong> <span>Over 9</span> <span class="up">▲ 90%</span></div>
+      <div class="ticker-item"><strong>V75 (1s)</strong> <span>Under 9</span> <span class="up">▲ 92%</span></div>
+      <!-- duplicate for seamless loop -->
+      <div class="ticker-item"><strong>V75</strong> <span>Over 9</span> <span class="up">▲ 94%</span></div>
+      <div class="ticker-item"><strong>V100</strong> <span>Under 9</span> <span class="up">▲ 91%</span></div>
+      <div class="ticker-item"><strong>V25</strong> <span>Over 9</span> <span class="up">▲ 97%</span></div>
+      <div class="ticker-item"><strong>CRASH 300</strong> <span>Under 9</span> <span class="down">▼ 88%</span></div>
+      <div class="ticker-item"><strong>BOOM 500</strong> <span>Over 9</span> <span class="up">▲ 93%</span></div>
+      <div class="ticker-item"><strong>V50</strong> <span>Under 9</span> <span class="up">▲ 96%</span></div>
+      <div class="ticker-item"><strong>STEP INDEX</strong> <span>Over 9</span> <span class="up">▲ 90%</span></div>
+      <div class="ticker-item"><strong>V75 (1s)</strong> <span>Under 9</span> <span class="up">▲ 92%</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" style="padding-top:96px;">
+  <div class="hero-bg-chess">♚</div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Deriv Match Intelligence Platform</div>
+      <h1 class="hero-h1">
+        <em>Reign</em> over<br>
+        <strong>every trade.</strong>
+      </h1>
+      <div class="hero-rule"></div>
+      <p class="hero-sub">MatchKing delivers institutional-grade Over/Under 9 signals for Deriv matches. AI-driven precision. Royal confidence. Real results.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-primary-lg" onclick="openModal('demoModal')">Request Free Demo <span>→</span></a>
+        <a href="#pricing" class="btn-ghost-lg">View Pricing</a>
       </div>
-      <button class="navbar-toggle" id="navToggle" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
-      </button>
-      <div class="navbar-menu" id="navMenu">
-        <a href="#features" class="navbar-link">Features</a>
-        <a href="#how-it-works" class="navbar-link">How It Works</a>
-        <a href="#pricing" class="navbar-link">Pricing</a>
-        <a href="book/index.html" class="btn btn-secondary">Free Demo</a>
-        <a href="/digitpro/" class="btn btn-primary">Access the Tool</a>
+      <div class="hero-stats-strip fade-up">
+        <div class="hstat">
+          <div class="hstat-val">99<span style="font-size:24px;color:var(--gold)">%</span></div>
+          <div class="hstat-label">Signal Accuracy</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-val">12<span style="font-size:24px;color:var(--gold)">+</span></div>
+          <div class="hstat-label">Signals Per Day</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-val">24<span style="font-size:18px;color:var(--gold)">/7</span></div>
+          <div class="hstat-label">Market Coverage</div>
+        </div>
       </div>
     </div>
-  </nav>
 
-  <main>
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="container">
-        <div class="hero-content">
-          <div class="hero-text">
-            <h1>Automated Market Analysis for Volatility Trading</h1>
-            <p class="hero-subtitle">Deriv Hacker delivers 99% accurate entry signals powered by AI-driven analytics. Get precise predictions, stop-loss guidance, and confidence metrics in real time.</p>
-            <div class="hero-cta">
-              <a href="book/index.html" class="btn btn-demo btn-lg">Request Free Demo</a>
-              <a href="#pricing" class="btn btn-primary btn-lg">View Pricing</a>
-            </div>
-            <p class="hero-trust">✓ Live demo walkthrough • No credit card required • 30-minute session</p>
-          </div>
-          <div class="hero-visual">
-            <div class="chart-card">
-              <div class="chart-header">
-                <h4>Live Market Signals</h4>
-                <span class="chart-badge">Real-time</span>
-              </div>
-              <svg class="chart" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg">
-                <!-- Grid lines -->
-                <line x1="30" y1="20" x2="30" y2="140" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
-                <line x1="30" y1="140" x2="310" y2="140" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
-                
-                <!-- Candlesticks -->
-                <g class="candlestick">
-                  <line x1="50" y1="50" x2="50" y2="130" stroke="#289D3F" stroke-width="1" opacity="0.5"/>
-                  <rect x="45" y="70" width="10" height="30" fill="#289D3F" opacity="0.8"/>
-                </g>
-                <g class="candlestick">
-                  <line x1="75" y1="40" x2="75" y2="120" stroke="#289D3F" stroke-width="1" opacity="0.5"/>
-                  <rect x="70" y="60" width="10" height="35" fill="#289D3F"/>
-                </g>
-                <g class="candlestick">
-                  <line x1="100" y1="55" x2="100" y2="125" stroke="#289D3F" stroke-width="1" opacity="0.5"/>
-                  <rect x="95" y="75" width="10" height="28" fill="#289D3F" opacity="0.7"/>
-                </g>
-                <g class="candlestick">
-                  <line x1="125" y1="30" x2="125" y2="110" stroke="#B0FC38" stroke-width="1" opacity="0.6"/>
-                  <rect x="120" y="50" width="10" height="40" fill="#B0FC38"/>
-                </g>
-                <g class="candlestick">
-                  <line x1="150" y1="45" x2="150" y2="118" stroke="#289D3F" stroke-width="1" opacity="0.5"/>
-                  <rect x="145" y="65" width="10" height="32" fill="#289D3F" opacity="0.85"/>
-                </g>
-                <g class="candlestick">
-                  <line x1="175" y1="35" x2="175" y2="105" stroke="#B0FC38" stroke-width="1" opacity="0.6"/>
-                  <rect x="170" y="55" width="10" height="38" fill="#B0FC38"/>
-                </g>
-                <g class="candlestick">
-                  <line x1="200" y1="50" x2="200" y2="125" stroke="#289D3F" stroke-width="1" opacity="0.5"/>
-                  <rect x="195" y="70" width="10" height="30" fill="#289D3F" opacity="0.8"/>
-                </g>
-                <g class="candlestick">
-                  <line x1="225" y1="25" x2="225" y2="100" stroke="#B0FC38" stroke-width="1" opacity="0.6"/>
-                  <rect x="220" y="45" width="10" height="42" fill="#B0FC38"/>
-                </g>
-                <g class="candlestick">
-                  <line x1="250" y1="40" x2="250" y2="115" stroke="#289D3F" stroke-width="1" opacity="0.5"/>
-                  <rect x="245" y="60" width="10" height="35" fill="#289D3F" opacity="0.8"/>
-                </g>
-                <g class="candlestick">
-                  <line x1="275" y1="30" x2="275" y2="108" stroke="#B0FC38" stroke-width="1" opacity="0.6"/>
-                  <rect x="270" y="50" width="10" height="40" fill="#B0FC38"/>
-                </g>
-              </svg>
-              <div class="chart-stats">
-                <div class="stat-item">
-                  <span class="stat-label">Accuracy</span>
-                  <span class="stat-value">99%</span>
-                </div>
-                <div class="stat-item">
-                  <span class="stat-label">Signals/Day</span>
-                  <span class="stat-value">12+</span>
-                </div>
-                <div class="stat-item">
-                  <span class="stat-label">Markets</span>
-                  <span class="stat-value">24/7</span>
-                </div>
-              </div>
-            </div>
-          </div>
+    <!-- TERMINAL -->
+    <div class="hero-right">
+      <div class="terminal-header">
+        <div class="terminal-dots">
+          <span></span><span></span><span></span>
         </div>
+        <div class="terminal-title">matchking_signals.terminal</div>
+        <div class="terminal-status">LIVE FEED</div>
       </div>
-    </section>
-
-    <!-- Trust Section -->
-    <section class="trust-bar">
-      <div class="container">
-        <div class="trust-items">
-          <div class="trust-item">
-            <span class="trust-icon">🎯</span>
-            <p><strong>99% Accuracy</strong> on backtested data</p>
-          </div>
-          <div class="trust-item">
-            <span class="trust-icon">⚡</span>
-            <p><strong>Real-time Signals</strong> 24/7 monitoring</p>
-          </div>
-          <div class="trust-item">
-            <span class="trust-icon">🔒</span>
-            <p><strong>Enterprise Security</strong> bank-grade protection</p>
-          </div>
-        </div>
+      <div class="terminal-body">
+        <table class="signal-table">
+          <thead>
+            <tr>
+              <th>Market</th>
+              <th>Signal</th>
+              <th>Confidence</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody id="signalBody">
+            <tr>
+              <td><div class="sig-market">V75 Index</div><div class="sig-type">VOLATILITY · MATCH</div></td>
+              <td><span class="sig-badge over">OVER 9</span></td>
+              <td><div class="sig-conf"><div class="sig-conf-bar"><div class="sig-conf-fill" style="width:97%"></div></div><span class="sig-conf-val">97%</span></div></td>
+              <td class="sig-time">just now</td>
+            </tr>
+            <tr>
+              <td><div class="sig-market">BOOM 500</div><div class="sig-type">SYNTHETIC · MATCH</div></td>
+              <td><span class="sig-badge over">OVER 9</span></td>
+              <td><div class="sig-conf"><div class="sig-conf-bar"><div class="sig-conf-fill" style="width:93%"></div></div><span class="sig-conf-val">93%</span></div></td>
+              <td class="sig-time">2m ago</td>
+            </tr>
+            <tr>
+              <td><div class="sig-market">V100 Index</div><div class="sig-type">VOLATILITY · MATCH</div></td>
+              <td><span class="sig-badge under">UNDER 9</span></td>
+              <td><div class="sig-conf"><div class="sig-conf-bar"><div class="sig-conf-fill" style="width:89%"></div></div><span class="sig-conf-val">89%</span></div></td>
+              <td class="sig-time">5m ago</td>
+            </tr>
+            <tr>
+              <td><div class="sig-market">CRASH 300</div><div class="sig-type">SYNTHETIC · MATCH</div></td>
+              <td><span class="sig-badge under">UNDER 9</span></td>
+              <td><div class="sig-conf"><div class="sig-conf-bar"><div class="sig-conf-fill" style="width:95%"></div></div><span class="sig-conf-val">95%</span></div></td>
+              <td class="sig-time">7m ago</td>
+            </tr>
+            <tr>
+              <td><div class="sig-market">Step Index</div><div class="sig-type">SYNTHETIC · MATCH</div></td>
+              <td><span class="sig-badge over">OVER 9</span></td>
+              <td><div class="sig-conf"><div class="sig-conf-bar"><div class="sig-conf-fill" style="width:91%"></div></div><span class="sig-conf-val">91%</span></div></td>
+              <td class="sig-time">11m ago</td>
+            </tr>
+            <tr>
+              <td><div class="sig-market">V25 Index</div><div class="sig-type">VOLATILITY · MATCH</div></td>
+              <td><span class="sig-badge over">OVER 9</span></td>
+              <td><div class="sig-conf"><div class="sig-conf-bar"><div class="sig-conf-fill" style="width:98%"></div></div><span class="sig-conf-val">98%</span></div></td>
+              <td class="sig-time">14m ago</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="features">
-      <div class="container">
-        <h2>Why Choose Deriv Hacker?</h2>
-        <p class="section-subtitle">Built by traders, for traders. Industry-leading accuracy and usability.</p>
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon">📊</div>
-            <h3>Automated Scanning</h3>
-            <p>Continuously monitors volatility instruments, derivatives, and ETFs. Identifies high-probability setups across multiple markets.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">🎯</div>
-            <h3>Precision Entries</h3>
-            <p>AI-powered analysis delivers exact entry points with suggested stop-loss levels and profit targets.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">📈</div>
-            <h3>Confidence Scoring</h3>
-            <p>Every signal includes a confidence metric so you can make informed trading decisions.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">⚙️</div>
-            <h3>Real-Time Alerts</h3>
-            <p>Get instant notifications when high-confidence signals are detected. Never miss an opportunity.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">🌍</div>
-            <h3>Multi-Market Support</h3>
-            <p>Works across options, futures, volatility indices, and ETFs. Full market coverage.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">🚀</div>
-            <h3>Fast Onboarding</h3>
-            <p>Start trading in minutes. Simple interface, comprehensive documentation, and dedicated support.</p>
-          </div>
-        </div>
+      <div class="terminal-footer">
+        <div class="tf-left">Today's accuracy: <span>99%</span> · <span id="signalCount">6</span> signals generated</div>
+        <div class="tf-accuracy">99%</div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <!-- How It Works -->
-    <section id="how-it-works" class="how-it-works">
-      <div class="container">
-        <h2>How Deriv Hacker Works</h2>
-        <p class="section-subtitle">A 3-step process to trading success.</p>
-        <div class="steps">
-          <div class="step">
-            <div class="step-number">1</div>
-            <h3>AI Scans Markets</h3>
-            <p>Our ensemble models continuously analyze volatility instruments, price action, and market microstructure to identify optimal entry conditions.</p>
-          </div>
-          <div class="step">
-            <div class="step-number">2</div>
-            <h3>Generate Signals</h3>
-            <p>High-confidence trading signals are generated with entry prices, stop suggestions, and profit targets. Each signal includes a confidence score.</p>
-          </div>
-          <div class="step">
-            <div class="step-number">3</div>
-            <h3>You Trade & Win</h3>
-            <p>Execute trades with precision. Real-time alerts ensure you never miss a setup. Our data backs 99% accuracy on historical performance.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+<!-- MARQUEE -->
+<div class="marquee-band">
+  <div class="marquee-inner">
+    <span class="mq-item">Over/Under 9 Deriv Signals</span>
+    <span class="mq-item">AI-Powered Match Intelligence</span>
+    <span class="mq-item">Volatility Index Trading</span>
+    <span class="mq-item">Real-Time Signal Engine</span>
+    <span class="mq-item">Institutional Precision</span>
+    <span class="mq-item">Royal Trading Edge</span>
+    <span class="mq-item">Over/Under 9 Deriv Signals</span>
+    <span class="mq-item">AI-Powered Match Intelligence</span>
+    <span class="mq-item">Volatility Index Trading</span>
+    <span class="mq-item">Real-Time Signal Engine</span>
+    <span class="mq-item">Institutional Precision</span>
+    <span class="mq-item">Royal Trading Edge</span>
+  </div>
+</div>
 
-    <!-- Testimonials -->
-    <section class="testimonials">
-      <div class="container">
-        <h2>Trusted by Professional Traders</h2>
-        <div class="testimonials-grid">
-          <div class="testimonial">
-            <p class="testimonial-text">"Deriv Hacker completely changed how we trade volatility. The signals are incredibly accurate and the interface is clean. Highly recommended."</p>
-            <p class="testimonial-author">— Marcus T., Proprietary Trader</p>
-          </div>
-          <div class="testimonial">
-            <p class="testimonial-text">"The demo sold me immediately. The analytics and real-time signals are professional-grade. Worth every penny."</p>
-            <p class="testimonial-author">— Sofia M., Hedge Fund Manager</p>
-          </div>
-          <div class="testimonial">
-            <p class="testimonial-text">"Best trading tool we've integrated into our platform. Support is responsive and the product keeps improving."</p>
-            <p class="testimonial-author">— David L., Trading Desk Lead</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-   <!-- Pricing / CTA -->
-<section id="pricing" class="pricing">
+<!-- HOW IT WORKS -->
+<section id="how-it-works" class="section-pad">
   <div class="container">
-    <h2>Choose Your Plan</h2>
-    <p class="section-subtitle">One-time investment. No hidden fees. Lifetime value.</p>
-    
-    <div class="pricing-grid">
+    <div class="section-eyebrow">The Process</div>
+    <h2 class="section-h2">From scan to <em>signal</em><br>in seconds.</h2>
+    <div class="hiw-grid fade-up">
+      <div class="hiw-cell">
+        <div class="hiw-num">01</div>
+        <div class="hiw-icon">🔬</div>
+        <h3 class="hiw-h3">Market Intelligence</h3>
+        <p class="hiw-p">Our ensemble models scan Deriv's synthetic indices 24/7 — analysing volatility patterns, match sequences, and microstructure behaviour to isolate high-probability Over/Under 9 setups.</p>
+      </div>
+      <div class="hiw-cell">
+        <div class="hiw-num">02</div>
+        <div class="hiw-icon">⚡</div>
+        <h3 class="hiw-h3">Signal Generation</h3>
+        <p class="hiw-p">When conditions align, a precision signal fires — complete with market, direction (Over or Under 9), and a confidence score. Every signal is timestamped and logged.</p>
+      </div>
+      <div class="hiw-cell">
+        <div class="hiw-num">03</div>
+        <div class="hiw-icon">♛</div>
+        <h3 class="hiw-h3">You Execute, You Win</h3>
+        <p class="hiw-p">Execute on Deriv's platform using our signal. Real-time alerts ensure zero missed opportunities. Our historical data shows 99% accuracy on peak conditions.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-      <!-- BASIC PLAN -->
-      <div class="pricing-card">
-        <div class="pricing-header">
-          <h3>Deriv Hacker Tool</h3>
-
-          <p class="price-old">$100</p>
-          <p class="price-value">$199</p>
-
-          <p class="price-note">One-time payment</p>
-
-          <p class="proof-note">
-            
-          </p>
+<!-- FEATURES BENTO -->
+<section id="features" class="section-pad" style="padding-top:0;">
+  <div class="container">
+    <div class="section-eyebrow">Platform Intelligence</div>
+    <h2 class="section-h2">Everything a <strong>king</strong><br><em>needs</em> to trade.</h2>
+    <div class="bento fade-up">
+      <!-- Wide top-left: accuracy gauge -->
+      <div class="bento-cell wide">
+        <div class="bento-icon">🎯</div>
+        <h3 class="bento-h3">99% Signal Accuracy</h3>
+        <p class="bento-p">Backtested across thousands of Deriv match sequences. Our model achieves peak accuracy on V75, V100, BOOM, CRASH, and Step Index instruments.</p>
+        <div class="gauge-wrap">
+          <svg class="gauge-svg" viewBox="0 0 160 90">
+            <path d="M 10 80 A 70 70 0 0 1 150 80" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8" stroke-linecap="round"/>
+            <path d="M 10 80 A 70 70 0 0 1 150 80" fill="none" stroke="url(#gaugeGrad)" stroke-width="8" stroke-linecap="round"
+              stroke-dasharray="219.9" stroke-dashoffset="2.2"
+              style="transition: stroke-dashoffset 2s ease;"/>
+            <defs>
+              <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#C9A84C"/>
+                <stop offset="100%" stop-color="#F5E09A"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="gauge-val">99%</div>
         </div>
-
-        <ul class="pricing-features">
-          <li>✓ Lifetime access to Deriv Hacker platform</li>
-          <li>✓ Real-time trading signals & alerts</li>
-          <li>✓ Entry & stop-loss guidance</li>
-          <li>✓ Confidence scoring system</li>
-          <li>✓ Multi-market support (volatility indices)</li>
-          <li>✓ Basic email support</li>
-          <li>✓ Quarterly feature updates</li>
-          <li>🔥 Strategy proven with live trading results</li>
-        </ul>
-
-        <button class="btn btn-secondary btn-lg" id="pricingBuyBasic" style="width: 100%; margin-top: 20px;">
-          Get Started – $199
-        </button>
-
-        <p class="price-note small-note">
-          Previously $100 • Now upgraded with proven results
-        </p>
+        <span class="bento-tag">PEAK BACKTESTED ACCURACY</span>
       </div>
 
-      <!-- PRO PLAN -->
-      <div class="pricing-card pricing-featured">
-
-        <div class="pricing-badge">🔥 Proven Strategy</div>
-
-        <div class="pricing-header">
-          <h3>Tool + Mentorship</h3>
-
-          <p class="price-old">$200</p>
-          <p class="price-value">$299</p>
-
-          <p class="price-note">One-time payment</p>
-
-          <p class="proof-note">
-           
-          </p>
+      <!-- Top-right: markets -->
+      <div class="bento-cell">
+        <div class="bento-icon">🌍</div>
+        <h3 class="bento-h3">7 Deriv Markets</h3>
+        <p class="bento-p">V10, V25, V50, V75, V100, BOOM 500, CRASH 300, Step Index. Full synthetic coverage.</p>
+        <div style="margin-top:20px; display:flex; flex-wrap:wrap; gap:6px;">
+          <span class="bento-tag">V75</span>
+          <span class="bento-tag">V100</span>
+          <span class="bento-tag">BOOM 500</span>
+          <span class="bento-tag">CRASH 300</span>
+          <span class="bento-tag">STEP INDEX</span>
+          <span class="bento-tag">V25</span>
         </div>
+      </div>
 
-        <ul class="pricing-features">
-          <li>✓ <strong>Everything in Tool plan</strong></li>
-           <li>✅<strong>FREE ACCOUNT MANAGEMENT</strong></li>
-           <li>✓ 1-on-1 mentorship sessions (4 sessions)</li>
-          <li>✓ Personalized trading strategy setup</li>
-          <li>✓ Risk management coaching</li>
-          <li>✓ Direct WhatsApp/Telegram support</li>
-          <li>✓ Quarterly feature updates</li>
-          <li>✓ Exclusive trading community access</li>
-          <li>✓ Lifetime mentorship group access</li>
-          <li>🔥 Strategy proven with real trading results</li>
-        </ul>
+      <!-- Middle left: candles -->
+      <div class="bento-cell">
+        <div class="bento-icon">📊</div>
+        <h3 class="bento-h3">Real-Time Alerts</h3>
+        <p class="bento-p">Instant push notifications when a qualifying Over/Under 9 signal is detected. Never miss a setup.</p>
+        <div class="candle-preview" id="candlePreview"></div>
+      </div>
 
-        <button class="btn btn-primary btn-lg" id="pricingBuyPro" style="width: 100%; margin-top: 20px;">
-          Pay with USDT – $299
-        </button>
+      <!-- Middle centre -->
+      <div class="bento-cell">
+        <div class="bento-icon">🧠</div>
+        <h3 class="bento-h3">Confidence Scoring</h3>
+        <p class="bento-p">Every signal ships with a percentage confidence metric so you can size positions with precision.</p>
+        <div style="margin-top:24px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim)">V75 Over 9</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold2)">97%</span>
+          </div>
+          <div style="height:3px;background:rgba(255,255,255,0.06);border-radius:2px;"><div style="width:97%;height:100%;background:linear-gradient(to right,var(--gold),var(--gold2));border-radius:2px;"></div></div>
+          <div style="display:flex;justify-content:space-between;margin:12px 0 6px;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim)">CRASH 300 Under 9</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold2)">95%</span>
+          </div>
+          <div style="height:3px;background:rgba(255,255,255,0.06);border-radius:2px;"><div style="width:95%;height:100%;background:linear-gradient(to right,var(--gold),var(--gold2));border-radius:2px;"></div></div>
+          <div style="display:flex;justify-content:space-between;margin:12px 0 6px;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim)">BOOM 500 Over 9</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold2)">93%</span>
+          </div>
+          <div style="height:3px;background:rgba(255,255,255,0.06);border-radius:2px;"><div style="width:93%;height:100%;background:linear-gradient(to right,var(--gold),var(--gold2));border-radius:2px;"></div></div>
+        </div>
+      </div>
 
-        <p class="price-note small-note">
-          Previously $200 • Now includes mentorship + added value
-        </p>
+      <!-- Bottom right: onboarding -->
+      <div class="bento-cell">
+        <div class="bento-icon">🚀</div>
+        <h3 class="bento-h3">Fast Onboarding</h3>
+        <p class="bento-p">Start trading in under 10 minutes. Clean interface, full documentation, dedicated support.</p>
+        <span class="bento-tag">BEGINNER FRIENDLY</span>
       </div>
 
     </div>
   </div>
 </section>
-    <!-- Demo Offer -->
-    <section class="demo-section">
-      <div class="container">
-        <h2>See It In Action</h2>
-        <p>Book a 30-minute live demo. We'll walk you through the platform, show real examples, and answer all your questions.</p>
-        <a href="book/index.html" class="btn btn-demo btn-lg">Request Free Demo</a>
-      </div>
-    </section>
 
-    <!-- FAQ -->
-    <section class="faq">
-      <div class="container">
-        <h2>Frequently Asked Questions</h2>
-        <div class="faq-list">
-          <details class="faq-item">
-            <summary>Is the 99% accuracy guaranteed?</summary>
-            <p>The 99% figure is based on peak backtested performance across optimal market conditions. Live trading results may vary depending on market volatility, execution speed, and market conditions. We provide a demo session so you can evaluate the system before purchase.</p>
-          </details>
-          <details class="faq-item">
-            <summary>What markets does Deriv Hacker support?</summary>
-            <p>Deriv Hacker works across options, futures, volatility ETFs, and volatility indices. We continuously monitor multiple asset classes to deliver diverse trading opportunities.</p>
-          </details>
-          <details class="faq-item">
-            <summary>Do I need trading experience?</summary>
-            <p>While basic trading knowledge is helpful, our interface is designed for both beginners and professionals. The demo includes a walkthrough of all features and best practices.</p>
-          </details>
-          <details class="faq-item">
-            <summary>Is there customer support after purchase?</summary>
-            <p>Yes. You'll get priority email support, access to our knowledge base, and quarterly feature updates. We also offer optional one-on-one onboarding sessions.</p>
-          </details>
-          <details class="faq-item">
-            <summary>What if I'm not satisfied?</summary>
-            <p>We stand behind our product. Refund requests are handled on a case-by-case basis. The pre-purchase demo is specifically designed to let you evaluate the system risk-free.</p>
-          </details>
+<!-- CHALLENGE SECTION -->
+<section id="challenge" class="challenge-section section-pad">
+  <div class="container">
+    <div class="challenge-inner">
+      <div class="challenge-left fade-up">
+        <div class="challenge-car-frame">
+          <img src="gle 63.png" alt="2019 AMG GT 63" onerror="this.style.display='none';this.nextElementSibling.style.minHeight='200px';">
+          <div class="challenge-car-overlay"></div>
+          <div class="challenge-car-label">
+            <div class="challenge-car-sub">The Goal</div>
+            <div class="challenge-car-name">2019 Mercedes-AMG GT 63</div>
+          </div>
+        </div>
+        <div class="challenge-progress-block">
+          <div class="prog-labels">
+            <span>Progress to $115,500</span>
+            <span id="progPct">Challenge Active</span>
+          </div>
+          <div class="prog-bar">
+            <div class="prog-fill" id="progFill" style="width:0"></div>
+          </div>
         </div>
       </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container footer-content">
-      <div>
-        <p>&copy; <span id="year"></span> Deriv Hacker. All rights reserved.</p>
-      </div>
-      <div class="footer-contact">
-        <p style="font-size: 13px; color: #aaa;">
-          📧 <a href="mailto:hackerderiv@gmail.com" style="color: #289D3F; text-decoration: none;">hackerderiv@gmail.com</a>
-          &nbsp;&nbsp;|&nbsp;&nbsp;
-          💬 <a href="https://wa.me/254771814498" target="_blank" style="color: #289D3F; text-decoration: none;">WhatsApp</a>
-          &nbsp;&nbsp;|&nbsp;&nbsp;
-          ✈️ <a href="https://t.me/brandytades" target="_blank" style="color: #289D3F; text-decoration: none;">Telegram</a>
-          &nbsp;&nbsp;|&nbsp;&nbsp;
-          📷 <a href="https://instagram.com/brandyk.fx" target="_blank" style="color: #289D3F; text-decoration: none;">Instagram</a>
+      <div class="challenge-right fade-up">
+        <div class="section-eyebrow">Live Challenge</div>
+        <h2 class="section-h2">♛ The AMG<br><em>GT 63 Race</em></h2>
+        <p style="font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:24px;">
+          Our flagship live challenge: trade Deriv matches using MatchKing signals until the account hits $115,500 — enough for a 2019 AMG GT 63. Follow every trade in real-time. Real capital. Real execution. Real results.
+        </p>
+        <div class="challenge-meta-pills">
+          <span class="cpill">📊 DERIV MATCHES</span>
+          <span class="cpill">📈 OVER / UNDER 9</span>
+          <span class="cpill">🎯 LIVE SIGNALS</span>
+          <span class="cpill">⚡ REAL CAPITAL</span>
+        </div>
+        <a href="https://t.me/brandytadeschallenge" target="_blank" rel="noopener noreferrer" class="challenge-join-btn">
+          <i class="fab fa-telegram"></i> Join the Telegram Challenge
+        </a>
+        <p style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--dim);">
+          Free to follow · No obligations · Live strategy insights
         </p>
       </div>
-      <div class="footer-links">
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section-pad">
+  <div class="container">
+    <div class="section-eyebrow">Client Intelligence</div>
+    <h2 class="section-h2">Kings of the<br><em>market</em> speak.</h2>
+    <div class="testimonials-grid fade-up">
+      <div class="testi-card">
+        <div class="testi-quote-mark">"</div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">MatchKing completely changed how I trade volatility on Deriv. The Over/Under signals are incredibly accurate. I've never had a tool this precise.</p>
+        <div class="testi-author">Marcus T.</div>
+        <div class="testi-role">Proprietary Trader · Nairobi</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-quote-mark">"</div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">The demo sold me immediately. Professional-grade analytics delivered in a clean interface. I finally feel in control of every trade I place on Deriv.</p>
+        <div class="testi-author">Sofia M.</div>
+        <div class="testi-role">Independent Trader · Lagos</div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-quote-mark">"</div>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">Best signal tool I've used for Deriv matches. The confidence scoring alone is worth the investment. Support is fast and the platform keeps improving.</p>
+        <div class="testi-author">David L.</div>
+        <div class="testi-role">Trading Desk Lead · Johannesburg</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="section-pad" style="padding-top:0;">
+  <div class="container">
+    <div class="section-eyebrow">Pricing</div>
+    <h2 class="section-h2">One investment.<br><em>Lifetime</em> edge.</h2>
+    <div class="pricing-split fade-up">
+
+      <div class="price-card">
+        <div class="price-name">MatchKing Tool</div>
+        <p class="price-desc">Full platform access. Everything you need to trade Deriv matches with precision.</p>
+        <div class="price-amount">
+          <span class="price-currency">$</span>
+          <span class="price-number">199</span>
+        </div>
+        <p class="price-old">Previously $100 · Now with proven results</p>
+        <ul class="price-features">
+          <li>Lifetime platform access</li>
+          <li>Real-time Over/Under 9 signals</li>
+          <li>Confidence scoring system</li>
+          <li>Multi-market: V75, V100, BOOM, CRASH, Step</li>
+          <li>Entry guidance & stop-loss levels</li>
+          <li>Quarterly feature updates</li>
+          <li>Email support</li>
+        </ul>
+        <button class="price-btn ghost" onclick="openBuyModal(199)">Get Started — $199 USDT</button>
+      </div>
+
+      <div class="price-card featured">
+        <div class="price-badge">♛ Most Popular</div>
+        <div class="price-name">Tool + Mentorship</div>
+        <p class="price-desc">Everything in Tool, plus 1-on-1 coaching, account management, and community access.</p>
+        <div class="price-amount">
+          <span class="price-currency">$</span>
+          <span class="price-number">299</span>
+        </div>
+        <p class="price-old">Previously $200 · Now includes mentorship</p>
+        <ul class="price-features">
+          <li><strong>Everything in Tool plan</strong></li>
+          <li>FREE account management</li>
+          <li>4× 1-on-1 mentorship sessions</li>
+          <li>Personalised strategy setup</li>
+          <li>Risk management coaching</li>
+          <li>Direct WhatsApp & Telegram support</li>
+          <li>Exclusive trading community access</li>
+          <li>Lifetime mentorship group</li>
+        </ul>
+        <button class="price-btn solid" onclick="openBuyModal(299)">Pay with USDT — $299</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section-pad" style="padding-top:0;">
+  <div class="container">
+    <div class="section-eyebrow">FAQ</div>
+    <h2 class="section-h2">Questions, <em>answered.</em></h2>
+    <div class="faq-list fade-up">
+      <details class="faq-item">
+        <summary>Is the 99% accuracy guaranteed?</summary>
+        <p>The 99% figure represents peak backtested performance across optimal Deriv match conditions. Live trading results vary based on market volatility, execution speed, and conditions. We offer a free demo so you can evaluate the system before any commitment.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Which Deriv markets does MatchKing support?</summary>
+        <p>MatchKing covers Deriv's synthetic indices including Volatility 10, 25, 50, 75, and 100 Indices, BOOM 300/500/1000, CRASH 300/500/1000, and Step Index — all with Over/Under 9 match signal generation.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Do I need Deriv trading experience?</summary>
+        <p>Basic familiarity with Deriv's platform helps, but our interface is designed for all levels. The demo includes a complete walkthrough of features, signal interpretation, and best execution practices.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How is payment processed?</summary>
+        <p>We accept USDT (TRC20) only. You send the exact amount to our wallet address and submit your transaction hash for instant automated verification. Access credentials are delivered to your email upon confirmation.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What if I'm not satisfied?</summary>
+        <p>Refund requests are handled case-by-case. The pre-purchase demo exists specifically so you can evaluate the system risk-free — we strongly encourage taking the 30-minute session before purchasing.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <div class="container">
+    <h2>Ready to <em>rule</em><br>your trades?</h2>
+    <p>Book a free 30-minute demo. See live signals. Make an informed decision.</p>
+    <div class="cta-actions">
+      <a href="#" class="btn-primary-lg" onclick="openModal('demoModal')">Request Free Demo →</a>
+      <a href="#pricing" class="btn-ghost-lg">View Pricing</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">Match<span>King</span> ♛</div>
+        <p>Institutional-grade Deriv match signal intelligence. Built by traders, for traders who demand precision.</p>
+        <div class="footer-social">
+          <a href="mailto:hackerderiv@gmail.com" class="social-btn"><i class="fas fa-envelope"></i></a>
+          <a href="https://wa.me/254771814498" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://t.me/brandytades" target="_blank" class="social-btn"><i class="fab fa-telegram"></i></a>
+          <a href="https://instagram.com/brandyk.fx" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="#features">Intelligence</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="/tool/">Access Terminal</a>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <a href="#challenge">AMG Challenge</a>
+        <a href="https://t.me/brandytades" target="_blank">Telegram Channel</a>
+        <a href="https://t.me/brandytadeschallenge" target="_blank">Challenge Group</a>
+        <a href="book/index.html">Book Demo</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
         <a href="#">Privacy Policy</a>
         <a href="#">Terms of Service</a>
-        <a href="#">Contact</a>
         <a href="refund/">Refund Policy</a>
+        <a href="mailto:hackerderiv@gmail.com">Contact</a>
       </div>
     </div>
-  </footer>
-
-  <!-- Social Links Modal -->
-  <div class="modal" id="socialModal" aria-hidden="false">
-    <div class="modal-content social-modal-content" style="max-width: 380px; width: 90%; background: #242424; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 30px; position: relative; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);">
-      <button class="modal-close" id="socialModalClose">
-        <i class="fas fa-times"></i>
-      </button>
-      
-      <div class="social-modal-header">
-        <h2>Connect With Us</h2>
-      </div>
-
-      <div class="social-links-grid">
-        <!-- Email -->
-        <a href="mailto:hackerderiv@gmail.com" class="social-link-card email-card">
-          <div class="social-card-icon">
-            <i class="fas fa-envelope"></i>
-          </div>
-          <span class="social-card-label">Email</span>
-          <span class="social-card-hint">Get in touch</span>
-        </a>
-
-        <!-- WhatsApp -->
-        <a href="https://wa.me/254771814498" target="_blank" class="social-link-card whatsapp-card">
-          <div class="social-card-icon">
-            <i class="fab fa-whatsapp"></i>
-          </div>
-          <span class="social-card-label">WhatsApp</span>
-          <span class="social-card-hint">Chat with us</span>
-        </a>
-
-        <!-- Telegram -->
-        <a href="https://t.me/brandytades" target="_blank" class="social-link-card telegram-card">
-          <div class="social-card-icon">
-            <i class="fab fa-telegram"></i>
-          </div>
-          <span class="social-card-label">Telegram</span>
-          <span class="social-card-hint">Join channel</span>
-        </a>
-
-        <!-- Instagram -->
-        <a href="https://instagram.com/brandyk.fx" target="_blank" class="social-link-card instagram-card">
-          <div class="social-card-icon">
-            <i class="fab fa-instagram"></i>
-          </div>
-          <span class="social-card-label">Instagram</span>
-          <span class="social-card-hint">Follow us</span>
-        </a>
-      </div>
-
-      <div class="social-modal-info">
-        <p>Join our community for live updates and trading signals.</p>
-      </div>
-
-      <button type="button" onclick="closeSocialModal()" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Continue to Deriv Hacker</button>
+    <div class="footer-bottom">
+      <p>© <span id="yr"></span> MatchKing. All rights reserved.</p>
+      <p>Signals provided for <span>informational purposes</span>. Trading involves risk.</p>
     </div>
   </div>
+</footer>
 
-  <!-- Challenge G63 Modal -->
-  <div class="modal" id="challengeModal" aria-hidden="true">
-    <div class="modal-content challenge-modal-content" style="max-width: 380px; width: 90%; background: #000000; border: 1px solid rgba(255, 106, 0, 0.3); border-radius: 12px; padding: 20px; position: relative; box-shadow: 0 20px 60px rgba(255, 106, 0, 0.2);">
-      <button class="modal-close" id="challengeModalClose">
-        <i class="fas fa-times"></i>
-      </button>
-      
-      <div class="challenge-modal-header" style="text-align: center; margin-bottom: 12px;">
-        <h2 style="font-size: 24px; margin: 0 0 4px; background: linear-gradient(90deg, #289d3f, #289d3f); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">🏆 Challenge AMG GT 63 </h2>
-        <p style="font-size: 12px; color: #289d3f; font-weight: 600; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Live Trading Challenge</p>
-      </div>
+<!-- ═══════════════ MODALS ═══════════════ -->
 
-      <div style="text-align: center;">
-        <img src="gle 63.png" alt="2019 AMG GT 63" style="width: 100%; max-width: 300px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 8px 24px rgba(255, 106, 0, 0.2);">
-        <p style="font-size: 14px; color: #ccc; line-height: 1.5; margin: 12px 0;">Race to $115,500 for the 2019 AMG GT 63 using Deriv Hacker tools.</p>
-        
-        <p style="font-size: 13px; color: #999; margin: 12px 0; line-height: 1.4;">Join our community of traders executing this challenge in real-time. Follow live trading progress, strategy insights, and learn from actual market execution.</p>
-
-        <div style="display: flex; gap: 8px; margin: 14px 0; font-size: 11px; color: #999; text-align: center; flex-wrap: wrap; justify-content: center;">
-          <span>📊 DERIV MATCHES</span>
-          <span>•</span>
-          <span>📈 OVER 9</span>
-          <span>•</span>
-          <span>🎯 LIVE SIGNALS</span>
-        </div>
-
-        <a href="https://t.me/brandytadeschallenge" target="_blank" rel="noopener noreferrer" class="btn btn-challenge" style="background: linear-gradient(90deg, #289d3f, #289d3f); color: #fff; border: none; padding: 12px 24px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; transition: all 0.3s ease;">
-          <i class="fab fa-telegram"></i> Join Telegram Community
+<!-- Social Modal -->
+<div class="modal-overlay" id="socialModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-eyebrow">Connect With Us</div>
+      <div class="modal-title">Join the MatchKing Community</div>
+    </div>
+    <button class="modal-close" onclick="closeModal('socialModal'); setTimeout(()=>openModal('challengeModal'),500)"><i class="fas fa-times"></i></button>
+    <div class="modal-body">
+      <p>Follow us for live signals, strategy insights, and community updates across all platforms.</p>
+      <div class="social-grid">
+        <a href="mailto:hackerderiv@gmail.com" class="social-card email">
+          <i class="fas fa-envelope"></i>
+          <span class="sc-label">Email</span>
+          <span class="sc-hint">Get in touch</span>
+        </a>
+        <a href="https://wa.me/254771814498" target="_blank" class="social-card whatsapp">
+          <i class="fab fa-whatsapp"></i>
+          <span class="sc-label">WhatsApp</span>
+          <span class="sc-hint">Chat directly</span>
+        </a>
+        <a href="https://t.me/brandytades" target="_blank" class="social-card telegram">
+          <i class="fab fa-telegram"></i>
+          <span class="sc-label">Telegram</span>
+          <span class="sc-hint">Join channel</span>
+        </a>
+        <a href="https://instagram.com/brandyk.fx" target="_blank" class="social-card instagram">
+          <i class="fab fa-instagram"></i>
+          <span class="sc-label">Instagram</span>
+          <span class="sc-hint">Follow us</span>
         </a>
       </div>
+      <button class="modal-form-btn" onclick="closeModal('socialModal'); setTimeout(()=>openModal('challengeModal'),500)">
+        Continue to MatchKing ♛
+      </button>
     </div>
   </div>
+</div>
 
-  <!-- Demo Modal -->
-  <div class="modal" id="demoModal" aria-hidden="true">
-    <div class="modal-content">
-      <button class="modal-close" id="demoModalClose">✕</button>
-      <h3>Request Your Free Demo</h3>
-      <p>We'll contact you to schedule a 30-minute walkthrough of the Deriv Hacker platform.</p>
+<!-- Challenge Modal -->
+<div class="modal-overlay" id="challengeModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-eyebrow">Live Challenge</div>
+      <div class="modal-title">♛ The AMG GT 63 Race</div>
+    </div>
+    <button class="modal-close" onclick="closeModal('challengeModal')"><i class="fas fa-times"></i></button>
+    <div class="modal-body">
+      <img src="gle 63.png" alt="2019 AMG GT 63" class="challenge-modal-img" onerror="this.style.display='none'">
+      <p>Race to $115,500 for the 2019 AMG GT 63 using MatchKing Deriv match signals. Follow every trade live — real capital, real execution, real results.</p>
+      <div class="challenge-pills">
+        <span class="ch-pill">📊 DERIV MATCHES</span>
+        <span class="ch-pill">📈 OVER / UNDER 9</span>
+        <span class="ch-pill">🎯 LIVE SIGNALS</span>
+      </div>
+      <a href="https://t.me/brandytadeschallenge" target="_blank" rel="noopener noreferrer" class="challenge-join-btn">
+        <i class="fab fa-telegram"></i> Join Telegram Community
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Demo Modal -->
+<div class="modal-overlay" id="demoModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-eyebrow">Free Demo</div>
+      <div class="modal-title">Request Your Walkthrough</div>
+    </div>
+    <button class="modal-close" onclick="closeModal('demoModal')"><i class="fas fa-times"></i></button>
+    <div class="modal-body">
+      <p>We'll contact you to schedule a 30-minute live walkthrough of the MatchKing platform with real signal examples.</p>
       <form id="demoForm">
-        <input type="text" name="name" placeholder="Your Name" required>
-        <input type="email" name="email" placeholder="Your Email" required>
-        <input type="text" name="phone" placeholder="Phone Number (optional)">
-        <select name="experience" required>
-          <option value="">Trading Experience</option>
-          <option value="beginner">Beginner</option>
-          <option value="intermediate">Intermediate</option>
-          <option value="advanced">Advanced</option>
-          <option value="professional">Professional</option>
-        </select>
-        <button type="submit" class="btn btn-primary" style="width: 100%;">Request Demo</button>
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" name="name" placeholder="Your name" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" name="email" placeholder="you@example.com" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone (optional)</label>
+          <input type="text" name="phone" placeholder="+254..." class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Trading Experience</label>
+          <select name="experience" class="form-input form-select" required>
+            <option value="">Select level</option>
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+            <option>Professional</option>
+          </select>
+        </div>
+        <button type="submit" class="modal-form-btn">Request Demo ♛</button>
       </form>
     </div>
   </div>
+</div>
 
-  <!-- Purchase Modal - USDT Payment -->
-  <div class="modal" id="buyModal" aria-hidden="true">
-    <div class="modal-content buy-modal-content">
-      <button class="modal-close" id="buyModalClose">✕</button>
-      <h3 class="buy-modal-title">Purchase Deriv Hacker – 150 USDT</h3>
-      <p class="buy-modal-desc">Send exactly 150 USDT (TRC20) to the address below. You'll receive instant access after payment verification.</p>
-      
-      <div class="buy-address-section">
-        <p class="buy-address-label">USDT TRC20 Address</p>
-        <div class="buy-address-block">
-          <input type="text" id="usdtAddress" value="TH47oaGtKunPrAKYKVga4DUd49ccijnfmr" readonly class="buy-address-input">
-          <button type="button" onclick="copyToClipboard()" class="btn btn-primary">Copy</button>
+<!-- Buy Modal -->
+<div class="modal-overlay" id="buyModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-eyebrow" id="buyEyebrow">Purchase</div>
+      <div class="modal-title" id="buyTitle">MatchKing Tool — $199</div>
+    </div>
+    <button class="modal-close" onclick="closeModal('buyModal'); resetPaymentModal()"><i class="fas fa-times"></i></button>
+    <div class="modal-body">
+
+      <div class="step-indicator">
+        <div class="step-dot active" id="stepDot1">01 · Payment</div>
+        <div class="step-dot" id="stepDot2">02 · Verify</div>
+      </div>
+
+      <p id="buyDesc">Send exactly 199 USDT (TRC20) to the address below, then proceed to verification.</p>
+
+      <div class="address-box">
+        <div class="address-label">USDT TRC20 Address</div>
+        <div class="address-row">
+          <input type="text" id="usdtAddress" value="TH47oaGtKunPrAKYKVga4DUd49ccijnfmr" readonly class="address-input">
+          <button class="copy-btn" onclick="copyAddress()">Copy</button>
         </div>
       </div>
 
-      <div class="buy-warning-box">
-        <p><strong>⚠️ Important:</strong> Send exactly 150 USDT on the Tron network (TRC20). Other amounts or networks will not be processed.</p>
+      <div class="warning-box" id="buyWarning">
+        ⚠️ Send exactly <strong id="warnAmt">199</strong> USDT on the Tron network (TRC20) only. Other networks will not be processed.
       </div>
- 
-      <!-- Step 1: Email Input -->
-      <div id="paymentStep1" class="buy-payment-step">
-        <div class="buy-form-group">
-          <label class="buy-form-label">Your Email (for access credentials)</label>
-          <input type="email" id="paymentEmail" placeholder="you@example.com" class="buy-form-input">
-        </div>
 
-        <button type="button" onclick="proceedToVerification()" class="btn btn-primary btn-full">I've Sent the Payment</button>
-        <button type="button" onclick="openWhatsAppProof()" class="btn btn-secondary btn-full">Send proof via WhatsApp</button>
-        
-        <div class="buy-divider-section">
-          <p class="buy-divider-text">Already have access credentials?</p>
-          <button type="button" onclick="goToDigitpro()" class="btn btn-primary btn-full">Go to Deriv Hacker Tool</button>
+      <!-- Step 1 -->
+      <div id="payStep1">
+        <div class="form-group">
+          <label class="form-label">Your Email (for access credentials)</label>
+          <input type="email" id="payEmail" placeholder="you@example.com" class="form-input">
+        </div>
+        <button class="modal-form-btn" onclick="proceedToVerification()">I've Sent the Payment →</button>
+        <button class="modal-form-btn ghost" onclick="openWhatsAppProof()"><i class="fab fa-whatsapp"></i> &nbsp;Send Proof via WhatsApp</button>
+        <div style="border-top:1px solid var(--border);margin-top:20px;padding-top:20px;">
+          <p style="font-size:12px;color:var(--dim);">Already have access credentials?</p>
+          <button class="modal-form-btn ghost" onclick="window.location.href='/tool/'">Go to MatchKing Terminal ♛</button>
         </div>
       </div>
 
-      <!-- Step 2: Transaction Verification -->
-      <div id="paymentStep2" class="buy-payment-step" style="display: none;">
-        <div class="buy-form-group">
-          <label class="buy-form-label">Transaction Hash (Tx ID)</label>
-          <p class="buy-form-hint">Find your transaction hash in your wallet or on <a href="https://tronscan.org" target="_blank">Tronscan.org</a></p>
-          <input type="text" id="transactionHash" placeholder="Paste transaction hash here..." class="buy-form-input monospace">
+      <!-- Step 2 -->
+      <div id="payStep2" style="display:none;">
+        <div class="form-group">
+          <label class="form-label">Transaction Hash (Tx ID)</label>
+          <p style="font-size:11px;color:var(--dim);margin-bottom:8px;">Find your Tx ID in your wallet or on <a href="https://tronscan.org" target="_blank" style="color:var(--gold)">Tronscan.org</a></p>
+          <input type="text" id="txHash" placeholder="Paste transaction hash..." class="form-input" style="font-family:'JetBrains Mono',monospace;font-size:11px;">
         </div>
-
-        <button type="button" onclick="verifyTransaction()" class="btn btn-primary btn-full" id="verifyBtn">Verify Payment</button>
-        <button type="button" onclick="goBackToEmail()" class="btn btn-secondary btn-full">← Back</button>
-
-        <div class="buy-whatsapp-fallback">
-          <p>Don't know how to get the transaction hash? You can take a screenshot of your wallet payment confirmation and send it to us on WhatsApp.</p>
-          <button type="button" onclick="openWhatsAppProof()" class="btn btn-whatsapp btn-full">Send screenshot via WhatsApp</button>
-        </div>
-
-        <div id="verificationMessage" class="buy-verification-message"></div>
+        <button class="modal-form-btn" id="verifyBtn" onclick="verifyTransaction()">Verify Payment</button>
+        <button class="modal-form-btn ghost" onclick="goBackToEmail()">← Back</button>
+        <div id="verifyMsg" class="verify-msg"></div>
       </div>
-      
-      <p class="buy-modal-footer">After verification, you'll receive access credentials at your email instantly.</p>
+
     </div>
   </div>
+</div>
 
-  <script src="script.js"></script>
+<script>
+  const WHATSAPP = '254771814498';
+  const USDT_ADDR = 'TH47oaGtKunPrAKYKVga4DUd49ccijnfmr';
+  let purchaseAmt = 199;
+
+  /* ─── NAV ─── */
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').classList.toggle('scrolled', scrollY > 40);
+  });
+
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  });
+
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  /* ─── MODALS ─── */
+  function openModal(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // Click-outside close
+  document.querySelectorAll('.modal-overlay').forEach(m => {
+    m.addEventListener('click', e => {
+      if (e.target === m) {
+        const id = m.id;
+        closeModal(id);
+        if (id === 'socialModal') setTimeout(() => openModal('challengeModal'), 500);
+        if (id === 'buyModal') resetPaymentModal();
+      }
+    });
+  });
+
+  // Auto-open social modal
+  setTimeout(() => openModal('socialModal'), 700);
+
+  /* ─── BUY MODAL ─── */
+  function openBuyModal(price) {
+    purchaseAmt = price;
+    const label = price === 299 ? 'Tool + Mentorship' : 'MatchKing Tool';
+    document.getElementById('buyTitle').textContent = `${label} — $${price}`;
+    document.getElementById('buyDesc').textContent = `Send exactly ${price} USDT (TRC20) to the address below, then proceed to verification.`;
+    document.getElementById('warnAmt').textContent = price;
+    openModal('buyModal');
+  }
+
+  function copyAddress() {
+    const el = document.getElementById('usdtAddress');
+    el.select();
+    document.execCommand('copy');
+    const btn = event.target;
+    btn.textContent = 'Copied ♛';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  }
+
+  function proceedToVerification() {
+    const email = document.getElementById('payEmail').value.trim();
+    if (!email) { alert('Please enter your email address.'); return; }
+    sessionStorage.setItem('mkEmail', email);
+    document.getElementById('payStep1').style.display = 'none';
+    document.getElementById('payStep2').style.display = 'block';
+    document.getElementById('stepDot1').classList.remove('active');
+    document.getElementById('stepDot2').classList.add('active');
+  }
+
+  function goBackToEmail() {
+    document.getElementById('payStep2').style.display = 'none';
+    document.getElementById('payStep1').style.display = 'block';
+    document.getElementById('stepDot2').classList.remove('active');
+    document.getElementById('stepDot1').classList.add('active');
+    document.getElementById('verifyMsg').style.display = 'none';
+    document.getElementById('txHash').value = '';
+  }
+
+  async function verifyTransaction() {
+    const txHash = document.getElementById('txHash').value.trim();
+    const email  = sessionStorage.getItem('mkEmail');
+    const btn    = document.getElementById('verifyBtn');
+    const msg    = document.getElementById('verifyMsg');
+
+    if (!txHash) { alert('Please paste the transaction hash.'); return; }
+
+    btn.disabled = true; btn.textContent = 'Verifying...';
+    msg.style.display = 'none';
+
+    try {
+      const res  = await fetch(`https://apilist.tronscan.org/api/transaction-info?hash=${txHash}`);
+      const data = await res.json();
+
+      if (!data || !data.contractData) {
+        showError(msg, 'Transaction not found. Please check the hash and try again.'); 
+        btn.disabled = false; btn.textContent = 'Verify Payment'; return;
+      }
+
+      const cd    = data.contractData;
+      const value = cd.amount ? cd.amount / 1000000 : 0;
+      const to    = (cd.to || '').toLowerCase();
+
+      if (to !== USDT_ADDR.toLowerCase()) {
+        showError(msg, '❌ Transaction sent to wrong address. Please resend to the correct TRC20 address.'); 
+        btn.disabled = false; btn.textContent = 'Verify Payment'; return;
+      }
+
+      if (value !== purchaseAmt) {
+        showError(msg, `❌ Incorrect amount. Expected ${purchaseAmt} USDT, received ${value} USDT.`); 
+        btn.disabled = false; btn.textContent = 'Verify Payment'; return;
+      }
+
+      msg.className = 'verify-msg success';
+      msg.innerHTML = `<strong>♛ Payment Verified!</strong><br>Tx: ${txHash.substring(0,20)}…<br>Email: ${email}<br><br>Access credentials are being sent to your email. Welcome to MatchKing!`;
+      msg.style.display = 'block';
+      btn.style.display = 'none';
+
+      setTimeout(() => { closeModal('buyModal'); resetPaymentModal(); }, 4000);
+    } catch(err) {
+      showError(msg, 'Verification error. Please try again or contact support.');
+      btn.disabled = false; btn.textContent = 'Verify Payment';
+    }
+  }
+
+  function showError(el, txt) {
+    el.className = 'verify-msg error';
+    el.innerHTML = txt;
+    el.style.display = 'block';
+  }
+
+  function resetPaymentModal() {
+    document.getElementById('payStep1').style.display = 'block';
+    document.getElementById('payStep2').style.display = 'none';
+    document.getElementById('verifyMsg').style.display = 'none';
+    document.getElementById('payEmail').value = '';
+    document.getElementById('txHash').value = '';
+    const btn = document.getElementById('verifyBtn');
+    btn.disabled = false; btn.textContent = 'Verify Payment'; btn.style.display = 'block';
+    document.getElementById('stepDot1').classList.add('active');
+    document.getElementById('stepDot2').classList.remove('active');
+  }
+
+  function openWhatsAppProof() {
+    const email  = (document.getElementById('payEmail').value || sessionStorage.getItem('mkEmail') || '');
+    const txHash = document.getElementById('txHash') ? document.getElementById('txHash').value : '';
+    const msg = `Hello MatchKing ♛,\n\nI sent ${purchaseAmt} USDT (TRC20) to ${USDT_ADDR}.\nEmail: ${email}\nTx Hash: ${txHash}\n\nPlease confirm my access.`;
+    window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`, '_blank');
+  }
+
+  /* ─── DEMO FORM ─── */
+  document.getElementById('demoForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name  = this.name.value;
+    const email = this.email.value;
+    closeModal('demoModal');
+    alert(`Thank you, ${name}! ♛\n\nWe'll reach out to ${email} to schedule your MatchKing demo.`);
+    this.reset();
+  });
+
+  /* ─── CANDLE PREVIEW ─── */
+  const candleData = [
+    { bull: false, h: 50, body: 26 },
+    { bull: true,  h: 62, body: 38 },
+    { bull: true,  h: 55, body: 30 },
+    { bull: false, h: 44, body: 22 },
+    { bull: true,  h: 70, body: 44 },
+    { bull: true,  h: 58, body: 32 },
+    { bull: false, h: 48, body: 24 },
+    { bull: true,  h: 75, body: 50 },
+    { bull: true,  h: 65, body: 38 },
+    { bull: false, h: 40, body: 20 },
+    { bull: true,  h: 68, body: 42 },
+    { bull: true,  h: 60, body: 35 },
+  ];
+
+  const cp = document.getElementById('candlePreview');
+  if (cp) {
+    candleData.forEach(d => {
+      const c = document.createElement('div');
+      c.className = `candle ${d.bull ? 'bull' : 'bear'}`;
+      c.innerHTML = `<div class="candle-wick" style="height:${d.h}px;"></div><div class="candle-body" style="height:${d.body}px;"></div>`;
+      cp.appendChild(c);
+    });
+  }
+
+  /* ─── PROGRESS BAR ANIMATION ─── */
+  const pf = document.getElementById('progFill');
+  if (pf) {
+    setTimeout(() => { pf.style.width = '24%'; }, 800);
+  }
+
+  /* ─── SCROLL ANIMATIONS ─── */
+  const fadeEls = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  fadeEls.forEach(el => observer.observe(el));
+
+  /* ─── LIVE SIGNAL PULSE ─── */
+  const signalMkts = ['V75 Index','V100 Index','BOOM 500','CRASH 300','V50 Index','V25 Index','Step Index','V75 (1s)'];
+  const signalTypes = ['OVER 9','UNDER 9'];
+  let sigCount = 6;
+
+  setInterval(() => {
+    const mkt  = signalMkts[Math.floor(Math.random() * signalMkts.length)];
+    const type = signalTypes[Math.floor(Math.random() * 2)];
+    const conf = Math.floor(Math.random() * 10 + 88);
+    const body = document.getElementById('signalBody');
+    if (!body) return;
+
+    const row = document.createElement('tr');
+    row.style.background = 'rgba(201,168,76,0.06)';
+    row.innerHTML = `
+      <td><div class="sig-market">${mkt}</div><div class="sig-type">SYNTHETIC · MATCH</div></td>
+      <td><span class="sig-badge ${type === 'OVER 9' ? 'over' : 'under'}">${type}</span></td>
+      <td><div class="sig-conf"><div class="sig-conf-bar"><div class="sig-conf-fill" style="width:${conf}%"></div></div><span class="sig-conf-val">${conf}%</span></div></td>
+      <td class="sig-time">just now</td>
+    `;
+    body.insertBefore(row, body.firstChild);
+
+    // Update existing rows' times
+    body.querySelectorAll('.sig-time').forEach((t, i) => {
+      if (i > 0) t.textContent = `${i * 3}m ago`;
+    });
+
+    // Keep only 6 rows
+    while (body.children.length > 6) body.removeChild(body.lastChild);
+
+    setTimeout(() => row.style.background = '', 1200);
+
+    sigCount++;
+    const sc = document.getElementById('signalCount');
+    if (sc) sc.textContent = sigCount;
+  }, 12000);
+</script>
 </body>
 </html>
