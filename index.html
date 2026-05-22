@@ -648,7 +648,7 @@
       gap: 80px; align-items: center;
     }
 
-    .challenge-left {}
+   
 
     .challenge-car-frame {
       position: relative; border: 1px solid var(--border2);
@@ -2079,14 +2079,7 @@
   }
 
   /* ─── DEMO FORM ─── */
-  document.getElementById('demoForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const name  = this.name.value;
-    const email = this.email.value;
-    closeModal('demoModal');
-    alert(`Thank you, ${name}! ♛\n\nWe'll reach out to ${email} to schedule your MatchKing demo.`);
-    this.reset();
-  });
+ 
 
   /* ─── CANDLE PREVIEW ─── */
   const candleData = [
@@ -2189,11 +2182,13 @@ document.getElementById("demoForm").addEventListener("submit", async function(e)
 
       alert("♛ Demo request submitted successfully!");
 
+      closeModal('demoModal');
+
       this.reset();
 
     } else {
 
-      alert("Failed to submit request.");
+      alert(result.error || "Failed to submit request.");
 
     }
 
@@ -2201,7 +2196,7 @@ document.getElementById("demoForm").addEventListener("submit", async function(e)
 
     console.log(err);
 
-    alert("Server error.");
+    alert("Server error: " + err.message);
 
   }
 

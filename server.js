@@ -258,8 +258,8 @@ app.post("/request-demo", async (req, res) => {
   try {
 
     await transporter.sendMail({
-      from: `"MatchKing Demo" <YOUR_EMAIL@gmail.com>`,
-      to: "YOUR_EMAIL@gmail.com",
+      from: `"MatchKing Demo" <matchkingofficial@gmail.com>`,
+      to: "matchkingofficial@gmail.com",
 
       subject: "♛ New MatchKing Demo Request",
 
