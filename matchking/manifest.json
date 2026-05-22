@@ -1,13 +1,13 @@
 {
-  "name": "digitpro - Deriv Tick Analysis",
-  "short_name": "digitpro",
+  "name": "matchking - Deriv Tick Analysis",
+  "short_name": "matchking",
   "description": "Professional market analysis and trading intelligence for Deriv",
-  "start_url": "/digitpro/",
+  "start_url": "/matchking/",
   "display": "standalone",
   "background_color": "#0a0a0a",
   "theme_color": "#289D3F",
   "orientation": "portrait-primary",
-  "scope": "/digitpro/",
+  "scope": "/matchking/",
   "categories": ["finance", "productivity", "business"],
   "lang": "en",
   "icons": [
@@ -65,7 +65,7 @@
       "name": "Market Analysis",
       "short_name": "Analysis",
       "description": "View live market analysis",
-      "url": "/digitpro/?view=analysis",
+      "url": "/matchking/?view=analysis",
       "icons": [
         {
           "src": "icons/icon-96x96.png",

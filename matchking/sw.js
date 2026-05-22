@@ -1,12 +1,12 @@
-const CACHE_NAME = 'digitpro-v1.0.0';
+const CACHE_NAME = 'matchking-v1.0.0';
 const urlsToCache = [
-  '/digitpro/',
-  '/digitpro/index.html',
-  '/digitpro/styles.css',
-  '/digitpro/script.js',
-  '/digitpro/manifest.json',
-  '/digitpro/icons/icon-192x192.png',
-  '/digitpro/icons/icon-512x512.png',
+  '/matchking/',
+  '/matchking/index.html',
+  '/matchking/styles.css',
+  '/matchking/script.js',
+  '/matchking/manifest.json',
+  '/matchking/icons/icon-192x192.png',
+  '/matchking/icons/icon-512x512.png',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'
 ];
@@ -94,7 +94,7 @@ self.addEventListener('fetch', (event) => {
         console.log('[ServiceWorker] Fetch failed', error);
         // Return offline page if available
         if (event.request.destination === 'document') {
-          return caches.match('/digitpro/index.html');
+          return caches.match('/matchking/index.html');
         }
       })
   );
@@ -118,11 +118,11 @@ self.addEventListener('push', (event) => {
   
   const options = {
     body: event.data ? event.data.text() : 'New market update available',
-    icon: '/digitpro/icons/icon-192x192.png',
-    badge: '/digitpro/icons/icon-72x72.png',
+    icon: '/matchking/icons/icon-192x192.png',
+    badge: '/matchking/icons/icon-72x72.png',
     vibrate: [100, 50, 100],
     data: {
-      url: '/digitpro/'
+      url: '/matchking/'
     },
     actions: [
       {
@@ -137,7 +137,7 @@ self.addEventListener('push', (event) => {
   };
 
   event.waitUntil(
-    self.registration.showNotification('digitpro', options)
+    self.registration.showNotification('matchking', options)
   );
 });
 
@@ -149,7 +149,7 @@ self.addEventListener('notificationclick', (event) => {
 
   if (event.action === 'view') {
     event.waitUntil(
-      clients.openWindow('/digitpro/')
+      clients.openWindow('/matchking/')
     );
   }
 });

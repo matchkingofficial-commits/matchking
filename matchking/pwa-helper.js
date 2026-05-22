@@ -83,7 +83,7 @@ function initializePWA() {
   // Register service worker
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/digitpro/sw.js')
+      navigator.serviceWorker.register('/matchking/sw.js')
         .then((registration) => {
           console.log('ServiceWorker registration successful:', registration);
           
@@ -206,7 +206,7 @@ function showInstallSuccessMessage() {
   message.innerHTML = `
     <div class="success-content">
       <i class="fas fa-check-circle"></i>
-      <span>digitpro installed successfully!</span>
+      <span>matchking installed successfully!</span>
     </div>
   `;
   document.body.appendChild(message);

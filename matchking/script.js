@@ -1419,7 +1419,7 @@ async function validateUserAccess(userData) {
                 
                 console.log('🚫 API not available - requiring payment for access');
                 console.log('👤 User email that requires payment:', userData.email);
-                showNotification('Validation API unavailable. Please complete payment to access digitpro.', 'warning');
+                showNotification('Validation API unavailable. Please complete payment to access matchking.', 'warning');
                 return false;
             } else {
                 console.warn('⚠️ API response not OK:', response.status, response.statusText);
@@ -1525,12 +1525,12 @@ async function validateUserAccess(userData) {
         // Check if it's a network error
         if (error.name === 'TypeError' && error.message.includes('fetch')) {
             console.warn('🌐 Network error - API might be down or URL incorrect');
-            showNotification('Network error connecting to validation API. Please complete payment to access digitpro.', 'warning');
+            showNotification('Network error connecting to validation API. Please complete payment to access matchking.', 'warning');
             return false;
         }
         
         // On other errors, require payment
-        showNotification('Unable to verify account status. Please complete payment to access digitpro.', 'warning');
+        showNotification('Unable to verify account status. Please complete payment to access matchking.', 'warning');
         return false;
     }
 }
@@ -1597,7 +1597,7 @@ function showAuthProcessing() {
                     </div>
                     <div class="step">
                         <i class="fas fa-circle"></i>
-                        <span>Initializing digitpro</span>
+                        <span>Initializing matchking</span>
                     </div>
                 </div>
             `;
@@ -2107,7 +2107,7 @@ function showAuthModal() {
 
 // Initialize auth modal on page load
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 digitpro initializing...');
+    console.log('🚀 matchking initializing...');
     
     // Initialize market data
     initializeMarketData();
@@ -2132,8 +2132,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Payment Modal Functions
 // Configuration - USDT Payment
-const DIGITPRO_USDT_ADDRESS = 'TH47oaGtKunPrAKYKVga4DUd49ccijnfmr';
-const DIGITPRO_USDT_AMOUNT = 300;
+const matchking_USDT_ADDRESS = 'TH47oaGtKunPrAKYKVga4DUd49ccijnfmr';
+const matchking_USDT_AMOUNT = 300;
 
 function showPaymentModal() {
     const modal = document.getElementById('payment-modal');
@@ -2163,15 +2163,15 @@ function hidePaymentModal() {
         setTimeout(() => {
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
-            resetDigitproPaymentModal();
+            resetmatchkingPaymentModal();
             showAuthModal();
         }, 300);
     }
 }
 
 // Copy USDT address to clipboard
-function copyDigitproAddress(e) {
-    const addressInput = document.getElementById('digitproUsdtAddress');
+function copymatchkingAddress(e) {
+    const addressInput = document.getElementById('matchkingUsdtAddress');
     if (!addressInput) return;
     const text = addressInput.value || addressInput.innerText || '';
 
@@ -2200,35 +2200,35 @@ function copyDigitproAddress(e) {
 }
 
 // Move to transaction hash input
-function proceedToDigitproVerification() {
-    const email = document.getElementById('digitproPaymentEmail').value;
+function proceedTomatchkingVerification() {
+    const email = document.getElementById('matchkingPaymentEmail').value;
     if (!email) {
         alert('Please enter your email address');
         return;
     }
     
     // Store email in session
-    sessionStorage.setItem('digitproPaymentEmail', email);
+    sessionStorage.setItem('matchkingPaymentEmail', email);
     
     // Hide email step, show verification step
-    document.getElementById('digitproPaymentStep1').style.display = 'none';
-    document.getElementById('digitproPaymentStep2').style.display = 'block';
+    document.getElementById('matchkingPaymentStep1').style.display = 'none';
+    document.getElementById('matchkingPaymentStep2').style.display = 'block';
 }
 
 // Go back to email input
-function goBackToDigitproEmail() {
-    document.getElementById('digitproPaymentStep2').style.display = 'none';
-    document.getElementById('digitproPaymentStep1').style.display = 'block';
-    document.getElementById('digitproVerificationMessage').style.display = 'none';
-    document.getElementById('digitproTransactionHash').value = '';
+function goBackTomatchkingEmail() {
+    document.getElementById('matchkingPaymentStep2').style.display = 'none';
+    document.getElementById('matchkingPaymentStep1').style.display = 'block';
+    document.getElementById('matchkingVerificationMessage').style.display = 'none';
+    document.getElementById('matchkingTransactionHash').value = '';
 }
 
 // Verify transaction using Tronscan API
-async function verifyDigitproTransaction() {
-    const txHash = document.getElementById('digitproTransactionHash').value.trim();
-    const email = sessionStorage.getItem('digitproPaymentEmail');
-    const verifyBtn = document.getElementById('digitproVerifyBtn');
-    const messageDiv = document.getElementById('digitproVerificationMessage');
+async function verifymatchkingTransaction() {
+    const txHash = document.getElementById('matchkingTransactionHash').value.trim();
+    const email = sessionStorage.getItem('matchkingPaymentEmail');
+    const verifyBtn = document.getElementById('matchkingVerifyBtn');
+    const messageDiv = document.getElementById('matchkingVerificationMessage');
     
     if (!txHash) {
         alert('Please paste the transaction hash');
@@ -2246,7 +2246,7 @@ async function verifyDigitproTransaction() {
         const data = await response.json();
         
         if (!data || !data.contractData) {
-            showDigitproVerificationError(messageDiv, 'Transaction not found. Please check the hash and try again.');
+            showmatchkingVerificationError(messageDiv, 'Transaction not found. Please check the hash and try again.');
             verifyBtn.disabled = false;
             verifyBtn.textContent = 'Verify Payment';
             return;
@@ -2256,25 +2256,25 @@ async function verifyDigitproTransaction() {
         const contractData = data.contractData;
         const txValue = contractData.amount ? (contractData.amount / 1000000) : 0; // USDT has 6 decimals
         const toAddress = contractData.to || '';
-        const expectedAddress = DIGITPRO_USDT_ADDRESS;
+        const expectedAddress = matchking_USDT_ADDRESS;
         
         // Check if payment is correct
         if (toAddress.toLowerCase() !== expectedAddress.toLowerCase()) {
-            showDigitproVerificationError(messageDiv, '❌ Transaction sent to wrong address. Please verify and resend to the correct address.');
+            showmatchkingVerificationError(messageDiv, '❌ Transaction sent to wrong address. Please verify and resend to the correct address.');
             verifyBtn.disabled = false;
             verifyBtn.textContent = 'Verify Payment';
             return;
         }
         
-        if (txValue !== DIGITPRO_USDT_AMOUNT) {
-            showDigitproVerificationError(messageDiv, `❌ Incorrect amount. Expected ${DIGITPRO_USDT_AMOUNT} USDT, but received ${txValue} USDT.`);
+        if (txValue !== matchking_USDT_AMOUNT) {
+            showmatchkingVerificationError(messageDiv, `❌ Incorrect amount. Expected ${matchking_USDT_AMOUNT} USDT, but received ${txValue} USDT.`);
             verifyBtn.disabled = false;
             verifyBtn.textContent = 'Verify Payment';
             return;
         }
         
         // Payment verified successfully
-        showDigitproVerificationSuccess(messageDiv, txHash, email);
+        showmatchkingVerificationSuccess(messageDiv, txHash, email);
         
         // Activate access after verification
         if (currentUser) {
@@ -2291,18 +2291,18 @@ async function verifyDigitproTransaction() {
         setTimeout(() => {
             hidePaymentModal();
             startWebSocket();
-            showNotification('Payment verified! Welcome to digitpro!', 'success');
+            showNotification('Payment verified! Welcome to matchking!', 'success');
         }, 3000);
         
     } catch (error) {
         console.error('Verification error:', error);
-        showDigitproVerificationError(messageDiv, 'Error verifying transaction. Please try again or contact support.');
+        showmatchkingVerificationError(messageDiv, 'Error verifying transaction. Please try again or contact support.');
         verifyBtn.disabled = false;
         verifyBtn.textContent = 'Verify Payment';
     }
 }
 
-function showDigitproVerificationSuccess(messageDiv, txHash, email) {
+function showmatchkingVerificationSuccess(messageDiv, txHash, email) {
     messageDiv.style.background = 'rgba(76, 175, 80, 0.1)';
     messageDiv.style.borderLeft = '4px solid #4caf50';
     messageDiv.style.color = '#4caf50';
@@ -2313,10 +2313,10 @@ function showDigitproVerificationSuccess(messageDiv, txHash, email) {
         Activating your access now...
     `;
     messageDiv.style.display = 'block';
-    document.getElementById('digitproVerifyBtn').style.display = 'none';
+    document.getElementById('matchkingVerifyBtn').style.display = 'none';
 }
 
-function showDigitproVerificationError(messageDiv, message) {
+function showmatchkingVerificationError(messageDiv, message) {
     messageDiv.style.background = 'rgba(244, 67, 54, 0.1)';
     messageDiv.style.borderLeft = '4px solid #f44336';
     messageDiv.style.color = '#ff6a6a';
@@ -2324,23 +2324,23 @@ function showDigitproVerificationError(messageDiv, message) {
     messageDiv.style.display = 'block';
 }
 
-function resetDigitproPaymentModal() {
-    document.getElementById('digitproPaymentStep1').style.display = 'block';
-    document.getElementById('digitproPaymentStep2').style.display = 'none';
-    document.getElementById('digitproVerificationMessage').style.display = 'none';
-    document.getElementById('digitproPaymentEmail').value = '';
-    document.getElementById('digitproTransactionHash').value = '';
-    document.getElementById('digitproVerifyBtn').style.display = 'block';
-    document.getElementById('digitproVerifyBtn').disabled = false;
-    document.getElementById('digitproVerifyBtn').textContent = 'Verify Payment';
+function resetmatchkingPaymentModal() {
+    document.getElementById('matchkingPaymentStep1').style.display = 'block';
+    document.getElementById('matchkingPaymentStep2').style.display = 'none';
+    document.getElementById('matchkingVerificationMessage').style.display = 'none';
+    document.getElementById('matchkingPaymentEmail').value = '';
+    document.getElementById('matchkingTransactionHash').value = '';
+    document.getElementById('matchkingVerifyBtn').style.display = 'block';
+    document.getElementById('matchkingVerifyBtn').disabled = false;
+    document.getElementById('matchkingVerifyBtn').textContent = 'Verify Payment';
 }
 
 // Open WhatsApp with a prefilled message
-function openDigitproWhatsAppProof() {
-    const email = document.getElementById('digitproPaymentEmail') && document.getElementById('digitproPaymentEmail').value ? document.getElementById('digitproPaymentEmail').value : (sessionStorage.getItem('digitproPaymentEmail') || '');
-    const txHash = document.getElementById('digitproTransactionHash') && document.getElementById('digitproTransactionHash').value ? document.getElementById('digitproTransactionHash').value : '';
-    const address = DIGITPRO_USDT_ADDRESS;
-    const amount = DIGITPRO_USDT_AMOUNT;
+function openmatchkingWhatsAppProof() {
+    const email = document.getElementById('matchkingPaymentEmail') && document.getElementById('matchkingPaymentEmail').value ? document.getElementById('matchkingPaymentEmail').value : (sessionStorage.getItem('matchkingPaymentEmail') || '');
+    const txHash = document.getElementById('matchkingTransactionHash') && document.getElementById('matchkingTransactionHash').value ? document.getElementById('matchkingTransactionHash').value : '';
+    const address = matchking_USDT_ADDRESS;
+    const amount = matchking_USDT_AMOUNT;
     
     if (!email) {
         alert('Please enter your email first');

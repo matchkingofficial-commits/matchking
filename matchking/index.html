@@ -15,20 +15,20 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="MatchKing Terminal">
     <meta name="msapplication-TileColor" content="#C9A84C">
-    <meta name="msapplication-config" content="/digitpro/browserconfig.xml">
+    <meta name="msapplication-config" content="/matchking/browserconfig.xml">
     
     <!-- PWA Manifest -->
-    <link rel="manifest" href="/digitpro/manifest.json">
+    <link rel="manifest" href="/matchking/manifest.json">
     
     <!-- PWA Icons -->
-    <link rel="icon" type="image/png" sizes="32x32" href="/digitpro/icons/icon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/digitpro/icons/icon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/digitpro/icons/icon-192x192.png">
-    <link rel="mask-icon" href="/digitpro/icons/safari-pinned-tab.svg" color="#C9A84C">
+    <link rel="icon" type="image/png" sizes="32x32" href="/matchking/icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/matchking/icons/icon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/matchking/icons/icon-192x192.png">
+    <link rel="mask-icon" href="/matchking/icons/safari-pinned-tab.svg" color="#C9A84C">
     <link rel="shortcut icon" href="/favicon.ico">
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="/digitpro/styles.css">
+    <link rel="stylesheet" href="/matchking/styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
@@ -121,8 +121,8 @@
             <div class="address-section">
                 <p class="address-label">USDT TRC20 Address</p>
                 <div class="address-block">
-                    <input type="text" id="digitproUsdtAddress" value="TH47oaGtKunPrAKYKVga4DUd49ccijnfmr" readonly class="address-input">
-                    <button type="button" class="btn btn-primary" onclick="copyDigitproAddress(event)">Copy</button>
+                    <input type="text" id="matchkingUsdtAddress" value="TH47oaGtKunPrAKYKVga4DUd49ccijnfmr" readonly class="address-input">
+                    <button type="button" class="btn btn-primary" onclick="copymatchkingAddress(event)">Copy</button>
                 </div>
             </div>
 
@@ -131,14 +131,14 @@
             </div>
 
             <!-- Step 1: Email Input -->
-            <div id="digitproPaymentStep1" class="payment-step">
+            <div id="matchkingPaymentStep1" class="payment-step">
                 <div class="form-group">
                     <label class="form-label">Your Email (for access credentials)</label>
-                    <input type="email" id="digitproPaymentEmail" placeholder="you@example.com" class="form-input">
+                    <input type="email" id="matchkingPaymentEmail" placeholder="you@example.com" class="form-input">
                 </div>
 
-                <button type="button" onclick="proceedToDigitproVerification()" class="btn btn-primary btn-full">I've Sent the Payment</button>
-                <button type="button" onclick="openDigitproWhatsAppProof()" class="btn btn-secondary btn-full">Send proof via WhatsApp</button>
+                <button type="button" onclick="proceedTomatchkingVerification()" class="btn btn-primary btn-full">I've Sent the Payment</button>
+                <button type="button" onclick="openmatchkingWhatsAppProof()" class="btn btn-secondary btn-full">Send proof via WhatsApp</button>
                 
                 <div class="divider-section">
                     <p class="divider-text">Already have access credentials?</p>
@@ -147,22 +147,22 @@
             </div>
 
             <!-- Step 2: Transaction Verification -->
-            <div id="digitproPaymentStep2" class="payment-step" style="display: none;">
+            <div id="matchkingPaymentStep2" class="payment-step" style="display: none;">
                 <div class="form-group">
                     <label class="form-label">Transaction Hash (Tx ID)</label>
                     <p class="form-hint">Find your transaction hash in your wallet or on <a href="https://tronscan.org" target="_blank">Tronscan.org</a></p>
-                    <input type="text" id="digitproTransactionHash" placeholder="Paste transaction hash here..." class="form-input monospace">
+                    <input type="text" id="matchkingTransactionHash" placeholder="Paste transaction hash here..." class="form-input monospace">
                 </div>
 
-                <button type="button" onclick="verifyDigitproTransaction()" class="btn btn-primary btn-full" id="digitproVerifyBtn">Verify Payment</button>
-                <button type="button" onclick="goBackToDigitproEmail()" class="btn btn-secondary btn-full">← Back</button>
+                <button type="button" onclick="verifymatchkingTransaction()" class="btn btn-primary btn-full" id="matchkingVerifyBtn">Verify Payment</button>
+                <button type="button" onclick="goBackTomatchkingEmail()" class="btn btn-secondary btn-full">← Back</button>
 
                 <div class="whatsapp-fallback">
                     <p>Don't know how to get the transaction hash? You can take a screenshot of your wallet payment confirmation and send it to us on WhatsApp.</p>
-                    <button type="button" onclick="openDigitproWhatsAppProof()" class="btn btn-whatsapp btn-full">Send screenshot via WhatsApp</button>
+                    <button type="button" onclick="openmatchkingWhatsAppProof()" class="btn btn-whatsapp btn-full">Send screenshot via WhatsApp</button>
                 </div>
 
-                <div id="digitproVerificationMessage" class="verification-message"></div>
+                <div id="matchkingVerificationMessage" class="verification-message"></div>
             </div>
             
             <p class="payment-footer">After verification, you'll receive access credentials at your email instantly.</p>
@@ -382,7 +382,7 @@
     </div>
     
     <!-- PWA Scripts -->
-    <script src="/digitpro/pwa-helper.js"></script>
-    <script src="/digitpro/script.js"></script>
+    <script src="/matchking/pwa-helper.js"></script>
+    <script src="/matchking/script.js"></script>
 </body>
 </html>
