@@ -1,388 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MatchKing Terminal - Deriv Trading Signals</title>
-    
-    <!-- PWA Meta Tags -->
-    <meta name="description" content="MatchKing Terminal - Professional trading signals and analysis for Deriv matches">
-    <meta name="keywords" content="deriv, trading, signals, matchking, match analysis, over under 9">
-    <meta name="author" content="MatchKing">
-    <meta name="theme-color" content="#C9A84C">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="MatchKing Terminal">
-    <meta name="msapplication-TileColor" content="#C9A84C">
-    <meta name="msapplication-config" content="/matchking/browserconfig.xml">
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/matchking/manifest.json">
-    
-    <!-- PWA Icons -->
-    <link rel="icon" type="image/png" sizes="32x32" href="/matchking/icons/icon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/matchking/icons/icon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/matchking/icons/icon-192x192.png">
-    <link rel="mask-icon" href="/matchking/icons/safari-pinned-tab.svg" color="#C9A84C">
-    <link rel="shortcut icon" href="/favicon.ico">
-    
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="/matchking/styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MatchKing Terminal — Command the Market</title>
+  <meta name="description" content="MatchKing Terminal — Professional trading signals and digit analysis for Deriv matches">
+  <meta name="theme-color" content="#C9A84C">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MatchKing Terminal">
+  <link rel="manifest" href="/matchking/manifest.json">
+  <link rel="icon" type="image/png" sizes="32x32" href="/matchking/icons/icon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/matchking/icons/icon-192x192.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Auth Modal -->
-    <div id="auth-modal" class="auth-modal">
-        <div class="auth-modal-content">
-            <div class="auth-header">
-                <div class="auth-logo">♛</div>
-                <h2 id="auth-title">MATCHKING TERMINAL</h2>
-                <p id="auth-subtitle">Professional Deriv Match Trading Signals</p>
-            </div>
-            
-            <!-- Deriv OAuth Login -->
-            <div id="deriv-auth-form" class="auth-form">
-                <div class="deriv-info">
-                    <div class="info-item">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>Secure authentication via Deriv</span>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-user-check"></i>
-                        <span>No passwords to remember</span>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-link"></i>
-                        <span>Used for authentication only</span>
-                    </div>
-                </div>
-                
-                <button type="button" class="deriv-auth-btn" onclick="loginWithDeriv()">
-                    <i class="fas fa-sign-in-alt"></i>
-                    <span>Login with Deriv</span>
-                </button>
-                
-                <button type="button" class="deriv-signup-btn" onclick="window.open('https://track.deriv.com/__rVf-VSveO71k0YPxVS0A2Nd7ZgqdRLk/1/', '_blank')">
-                    <i class="fas fa-user-plus"></i>
-                    <span>New to Deriv? Create Account</span>
-                </button>
-                  <!-- Token Login Divider -->
-                <div class="auth-divider">
-                    <span class="divider-text">OR</span>
-                </div>
 
-                <!-- API Token Login -->
-                <div class="token-login-section">
-                    <div class="token-info">
-                        <div class="info-item">
-                            <i class="fas fa-key"></i>
-                            <span>Login with API Token</span>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-bolt"></i>
-                            <span>Instant access without OAuth</span>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Deriv API Token</label>
-                        <input type="password" id="token-input" class="token-input" placeholder="Paste your Deriv API token here..." autocomplete="off">
-                        <button type="button" class="toggle-token-visibility" onclick="toggleTokenVisibility()" title="Show/Hide token">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                    
-                    <button type="button" class="token-login-btn" onclick="loginWithToken()">
-                        <i class="fas fa-sign-in-alt"></i>
-                        <span>Login with Token</span>
-                    </button>
-                </div>
-                
-                <div class="auth-footer">
-                    <p class="terms-text">
-                        By continuing, you agree to our 
-                        <a href="#" class="terms-link">Terms of Service</a> and 
-                        <a href="#" class="terms-link">Privacy Policy</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- ══ AUTH MODAL ══ -->
+<div id="auth-modal" class="mk-overlay">
+  <div class="mk-auth-box">
+    <div class="mk-auth-crown">♛</div>
+    <div class="mk-auth-name">MATCHKING</div>
+    <div class="mk-auth-sub" id="auth-subtitle">Professional Deriv Match Trading Signals</div>
 
-    <!-- Payment Modal -->
-    <div id="payment-modal" class="payment-modal">
-        <div class="payment-modal-content">
-            <button class="modal-close" id="paymentModalClose">✕</button>
-            <h3 class="payment-modal-title">Purchase MatchKing Terminal – 300 USDT</h3>
-            <p class="payment-modal-desc">Send exactly 300 USDT (TRC20) to the address below. You'll receive instant access after payment verification.</p>
-            
-            <div class="address-section">
-                <p class="address-label">USDT TRC20 Address</p>
-                <div class="address-block">
-                    <input type="text" id="matchkingUsdtAddress" value="TH47oaGtKunPrAKYKVga4DUd49ccijnfmr" readonly class="address-input">
-                    <button type="button" class="btn btn-primary" onclick="copymatchkingAddress(event)">Copy</button>
-                </div>
-            </div>
+    <div id="deriv-auth-form" class="mk-auth-body">
+      <div class="mk-auth-perks">
+        <div class="mk-perk"><i class="fas fa-shield-alt"></i><span>Secure Deriv authentication</span></div>
+        <div class="mk-perk"><i class="fas fa-user-check"></i><span>No passwords to remember</span></div>
+        <div class="mk-perk"><i class="fas fa-link"></i><span>Used for authentication only</span></div>
+      </div>
 
-            <div class="warning-box">
-                <p><strong>⚠️ Important:</strong> Send exactly 300 USDT on the Tron network (TRC20). Other amounts or networks will not be processed.</p>
-            </div>
+      <button class="mk-btn mk-btn-gold" onclick="loginWithDeriv()">
+        <i class="fas fa-sign-in-alt"></i><span>Login with Deriv</span>
+      </button>
+      <button class="mk-btn mk-btn-ghost" onclick="window.open('https://track.deriv.com/__rVf-VSveO71k0YPxVS0A2Nd7ZgqdRLk/1/', '_blank')">
+        <i class="fas fa-user-plus"></i><span>New to Deriv? Create Account</span>
+      </button>
 
-            <!-- Step 1: Email Input -->
-            <div id="matchkingPaymentStep1" class="payment-step">
-                <div class="form-group">
-                    <label class="form-label">Your Email (for access credentials)</label>
-                    <input type="email" id="matchkingPaymentEmail" placeholder="you@example.com" class="form-input">
-                </div>
+      <div class="mk-divider"><span>or</span></div>
 
-                <button type="button" onclick="proceedTomatchkingVerification()" class="btn btn-primary btn-full">I've Sent the Payment</button>
-                <button type="button" onclick="openmatchkingWhatsAppProof()" class="btn btn-secondary btn-full">Send proof via WhatsApp</button>
-                
-                <div class="divider-section">
-                    <p class="divider-text">Already have access credentials?</p>
-                    <button type="button" onclick="returnToLogin()" class="btn btn-primary btn-full">Back to Login</button>
-                </div>
-            </div>
-
-            <!-- Step 2: Transaction Verification -->
-            <div id="matchkingPaymentStep2" class="payment-step" style="display: none;">
-                <div class="form-group">
-                    <label class="form-label">Transaction Hash (Tx ID)</label>
-                    <p class="form-hint">Find your transaction hash in your wallet or on <a href="https://tronscan.org" target="_blank">Tronscan.org</a></p>
-                    <input type="text" id="matchkingTransactionHash" placeholder="Paste transaction hash here..." class="form-input monospace">
-                </div>
-
-                <button type="button" onclick="verifymatchkingTransaction()" class="btn btn-primary btn-full" id="matchkingVerifyBtn">Verify Payment</button>
-                <button type="button" onclick="goBackTomatchkingEmail()" class="btn btn-secondary btn-full">← Back</button>
-
-                <div class="whatsapp-fallback">
-                    <p>Don't know how to get the transaction hash? You can take a screenshot of your wallet payment confirmation and send it to us on WhatsApp.</p>
-                    <button type="button" onclick="openmatchkingWhatsAppProof()" class="btn btn-whatsapp btn-full">Send screenshot via WhatsApp</button>
-                </div>
-
-                <div id="matchkingVerificationMessage" class="verification-message"></div>
-            </div>
-            
-            <p class="payment-footer">After verification, you'll receive access credentials at your email instantly.</p>
-        </div>
-    </div>
-
-    <!-- Welcome Modal -->
-    <div id="welcome-modal" class="welcome-modal">
-        <div class="welcome-modal-content">
-            <div class="welcome-header">
-                <div class="welcome-icon">♛</div>
-                <h2>Welcome to MatchKing Terminal!</h2>
-                <p>Your account has been successfully authenticated</p>
-            </div>
-            
-            <div class="welcome-details">
-                <div id="welcome-user-info">
-                    <!-- User details will be populated by JavaScript -->
-                </div>
-            </div>
-            
-            <div class="welcome-footer">
-                <button class="btn btn-primary btn-full" onclick="hideWelcomeModal()">
-                    <i class="fas fa-rocket"></i>
-                    <span>Start Trading</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="sidebar-logo">
-                <div class="sidebar-crown">♛</div>
-                <h2 class="sidebar-title">MatchKing</h2>
-            </div>
-            <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
-                <i class="fas fa-bars"></i>
+      <div class="mk-token-section token-login-section">
+        <div class="mk-perk"><i class="fas fa-key"></i><span>Login with API Token</span></div>
+        <div class="mk-perk"><i class="fas fa-bolt"></i><span>Instant access without OAuth</span></div>
+        <div class="mk-field-wrap">
+          <label class="mk-field-label">Deriv API Token</label>
+          <div class="mk-field-row">
+            <input type="password" id="token-input" class="mk-input" placeholder="Paste your Deriv API token here…" autocomplete="off">
+            <button class="mk-eye-btn" onclick="toggleTokenVisibility()" title="Show/hide token">
+              <i class="fas fa-eye"></i>
             </button>
+          </div>
         </div>
+        <button type="button" class="mk-btn mk-btn-gold token-login-btn" onclick="loginWithToken()">
+          <i class="fas fa-sign-in-alt"></i><span>Login with Token</span>
+        </button>
+      </div>
 
-        <nav class="sidebar-nav">
-            <div class="nav-section">
-                <h3 class="nav-section-title">Markets</h3>
-                <ul class="nav-menu">
-                    <li><a href="#" class="nav-link active" onclick="updateSymbol('ALL')"><i class="fas fa-globe"></i> All Markets</a></li>
-                    <li><a href="#" class="nav-link" onclick="updateSymbol('R_100')"><i class="fas fa-chart-line"></i> Volatility 100</a></li>
-                    <li><a href="#" class="nav-link" onclick="updateSymbol('R_75')"><i class="fas fa-chart-line"></i> Volatility 75</a></li>
-                    <li><a href="#" class="nav-link" onclick="updateSymbol('R_50')"><i class="fas fa-chart-line"></i> Volatility 50</a></li>
-                    
-                </ul>
-            </div>
+      <p class="mk-terms">
+        By continuing you agree to our
+        <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+      </p>
+    </div>
+  </div>
+</div>
 
-            <div class="nav-section">
-                <h3 class="nav-section-title">Tools</h3>
-                <ul class="nav-menu">
-                    <li><a href="#" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li><a href="#" class="nav-link"><i class="fas fa-waveform-lines"></i> Analytics</a></li>
-                    <li><a href="#" class="nav-link"><i class="fas fa-crystal-ball"></i> Predictions</a></li>
-                    <li><a href="#" class="nav-link"><i class="fas fa-cog"></i> Settings</a></li>
-                </ul>
-            </div>
-        </nav>
+<!-- ══ PAYMENT MODAL ══ -->
+<div id="payment-modal" class="mk-overlay">
+  <div class="mk-modal-box">
+    <button class="mk-modal-close" id="paymentModalClose">✕</button>
+    <div class="mk-modal-kicker">Unlock Access</div>
+    <h3 class="mk-modal-title">Purchase MatchKing Terminal</h3>
+    <p class="mk-modal-desc">Send exactly <strong>300 USDT (TRC20)</strong> to the address below. Instant access after payment verification.</p>
 
-        <div class="sidebar-footer">
-            <div id="user-info-sidebar" class="user-info-sidebar" style="display: none;">
-                <div class="user-avatar">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="user-details-sidebar">
-                    <div class="user-name-sidebar" id="user-name-sidebar">User</div>
-                    <div class="user-status-sidebar"><span class="status-dot"></span> Active</div>
-                </div>
-                <button class="logout-btn-sidebar" onclick="logout()" title="Logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                </button>
-            </div>
-            <div class="sidebar-status">
-                <p class="status-text">Status</p>
-                <p class="status-value" id="connection-status-sidebar">Offline</p>
-            </div>
+    <div class="mk-address-block">
+      <div class="mk-address-label">USDT TRC20 Address</div>
+      <div class="mk-address-row">
+        <input type="text" id="matchkingUsdtAddress" value="TH47oaGtKunPrAKYKVga4DUd49ccijnfmr" readonly class="mk-address-input">
+        <button class="mk-btn mk-btn-gold mk-btn-sm" onclick="copymatchkingAddress(event)">Copy</button>
+      </div>
+    </div>
+
+    <div class="mk-warn-box">
+      ⚠️ Send exactly <strong>300 USDT</strong> on the Tron network (TRC20) only. Other amounts or networks will not be processed.
+    </div>
+
+    <div id="matchkingPaymentStep1" class="mk-pay-step">
+      <div class="mk-field-wrap">
+        <label class="mk-field-label">Your Email (for access credentials)</label>
+        <input type="email" id="matchkingPaymentEmail" placeholder="you@example.com" class="mk-input">
+      </div>
+      <button class="mk-btn mk-btn-gold mk-btn-full" onclick="proceedTomatchkingVerification()">I've Sent the Payment</button>
+      <button class="mk-btn mk-btn-wa mk-btn-full" onclick="openmatchkingWhatsAppProof()"><i class="fab fa-whatsapp"></i> Send proof via WhatsApp</button>
+      <div class="mk-modal-divider"><span>Already have credentials?</span></div>
+      <button class="mk-btn mk-btn-ghost mk-btn-full" onclick="returnToLogin()">Back to Login</button>
+    </div>
+
+    <div id="matchkingPaymentStep2" class="mk-pay-step" style="display:none">
+      <div class="mk-field-wrap">
+        <label class="mk-field-label">Transaction Hash (Tx ID)</label>
+        <p class="mk-field-hint">Find this in your wallet or on <a href="https://tronscan.org" target="_blank">Tronscan.org</a></p>
+        <input type="text" id="matchkingTransactionHash" placeholder="Paste transaction hash here…" class="mk-input mk-mono">
+      </div>
+      <button class="mk-btn mk-btn-gold mk-btn-full" id="matchkingVerifyBtn" onclick="verifymatchkingTransaction()">Verify Payment</button>
+      <button class="mk-btn mk-btn-ghost mk-btn-full" onclick="goBackTomatchkingEmail()">← Back</button>
+      <button class="mk-btn mk-btn-wa mk-btn-full" onclick="openmatchkingWhatsAppProof()"><i class="fab fa-whatsapp"></i> Send screenshot via WhatsApp</button>
+      <div id="matchkingVerificationMessage" class="mk-verify-msg"></div>
+    </div>
+
+    <p class="mk-modal-footer">Access credentials sent to your email after verification.</p>
+  </div>
+</div>
+
+<!-- ══ WELCOME MODAL ══ -->
+<div id="welcome-modal" class="mk-overlay">
+  <div class="mk-modal-box" style="text-align:center">
+    <div class="mk-auth-crown" style="font-size:56px;margin-bottom:12px">♛</div>
+    <h2 class="mk-modal-title">Welcome to MatchKing Terminal</h2>
+    <p class="mk-modal-desc">Your account has been successfully authenticated.</p>
+    <div class="mk-welcome-details" id="welcome-user-info"></div>
+    <button class="mk-btn mk-btn-gold mk-btn-full" style="margin-top:20px" onclick="hideWelcomeModal()">
+      <i class="fas fa-rocket"></i><span>Start Trading</span>
+    </button>
+  </div>
+</div>
+
+<!-- ══ SIDEBAR ══ -->
+<aside class="mk-sidebar" id="sidebar">
+  <!-- Sidebar top bar visible on mobile -->
+  <div class="mk-sidebar-topbar">
+    <div class="mk-sidebar-brand">
+      <span class="mk-sb-crown">♛</span>
+      <div>
+        <div class="mk-sb-name">MatchKing</div>
+        <div class="mk-sb-tag">Terminal</div>
+      </div>
+    </div>
+    <button class="mk-sb-close" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
+  </div>
+
+  <!-- Markets -->
+  
+
+  <!-- Tools -->
+  
+
+  
+
+  <!-- User -->
+  <div id="user-info-sidebar" class="mk-user-block" style="display:none">
+    <div class="mk-user-avatar"><i class="fas fa-user"></i></div>
+    <div class="mk-user-info">
+      <div class="mk-user-name" id="user-name-sidebar">Trader</div>
+      <div class="mk-user-status"><span class="mk-status-dot"></span>Active</div>
+    </div>
+    <button class="mk-logout-btn" onclick="logout()" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
+  </div>
+
+  <!-- Connection -->
+  <div class="mk-conn-block">
+    <div class="mk-conn-label">Connection</div>
+    <div class="mk-conn-val" id="connection-status-sidebar">Offline</div>
+  </div>
+</aside>
+
+<!-- ══ MAIN ══ -->
+<div class="mk-main" id="mainContent">
+
+  <!-- ── TOP BAR ── -->
+  <header class="mk-topbar">
+    <div class="mk-topbar-left">
+      <button class="mk-hamburger" id="sidebarToggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="mk-topbar-brand">
+        <a href="../index.html" class="mk-topbar-crown" title="Back Home">  ♛</a>
+        <div>
+          <div class="mk-topbar-title">MatchKing Terminal</div>
+          <div class="mk-topbar-sub" id="connection-badge">● Connecting…</div>
         </div>
-    </aside>
+      </div>
+    </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <!-- Top Bar -->
-        <div class="top-bar">
-            <div class="top-bar-left">
-                <h1 class="page-title">Advanced Match Analysis</h1>
-                <p class="page-subtitle">Real-time MATCHES signal generation and predictions</p>
-            </div>
-            <div class="top-bar-right">
-                <div class="stat-badge">
-                    <span class="stat-badge-label">Markets</span>
-                    <span class="stat-badge-value" id="active-markets">0</span>
-                </div>
-                <div class="stat-badge">
-                    <span class="stat-badge-label">Status</span>
-                    <span class="stat-badge-value" id="connection-badge">●</span>
-                </div>
-            </div>
-        </div>
+    <div class="mk-topbar-right">
+      
+      <button id="pwaInstallBtn" class="mk-btn mk-btn-gold mk-btn-sm pwa-install-btn" style="display:none">
+        <i class="fas fa-download"></i><span>Install</span>
+      </button>
+    </div>
+  </header>
 
-        <!-- Content Area -->
-        <div class="content-wrapper">
-            <!-- Control Panel -->
-            <div class="control-panel">
-                <div class="control-item">
-                    <label for="symbol-select" class="control-label">Analysis Mode</label>
-                    <select id="symbol-select" class="control-select" onchange="updateSymbol(this.value)">
-                        <option value="ALL" selected>🌐 All Volatility Markets</option>
-                        <option value="R_100">⚡ Volatility 100 Index</option>
-                        <option value="R_75">⚡ Volatility 75 Index</option>
-                        <option value="R_50">⚡ Volatility 50 Index</option>
-                        <option value="R_25">⚡ Volatility 25 Index</option>
-                        <option value="R_10">⚡ Volatility 10 Index</option>
-                        <option value="1HZ10V">⚡ 1s Volatility 10 Index</option>
-                        <option value="1HZ15V">⚡ 1s Volatility 15 Index</option>
-                        <option value="1HZ30V">⚡ 1s Volatility 30 Index</option>
-                        <option value="1HZ50V">⚡ 1s Volatility 50 Index</option>
-                        <option value="1HZ75V">⚡ 1s Volatility 75 Index</option>
-                        <option value="1HZ90V">⚡ 1s Volatility 90 Index</option>
-                        <option value="1HZ100V">⚡ 1s Volatility 100 Index</option>
-                    </select>
-                </div>
-                <div class="control-item">
-                    <label for="tick-count" class="control-label">Data Points</label>
-                    <select id="tick-count" class="control-select" onchange="updateTickCount(parseInt(this.value))">
-                        <option value="50">50 Ticks</option>
-                        <option value="100">100 Ticks</option>
-                        <option value="120" selected>120 Ticks</option>
-                        <option value="200">200 Ticks</option>
-                        <option value="500">500 Ticks</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-                <div class="glass-card">
-                    <div class="card-header">
-                        <h3 class="card-title">📊 Signal Range</h3>
-                    </div>
-                    <div class="card-content">
-                        <div class="signal-range">
-                            <div class="signal-item">
-                                <span class="signal-label">Peak</span>
-                                <span class="signal-value" id="highest-digit">--</span>
-                            </div>
-                            <div class="signal-divider"></div>
-                            <div class="signal-item">
-                                <span class="signal-label">Low</span>
-                                <span class="signal-value" id="lowest-digit">--</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass-card">
-                    <div class="card-header">
-                        <h3 class="card-title">🎯 Pattern Recognition</h3>
-                        <div class="card-badge" id="prediction-countdown">⏰ 37s</div>
-                    </div>
-                    <div class="card-content">
-                        <div id="prediction-highlights" class="prediction-container">
-                            <div class="no-predictions">No patterns detected yet...</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass-card">
-                    <div class="card-header">
-                        <h3 class="card-title">📈 Market Activity</h3>
-                    </div>
-                    <div class="card-content">
-                        <div class="activity-stats">
-                            <div class="activity-stat">
-                                <span class="activity-label">Total Ticks</span>
-                                <span class="activity-value" id="tick-counter">0</span>
-                            </div>
-                            <div class="activity-stat">
-                                <span class="activity-label">Last Price</span>
-                                <span class="activity-value" id="current-price">--</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass-card">
-                    <div class="card-header">
-                        <h3 class="card-title">💰 Market Info</h3>
-                    </div>
-                    <div class="card-content">
-                        <div class="market-info">
-                            <div class="info-row">
-                                <span class="info-label">Current Symbol</span>
-                                <span class="info-value" id="current-symbol">--</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Last Digit</span>
-                                <span class="info-value" id="last-digit">--</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-          
-            <!-- Footer -->
-            <footer class="footer">
-                <p><i class="fas fa-server"></i> Connected to Deriv API • <i class="fas fa-bolt"></i> Real-time Analysis</p>
-                <p style="font-size: 12px; margin-top: 10px;"><a href="/refund/" style="color: #C9A84C; text-decoration: none;">Refund Policy</a> • <a href="/" style="color: #C9A84C; text-decoration: none;">Home</a></p>
-            </footer>
-        </div>
+  <!-- ── COMMAND BAR ── -->
+  <div class="mk-command-bar">
+    <div class="mk-cmd-item">
+      <label class="mk-cmd-label">Analysis Mode</label>
+      <select id="symbol-select" class="mk-select" onchange="updateSymbol(this.value)">
+        <option value="ALL" selected>🌐 All Volatility Markets</option>
+        <option value="R_100">⚡ Volatility 100 Index</option>
+        <option value="R_75">⚡ Volatility 75 Index</option>
+        <option value="R_50">⚡ Volatility 50 Index</option>
+        <option value="R_25">⚡ Volatility 25 Index</option>
+        <option value="R_10">⚡ Volatility 10 Index</option>
+        <option value="1HZ10V">⚡ 1s Volatility 10 Index</option>
+        <option value="1HZ15V">⚡ 1s Volatility 15 Index</option>
+        <option value="1HZ30V">⚡ 1s Volatility 30 Index</option>
+        <option value="1HZ50V">⚡ 1s Volatility 50 Index</option>
+        <option value="1HZ75V">⚡ 1s Volatility 75 Index</option>
+        <option value="1HZ90V">⚡ 1s Volatility 90 Index</option>
+        <option value="1HZ100V">⚡ 1s Volatility 100 Index</option>
+      </select>
     </div>
     
-    <!-- PWA Scripts -->
-    <script src="/matchking/pwa-helper.js"></script>
-    <script src="/matchking/script.js"></script>
+  </div>
+
+  <!-- ══════════════════════════════════
+       MAIN TERMINAL GRID
+  ══════════════════════════════════ -->
+  <div class="mk-terminal-grid">
+
+    <!-- ── LEFT COLUMN: Live price + market vitals ── -->
+    
+
+    <!-- ── CENTRE COLUMN: Pattern recognition (main signal) ── -->
+    <div class="mk-col-centre">
+
+      <div class="mk-signal-throne">
+        <div class="mk-throne-head">
+          <div>
+            <div class="mk-card-title" style="font-size:18px">🎯 Pattern Recognition</div>
+            <div class="mk-throne-sub">Real-time MATCHES digit prediction engine</div>
+          </div>
+          <div class="mk-countdown-badge" id="prediction-countdown">⏰ 45s</div>
+        </div>
+
+        <!-- Prediction area — JS writes here -->
+        <div id="prediction-highlights" class="mk-predictions">
+          <div class="mk-no-signal">
+            <div class="mk-no-signal-crown">♛</div>
+            <div>Awaiting market data…</div>
+            <div class="mk-no-signal-sub">Patterns will appear once connected</div>
+          </div>
+        </div>
+
+        <!-- Digit trail visualiser -->
+        <div class="mk-digit-trail-wrap">
+          <div class="mk-digit-trail-label">
+            <span class="mk-live-dot"></span> Digit Trail
+          </div>
+          <div class="mk-digit-trail" id="digitTrail">
+            <!-- JS populates: <span class="mk-trail-digit mk-td-even">4</span> etc. -->
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /col-centre -->
+
+    <!-- ── RIGHT COLUMN: Even/Odd + activity ── -->
+    
+
+                </div><!-- /terminal-grid -->
+
+  <!-- FOOTER -->
+  <footer class="mk-footer">
+    <span><i class="fas fa-server"></i> Connected to Deriv API &nbsp;·&nbsp; <i class="fas fa-bolt"></i> Real-time Analysis</span>
+    <span>
+      <a href="/refund/">Refund Policy</a> &nbsp;·&nbsp;
+      <a href="/">Home</a> &nbsp;·&nbsp;
+      ♛ MatchKing
+    </span>
+  </footer>
+
+</div><!-- /mk-main -->
+
+<script src="/matchking/pwa-helper.js"></script>
+<script src="/matchking/script.js"></script>
+
+<!-- Sync duplicate IDs so script.js targets either set -->
+<script>
+// Mirror values from primary IDs to secondary where we have duplication
+(function(){
+  const pairs = [
+    ['current-price',   'current-price-2'],
+    ['current-price',   'current-price-3'],
+    ['current-symbol',  'current-symbol-2'],
+    ['last-digit',      'last-digit-2'],
+    ['tick-counter',    'tick-counter-2'],
+  ];
+  const obs = new MutationObserver(() => {
+    pairs.forEach(([src, dst]) => {
+      const s = document.getElementById(src), d = document.getElementById(dst);
+      if (s && d && s.textContent !== d.textContent) d.textContent = s.textContent;
+    });
+  });
+  document.querySelectorAll('#current-price,#current-symbol,#last-digit,#tick-counter').forEach(el => {
+    if (el) obs.observe(el, { childList:true, subtree:true, characterData:true });
+  });
+})();
+</script>
 </body>
 </html>

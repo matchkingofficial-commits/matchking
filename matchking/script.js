@@ -103,7 +103,7 @@ function startPredictionCountdown() {
         clearInterval(predictionTimer);
     }
     
-    countdownSeconds = 37;
+    countdownSeconds = 45;
     updateCountdownDisplay();
     
     predictionTimer = setInterval(() => {
@@ -432,7 +432,7 @@ function updatePredictionHighlights() {
                     <div id="prediction-countdown" class="prediction-countdown">⏰ 37s</div>
                     <div class="prediction-markets">
                         ${hasIndividualHighs ? 
-                            `<strong>Hot Markets:</strong><br>${marketTags}` : 
+                            `<strong></strong><br>${marketTags}` : 
                             `<strong>Overall Average</strong><br>Across all markets`
                         }
                     </div>
@@ -443,7 +443,7 @@ function updatePredictionHighlights() {
             // Start countdown for new prediction
             currentPrediction = predictionKey;
             startPredictionCountdown();
-            console.log(`🎯 New prediction detected: Digit ${newPrediction.digit} (${newPrediction.overallPercentage}%) - Starting 37s countdown`);
+            console.log(`🎯 New prediction detected: Digit ${newPrediction.digit} (${newPrediction.overallPercentage}%) - Starting 45s countdown`);
         }
     }
     

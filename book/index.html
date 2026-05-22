@@ -1,285 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deriv Hacker Demo Booking</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/book/styles.css">
-  <link rel="icon" type="image/png" sizes="32x32" href="../deriv hacker/icons/icon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../deriv hacker/icons/icon-16x16.png">
-  <link rel="shortcut icon" href="/favicon.ico">
-  <style>
-    .demo-header {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
-    
-    .whatsapp-btn {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: linear-gradient(135deg, #25D366 0%, #128C7E 50%, #25D366 100%);
-      background-size: 200% 200%;
-      color: white;
-      padding: 14px 28px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 15px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      border: 2px solid #25D366;
-      cursor: pointer;
-      animation: gradientShift 3s ease infinite, pulse 2s ease-in-out infinite;
-      box-shadow: 
-        0 0 20px rgba(37, 211, 102, 0.6),
-        0 0 40px rgba(37, 211, 102, 0.4),
-        0 0 60px rgba(37, 211, 102, 0.2),
-        inset 0 0 20px rgba(255, 255, 255, 0.2);
-      transition: all 0.3s ease;
-      overflow: hidden;
-    }
-    
-    .whatsapp-btn::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(
-        45deg,
-        transparent 30%,
-        rgba(255, 255, 255, 0.3) 50%,
-        transparent 70%
-      );
-      animation: shimmer 2s infinite;
-    }
-    
-    .whatsapp-btn:hover {
-      transform: scale(1.05) translateY(-3px);
-      box-shadow: 
-        0 0 30px rgba(37, 211, 102, 0.8),
-        0 0 60px rgba(37, 211, 102, 0.6),
-        0 0 90px rgba(37, 211, 102, 0.4),
-        inset 0 0 30px rgba(255, 255, 255, 0.3);
-      border-color: #fff;
-      animation: gradientShift 1s ease infinite, pulse 1s ease-in-out infinite;
-    }
-    
-    .whatsapp-btn:active {
-      transform: scale(0.98);
-    }
-    
-    .whatsapp-btn svg {
-      width: 22px;
-      height: 22px;
-      fill: currentColor;
-      filter: drop-shadow(0 0 5px rgba(255,255,255,0.8));
-      animation: bounce 1s ease-in-out infinite;
-    }
-    
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    
-    @keyframes pulse {
-      0%, 100% { 
-        box-shadow: 
-          0 0 20px rgba(37, 211, 102, 0.6),
-          0 0 40px rgba(37, 211, 102, 0.4),
-          0 0 60px rgba(37, 211, 102, 0.2);
-      }
-      50% { 
-        box-shadow: 
-          0 0 30px rgba(37, 211, 102, 0.9),
-          0 0 60px rgba(37, 211, 102, 0.6),
-          0 0 90px rgba(37, 211, 102, 0.4);
-      }
-    }
-    
-    @keyframes shimmer {
-      0% { transform: translateX(-100%) rotate(45deg); }
-      100% { transform: translateX(100%) rotate(45deg); }
-    }
-    
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-3px); }
-    }
-    
-    /* Outer ring animation */
-    .whatsapp-btn::after {
-      content: '';
-      position: absolute;
-      top: -4px;
-      left: -4px;
-      right: -4px;
-      bottom: -4px;
-      border-radius: 50px;
-      border: 2px solid transparent;
-      background: linear-gradient(45deg, #25D366, #fff, #25D366) border-box;
-      -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-      mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity: 0.6;
-      animation: rotate 4s linear infinite;
-    }
-    
-    @keyframes rotate {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    /* Floating particles effect */
-    .whatsapp-btn .particles {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      overflow: hidden;
-      border-radius: 50px;
-    }
-    
-    .whatsapp-btn .particle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 50%;
-      animation: float 3s ease-in-out infinite;
-    }
-    
-    .whatsapp-btn .particle:nth-child(1) { left: 20%; animation-delay: 0s; }
-    .whatsapp-btn .particle:nth-child(2) { left: 50%; animation-delay: 1s; }
-    .whatsapp-btn .particle:nth-child(3) { left: 80%; animation-delay: 2s; }
-    
-    @keyframes float {
-      0%, 100% { transform: translateY(0) scale(0); opacity: 0; }
-      50% { transform: translateY(-20px) scale(1); opacity: 1; }
-    }
-    
-    @media (max-width: 480px) {
-      .demo-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-      }
-      
-      .whatsapp-btn {
-        font-size: 13px;
-        padding: 12px 20px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MatchKing — Book a Royal Session</title>
+<meta name="description" content="Book your free 30-minute MatchKing demo. See AI-powered volatility signals live.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="booking-container">
-    <!-- Left Panel: Booking Info -->
-    <div class="booking-info">
-      <div class="info-header">
-        <h1>Deriv Hacker</h1>
-        <div class="demo-header">
-          <p class="info-subtitle">30-Minute Demo Session</p>
-          <a href="https://wa.me/254771814498?text=Hi%20Deriv%20Hacker%2C%20I%20have%20just%20booked%20a%20class%20and%20wanted%20to%20confirm%20my%20booking." 
-             class="whatsapp-btn" 
-             target="_blank">
-            <div class="particles">
-              <span class="particle"></span>
-              <span class="particle"></span>
-              <span class="particle"></span>
-            </div>
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-            </svg>
-            <span>Text Me After Booking</span>
-          </a>
+
+<!-- Ambient particles -->
+<div class="ambient" aria-hidden="true">
+  <div class="amb-orb amb-1"></div>
+  <div class="amb-orb amb-2"></div>
+  <div class="amb-orb amb-3"></div>
+</div>
+
+<!-- NAV -->
+<nav class="book-nav">
+  <a href="/" class="book-nav-logo">
+    <span class="book-nav-crown">♛</span>
+    <div>
+      <div class="book-nav-name">MatchKing</div>
+      <div class="book-nav-tag">Rule Your Trades</div>
+    </div>
+  </a>
+  <a href="/" class="book-nav-back">
+    <i class="fas fa-arrow-left"></i>
+    <span>Back to Site</span>
+  </a>
+</nav>
+
+<!-- MAIN LAYOUT -->
+<div class="booking-wrap">
+
+  <!-- LEFT PANEL -->
+  <aside class="book-aside">
+
+    <div class="aside-kicker">
+      <span class="kicker-line"></span>
+      <span class="kicker-text">Free Session</span>
+      <span class="kicker-line"></span>
+    </div>
+
+    <h1 class="aside-title">ROYAL<br><em>DEMO</em></h1>
+    <p class="aside-sub">See MatchKing trade live. 30 minutes. No commitment. No credit card.</p>
+
+    <!-- WhatsApp CTA -->
+    <a href="https://wa.me/254771814498?text=Hi%20MatchKing%20%E2%99%9B%2C%20I%20just%20booked%20a%20demo%20session%20and%20wanted%20to%20confirm."
+       class="wa-confirm" target="_blank" rel="noopener">
+      <div class="wa-confirm-ring"></div>
+      <div class="wa-confirm-inner">
+        <i class="fab fa-whatsapp wa-icon"></i>
+        <div>
+          <div class="wa-label">Confirm via WhatsApp</div>
+          <div class="wa-hint">Text after booking to lock your slot</div>
+        </div>
+        <i class="fas fa-chevron-right wa-arrow"></i>
+      </div>
+    </a>
+
+    <!-- Session details -->
+    <div class="session-details">
+      <div class="session-detail">
+        <div class="sd-icon">🕐</div>
+        <div>
+          <div class="sd-label">Duration</div>
+          <div class="sd-val">30 minutes</div>
         </div>
       </div>
-
-      <div class="info-details">
-        <div class="detail-item">
-          <span class="detail-icon">🕐</span>
-          <div>
-            <p class="detail-label">Duration</p>
-            <p class="detail-value">30 minutes</p>
-          </div>
-        </div>
-        <div class="detail-item">
-          <span class="detail-icon">🌍</span>
-          <div>
-            <p class="detail-label">Your Timezone</p>
-            <p class="detail-value" id="userTimezone">Loading...</p>
-          </div>
-        </div>
-        <div class="detail-item">
-          <span class="detail-icon">📍</span>
-          <div>
-            <p class="detail-label">Location</p>
-            <p class="detail-value">Video Call (Google Meet)</p>
-          </div>
-        </div>
-        <div class="detail-item">
-          <span class="detail-icon">✓</span>
-          <div>
-            <p class="detail-label">What to Expect</p>
-            <p class="detail-value">Live walkthrough of 99% accurate signals</p>
-          </div>
+      <div class="session-detail">
+        <div class="sd-icon">🌍</div>
+        <div>
+          <div class="sd-label">Your Timezone</div>
+          <div class="sd-val" id="userTimezone">Detecting…</div>
         </div>
       </div>
-
-      <div class="info-features">
-        <h3>Demo Includes:</h3>
-        <ul>
-          <li>Live market signal generation</li>
-          <li>Accuracy metrics & confidence scoring</li>
-          <li>Real-time entry/exit points</li>
-          <li>Q&A with trading expert</li>
-          <li>30-minute video call via Google Meet</li>
-          <li>No credit card required</li>
-        </ul>
+      <div class="session-detail">
+        <div class="sd-icon">📡</div>
+        <div>
+          <div class="sd-label">Location</div>
+          <div class="sd-val">Google Meet (link sent via email)</div>
+        </div>
       </div>
     </div>
 
-    <!-- Right Panel: Calendar & Form -->
-    <div class="booking-form-section">
-      <!-- Calendly inline widget begin -->
-      <div class="calendly-inline-widget" data-url="https://calendly.com/hackerderiv/30min?hide_event_type_details=1&hide_gdpr_banner=1&background_color=1a1a1a&text_color=f9f9f9&primary_color=98ed4e" style="min-width:320px;height:700px;"></div>
+    <!-- Demo includes -->
+    <div class="includes-block">
+      <div class="includes-title">
+        <span class="includes-line"></span>
+        <span>Demo Includes</span>
+      </div>
+      <ul class="includes-list">
+        <li>Live market signal generation</li>
+        <li>Confidence scoring walkthrough</li>
+        <li>Real-time entry &amp; exit points</li>
+        <li>Risk management overview</li>
+        <li>Q&amp;A with a trading expert</li>
+        <li>No credit card required</li>
+      </ul>
+    </div>
+
+    <!-- Stat strip -->
+    <div class="aside-stats">
+      <div class="aside-stat">
+        <span class="as-val">99%</span>
+        <span class="as-lbl">Accuracy</span>
+      </div>
+      <div class="aside-stat-div"></div>
+      <div class="aside-stat">
+        <span class="as-val">12+</span>
+        <span class="as-lbl">Signals/Day</span>
+      </div>
+      <div class="aside-stat-div"></div>
+      <div class="aside-stat">
+        <span class="as-val">24/7</span>
+        <span class="as-lbl">Markets</span>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- RIGHT PANEL — Calendly -->
+  <main class="book-main">
+
+    <div class="book-main-head">
+      <div class="bmh-crown">♛</div>
+      <div>
+        <div class="bmh-title">Select Your Session</div>
+        <div class="bmh-sub">Choose a date &amp; time that suits your schedule</div>
+      </div>
+    </div>
+
+    <div class="calendly-wrap">
+      <div class="calendly-inline-widget"
+           data-url="https://calendly.com/hackerderiv/30min?hide_event_type_details=1&hide_gdpr_banner=1&background_color=0c0b0f&text_color=F2E8CC&primary_color=C9A84C"
+           style="min-width:320px;height:680px;"></div>
       <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-      <!-- Calendly inline widget end -->
     </div>
+
+    <!-- Fallback / alternative -->
+    <div class="alt-booking">
+      <span class="alt-line"></span>
+      <span class="alt-text">or reach us directly</span>
+      <span class="alt-line"></span>
+    </div>
+    <div class="direct-links">
+      <a href="https://wa.me/254771814498" target="_blank" class="direct-link dl-wa">
+        <i class="fab fa-whatsapp"></i> WhatsApp
+      </a>
+      <a href="https://t.me/brandytades" target="_blank" class="direct-link dl-tg">
+        <i class="fab fa-telegram"></i> Telegram
+      </a>
+      <a href="mailto:hackerderiv@gmail.com" class="direct-link dl-em">
+        <i class="fas fa-envelope"></i> Email
+      </a>
+    </div>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer class="book-footer">
+  <div class="book-footer-inner">
+    <span class="book-footer-brand">♛ MatchKing</span>
+    <div class="book-footer-links">
+      <a href="mailto:hackerderiv@gmail.com">hackerderiv@gmail.com</a>
+      <a href="https://wa.me/254771814498" target="_blank">WhatsApp</a>
+      <a href="https://t.me/brandytades" target="_blank">Telegram</a>
+      <a href="https://instagram.com/brandyk.fx" target="_blank">Instagram</a>
+      <a href="/refund/">Refund Policy</a>
+    </div>
+    <span class="book-footer-copy">&copy; <span id="year"></span> MatchKing</span>
   </div>
+</footer>
 
-  <!-- Footer -->
-  <footer style="background: #1a1a1a; border-top: 1px solid #333; padding: 30px 20px; text-align: center; margin-top: 40px;">
-    <p style="font-size: 13px; color: #aaa; margin-bottom: 10px;">
-      📧 <a href="mailto:hackerderiv@gmail.com" style="color: #289D3F; text-decoration: none;">hackerderiv@gmail.com</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;
-      💬 <a href="https://wa.me/254771814498" target="_blank" style="color: #289D3F; text-decoration: none;">WhatsApp</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;
-      ✈️ <a href="https://t.me/DerivHackerexpert" target="_blank" style="color: #289D3F; text-decoration: none;">Telegram</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;
-      📷 <a href="https://instagram.com/brandyk.fx" target="_blank" style="color: #289D3F; text-decoration: none;">Instagram</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;
-      📋 <a href="/refund/" style="color: #289D3F; text-decoration: none;">Refund Policy</a>
-    </p>
-    <p style="font-size: 12px; color: #666; margin: 0;">&copy; <span id="year"></span> Deriv Hacker. All rights reserved.</p>
-  </footer>
-
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-
-  <script src="/book/script.js"></script>
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  try {
+    document.getElementById('userTimezone').textContent =
+      Intl.DateTimeFormat().resolvedOptions().timeZone.replace('_',' ');
+  } catch(e) {}
+</script>
 </body>
 </html>

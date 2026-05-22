@@ -233,3 +233,66 @@ server.listen(PORT, () => {
   console.log(`📅 Booking page: http://localhost:${PORT}/book`);
   console.log(`\n⏹️  Press Ctrl+C to stop\n`);
 });
+const express = require("express");
+const nodemailer = require("nodemailer");
+
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// EMAIL TRANSPORT
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "matchkingofficial@gmail.com",
+    pass: "tmlo svxc rccw sxhx"
+  }
+});
+
+// DEMO REQUEST ROUTE
+app.post("/request-demo", async (req, res) => {
+
+  const { name, email, phone, experience } = req.body;
+
+  try {
+
+    await transporter.sendMail({
+      from: `"MatchKing Demo" <YOUR_EMAIL@gmail.com>`,
+      to: "YOUR_EMAIL@gmail.com",
+
+      subject: "♛ New MatchKing Demo Request",
+
+      html: `
+        <div style="font-family:Arial;padding:20px">
+          <h2>♛ New Demo Request</h2>
+
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Phone:</strong> ${phone || "N/A"}</p>
+          <p><strong>Experience:</strong> ${experience}</p>
+        </div>
+      `
+    });
+
+    res.json({
+      success: true,
+      message: "Demo request submitted"
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Email failed"
+    });
+
+  }
+
+});
+
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
+});
