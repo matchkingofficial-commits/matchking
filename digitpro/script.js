@@ -2360,6 +2360,256 @@ function returnToLogin() {
     hidePaymentModal();
 }
 
+// =============== TOKEN LOGIN FUNCTIONS ===============
+
+// Toggle token visibility
+function toggleTokenVisibility() {
+    const tokenInput = document.getElementById('token-input');
+    const toggleBtn = document.querySelector('.toggle-token-visibility');
+    
+    if (!tokenInput || !toggleBtn) return;
+    
+    if (tokenInput.type === 'password') {
+        tokenInput.type = 'text';
+        toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+    } else {
+        tokenInput.type = 'password';
+        toggleBtn.innerHTML = '<i class="fas fa-eye"></i>';
+    }
+}
+
+// Login with API Token
+async function loginWithToken() {
+    const tokenInput = document.getElementById('token-input');
+    const token = tokenInput ? tokenInput.value.trim() : '';
+    
+    if (!token) {
+        showNotification('Please enter your Deriv API token', 'error');
+        return;
+    }
+    
+    if (token.length < 15) {
+        showNotification('Token appears to be invalid. API tokens are typically longer.', 'error');
+        return;
+    }
+    
+    const btn = document.querySelector('.token-login-btn');
+    const originalContent = btn.innerHTML;
+    
+    // Show loading state
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Verifying token...</span>';
+    btn.disabled = true;
+    
+    try {
+        console.log('🔐 Attempting to login with API token...');
+        
+        // Track login attempt
+        trackLoginAttempt();
+        
+        // Check if login limit exceeded
+        if (isLoginLimitExceeded()) {
+            console.warn('🚫 Login attempt blocked - too many attempts');
+            btn.innerHTML = originalContent;
+            btn.disabled = false;
+            hideAuthModal();
+            showTooManyAttemptsModal();
+            return;
+        }
+        
+        // Test the token by making an API call
+        const userData = await validateTokenAndGetUserInfo(token);
+        
+        if (userData) {
+            // Show processing state
+            showAuthProcessing();
+            
+            // Store user data
+            currentUser = userData;
+            localStorage.setItem('derivlite_user', JSON.stringify(userData));
+            localStorage.setItem('derivlite_token', userData.token);
+            localStorage.setItem('derivlite_auth_time', new Date().toISOString());
+            
+            // Mark as authenticated
+            isAuthenticated = true;
+            
+            // Clear login attempts on successful authentication
+            clearLoginAttempts();
+            
+            // Hide processing state
+            hideAuthProcessing();
+            
+            // Validate user access
+            validateUserAccess(userData)
+                .then((hasAccess) => {
+                    if (hasAccess) {
+                        // User has valid access
+                        currentUser.hasAccess = true;
+                        localStorage.setItem('derivlite_user', JSON.stringify(currentUser));
+                        unlockDashboard();
+                        hideAuthModal();
+                        updateUserInfo(userData);
+                        showWelcomeMessage(userData);
+                        
+                        // Start the application
+                        setTimeout(() => {
+                            if (startWebSocket()) {
+                                console.log('🎉 Analysis started successfully with token login');
+                            } else {
+                                console.error('❌ Failed to start WebSocket analysis');
+                                showNotification('Failed to start analysis. Please refresh the page.', 'error');
+                            }
+                        }, 500);
+                        
+                        console.log('🎉 Token authentication completed successfully');
+                    } else {
+                        // User doesn't have access, show payment modal
+                        currentUser.hasAccess = false;
+                        localStorage.setItem('derivlite_user', JSON.stringify(currentUser));
+                        lockDashboard();
+                        hideAuthModal();
+                        setTimeout(() => {
+                            showPaymentModal();
+                        }, 300);
+                        console.log('💳 User needs to purchase access');
+                    }
+                })
+                .catch((error) => {
+                    console.error('❌ Error validating user access:', error);
+                    hideAuthModal();
+                    setTimeout(() => {
+                        showPaymentModal();
+                    }, 500);
+                });
+        } else {
+            throw new Error('Invalid token or unable to retrieve user information');
+        }
+        
+    } catch (error) {
+        console.error('❌ Token login failed:', error);
+        btn.innerHTML = originalContent;
+        btn.disabled = false;
+        showNotification(error.message || 'Authentication failed. Please check your token and try again.', 'error');
+    }
+}
+
+// Validate token and get user information from Deriv API
+async function validateTokenAndGetUserInfo(token) {
+    return new Promise((resolve, reject) => {
+        try {
+            // Create a WebSocket connection to validate the token
+            const apiUrl = 'wss://ws.derivws.com/websockets/v3?app_id=110104';
+            const tempWs = new WebSocket(apiUrl);
+            let responseReceived = false;
+            
+            // Set timeout to prevent hanging
+            const timeout = setTimeout(() => {
+                if (!responseReceived) {
+                    tempWs.close();
+                    reject(new Error('Connection timeout - unable to verify token'));
+                }
+            }, 10000);
+            
+            tempWs.onopen = () => {
+                console.log('🔗 Connected to Deriv API for token validation');
+                
+                // Authorize with the token
+                console.log('🔑 Authorizing with API token');
+                tempWs.send(JSON.stringify({
+                    authorize: token,
+                    req_id: 1
+                }));
+            };
+            
+            tempWs.onmessage = (event) => {
+                try {
+                    const response = JSON.parse(event.data);
+                    
+                    if (response.error) {
+                        console.error('❌ API error during token validation:', response.error);
+                        responseReceived = true;
+                        tempWs.close();
+                        clearTimeout(timeout);
+                        reject(new Error(response.error.message || 'Invalid token'));
+                        return;
+                    }
+                    
+                    if (response.authorize) {
+                        responseReceived = true;
+                        const authorizeData = response.authorize;
+                        
+                        console.log('✅ Token validated successfully!');
+                        console.log('📧 User email:', authorizeData.email);
+                        console.log('👤 Full name:', getDisplayName(authorizeData.fullname));
+                        console.log('💰 Balance:', authorizeData.balance);
+                        console.log('🆔 User ID:', authorizeData.user_id);
+                        console.log('🌍 Country:', authorizeData.country);
+                        console.log('🏦 Account ID:', authorizeData.loginid);
+                        console.log('🎯 Is Virtual:', authorizeData.is_virtual);
+                        
+                        // Create user data object from token response
+                        const userData = {
+                            accountId: authorizeData.loginid,
+                            token: token,
+                            currency: authorizeData.currency || 'USD',
+                            isVirtual: authorizeData.is_virtual || false,
+                            accountType: authorizeData.is_virtual ? 'virtual' : 'real',
+                            email: authorizeData.email || 'Not available',
+                            fullname: getDisplayName(authorizeData.fullname) || 'Not available',
+                            name: getDisplayName(authorizeData.fullname) || authorizeData.loginid,
+                            country: authorizeData.country || 'Unknown',
+                            balance: authorizeData.balance || 0,
+                            userId: authorizeData.user_id,
+                            loginId: authorizeData.loginid,
+                            scopes: authorizeData.scopes || [],
+                            preferredLanguage: authorizeData.preferred_language || 'EN',
+                            accountList: authorizeData.account_list || [],
+                            loginTime: new Date().toISOString(),
+                            loginMethod: 'token' // Indicate token-based login
+                        };
+                        
+                        console.log('✅ User data created successfully:', {
+                            email: userData.email,
+                            fullname: userData.fullname,
+                            country: userData.country,
+                            isVirtual: userData.isVirtual,
+                            loginMethod: userData.loginMethod
+                        });
+                        
+                        tempWs.close();
+                        clearTimeout(timeout);
+                        resolve(userData);
+                    }
+                } catch (error) {
+                    console.error('❌ Error parsing API response:', error);
+                    responseReceived = true;
+                    tempWs.close();
+                    clearTimeout(timeout);
+                    reject(new Error('Failed to parse API response'));
+                }
+            };
+            
+            tempWs.onerror = (error) => {
+                console.error('❌ WebSocket error during token validation:', error);
+                if (!responseReceived) {
+                    responseReceived = true;
+                    clearTimeout(timeout);
+                    reject(new Error('Connection error - unable to verify token'));
+                }
+            };
+            
+            tempWs.onclose = () => {
+                if (!responseReceived) {
+                    clearTimeout(timeout);
+                    reject(new Error('Connection closed without response'));
+                }
+            };
+            
+        } catch (error) {
+            console.error('❌ Error during token validation:', error);
+            reject(error);
+        }
+    });
+}
 // Close payment modal when clicking outside
 document.addEventListener('click', function(event) {
     const paymentModal = document.getElementById('payment-modal');
