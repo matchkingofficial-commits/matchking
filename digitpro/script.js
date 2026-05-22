@@ -50,8 +50,6 @@ const marketNames = {
     "R_50": "Volatility 50",
     "R_25": "Volatility 25",
     "R_10": "Volatility 10",
-    "RDBEAR": "Bear Market",
-    "RDBULL": "Bull Market",
     "1HZ10V": "1s Volatility 10",
     "1HZ15V": "1s Volatility 15",
     "1HZ30V": "1s Volatility 30",
@@ -426,7 +424,7 @@ function updatePredictionHighlights() {
             ).join('');
             
             const hasIndividualHighs = pred.markets.length > 0;
-            const statusIcon = hasIndividualHighs ? '🔥' : '📈';
+            const statusIcon = hasIndividualHighs ? '👑' : '📈';
             
             return `
                 <div class="prediction-item">
@@ -526,7 +524,7 @@ function startWebSocket() {
     derivWs.onopen = function () {
         console.log(`✅ Connected to Deriv API for ${activeMarkets.length} markets`);
         updateConnectionStatus(true);
-        showNotification('Connected to market data stream', 'success');
+       
         
         // Request exactly tickCount (120) historical ticks for all markets
         activeMarkets.forEach(symbol => {
