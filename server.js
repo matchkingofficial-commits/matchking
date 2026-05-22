@@ -234,7 +234,6 @@ server.listen(PORT, () => {
   console.log(`\n⏹️  Press Ctrl+C to stop\n`);
 });
 const express = require("express");
-const nodemailer = require("nodemailer");
 
 const app = express();
 
@@ -242,63 +241,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // EMAIL TRANSPORT
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "matchkingofficial@gmail.com",
-    pass: "tmlo svxc rccw sxhx"
-  }
-});
+
 
 // DEMO REQUEST ROUTE
-app.post("/request-demo", async (req, res) => {
 
-  try {
-
-    console.log("Incoming request:", req.body);
-
-    const { name, email, phone, experience } = req.body;
-
-    await transporter.sendMail({
-
-      from: "MatchKing <YOUR_GMAIL@gmail.com>",
-
-      to: "YOUR_GMAIL@gmail.com",
-
-      subject: "♛ New Demo Request",
-
-      html: `
-        <h2>New Demo Booking</h2>
-
-        <p><strong>Name:</strong> ${name}</p>
-
-        <p><strong>Email:</strong> ${email}</p>
-
-        <p><strong>Phone:</strong> ${phone}</p>
-
-        <p><strong>Experience:</strong> ${experience}</p>
-      `
-    });
-
-    console.log("Email sent successfully");
-
-    return res.status(200).json({
-      success: true
-    });
-
-  } catch(error) {
-
-    console.log("EMAIL ERROR:");
-    console.log(error);
-
-    return res.status(500).json({
-      success: false,
-      error: error.message
-    });
-
-  }
-
-});
 
 app.listen(3000, () => {
   console.log("Server running on port 3000");

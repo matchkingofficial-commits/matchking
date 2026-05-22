@@ -1827,7 +1827,13 @@
     <button class="modal-close" onclick="closeModal('demoModal')"><i class="fas fa-times"></i></button>
     <div class="modal-body">
       <p>We'll contact you to schedule a 30-minute live walkthrough of the MatchKing platform with real signal examples.</p>
-      <form id="demoForm">
+      <form id="demoForm" action="https://api.web3forms.com/submit" method="POST">
+
+  <input type="hidden" name="access_key" value="932aa5e7-c33b-4b5c-a20c-0472b5a4e98b">
+
+  <input type="hidden" name="subject" value="♛ New MatchKing Demo Request">
+
+  <input type="hidden" name="from_name" value="MatchKing Website">
 
   <div class="form-group">
     <label class="form-label">Full Name</label>
@@ -1860,6 +1866,7 @@
   <button type="submit" class="modal-form-btn">
     Request Demo ♛
   </button>
+
 </form>
     </div>
   </div>
@@ -2157,50 +2164,7 @@
     if (sc) sc.textContent = sigCount;
   }, 12000);
 </script>
-<script>
-document.getElementById("demoForm").addEventListener("submit", async function(e){
 
-  e.preventDefault();
 
-  const formData = new FormData(this);
-
-  const data = Object.fromEntries(formData.entries());
-
-  try {
-
-    const response = await fetch("/request-demo", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
-
-    const result = await response.json();
-
-    if(result.success){
-
-      alert("♛ Demo request submitted successfully!");
-
-      closeModal('demoModal');
-
-      this.reset();
-
-    } else {
-
-      alert(result.error || "Failed to submit request.");
-
-    }
-
-  } catch(err){
-
-    console.log(err);
-
-    alert("Server error: " + err.message);
-
-  }
-
-});
-</script>
 </body>
 </html>
