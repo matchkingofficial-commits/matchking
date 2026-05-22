@@ -253,40 +253,47 @@ const transporter = nodemailer.createTransport({
 // DEMO REQUEST ROUTE
 app.post("/request-demo", async (req, res) => {
 
-  const { name, email, phone, experience } = req.body;
-
   try {
 
-    await transporter.sendMail({
-      from: `"MatchKing Demo" <matchkingofficial@gmail.com>`,
-      to: "matchkingofficial@gmail.com",
+    console.log("Incoming request:", req.body);
 
-      subject: "♛ New MatchKing Demo Request",
+    const { name, email, phone, experience } = req.body;
+
+    await transporter.sendMail({
+
+      from: "MatchKing <YOUR_GMAIL@gmail.com>",
+
+      to: "YOUR_GMAIL@gmail.com",
+
+      subject: "♛ New Demo Request",
 
       html: `
-        <div style="font-family:Arial;padding:20px">
-          <h2>♛ New Demo Request</h2>
+        <h2>New Demo Booking</h2>
 
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Phone:</strong> ${phone || "N/A"}</p>
-          <p><strong>Experience:</strong> ${experience}</p>
-        </div>
+        <p><strong>Name:</strong> ${name}</p>
+
+        <p><strong>Email:</strong> ${email}</p>
+
+        <p><strong>Phone:</strong> ${phone}</p>
+
+        <p><strong>Experience:</strong> ${experience}</p>
       `
     });
 
-    res.json({
-      success: true,
-      message: "Demo request submitted"
+    console.log("Email sent successfully");
+
+    return res.status(200).json({
+      success: true
     });
 
-  } catch (error) {
+  } catch(error) {
 
+    console.log("EMAIL ERROR:");
     console.log(error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: "Email failed"
+      error: error.message
     });
 
   }
