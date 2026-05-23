@@ -12,7 +12,7 @@ The simplest approach is to embed your Calendly booking link directly:
 ### Step 2: Create Event Type
 1. Go to Calendly Settings
 2. Create a new event type:
-   - Name: "Deriv Hacker Demo"
+   - Name: "matchking Demo"
    - Duration: 30 minutes
    - Description: "Automated Market Analysis for Volatility Trading"
 3. Add Google Meet as video conferencing option
@@ -79,7 +79,7 @@ const CALENDLY_EVENT_TYPE_ID = 'YOUR_EVENT_TYPE_ID';
 // In book/script.js, modify handleFormSubmit:
 function handleFormSubmit(e) {
   e.preventDefault();
-  const calendlyLink = 'https://calendly.com/your-username/Deriv Hacker-demo';
+  const calendlyLink = 'https://calendly.com/your-username/matchking-demo';
   window.location.href = calendlyLink;
 }
 ```
@@ -97,7 +97,7 @@ function handleFormSubmit(e) {
 1. In `book/index.html`, replace the form with:
 ```html
 <div class="calendly-inline-widget" 
-     data-url="https://calendly.com/your-username/Deriv Hacker-demo?hide_event_type_details=1&hide_gdpr_banner=1" 
+     data-url="https://calendly.com/your-username/matchking-demo?hide_event_type_details=1&hide_gdpr_banner=1" 
      style="min-width:320px; height:700px;"></div>
 <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js"></script>
 ```

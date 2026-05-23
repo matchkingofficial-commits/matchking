@@ -14,8 +14,8 @@ const PROVIDER_END_HOUR = 17; // 5 PM
 
 // Calendly API Configuration
 const CALENDLY_API_KEY = 'eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzY1MzU5NDQ1LCJqdGkiOiJiM2VjMmIxZC1hMTQ3LTQzNzUtYmFhZS0wZTE1NWZkYTAzNDMiLCJ1c2VyX3V1aWQiOiJkZTc1NGI4OC02ZjE3LTQ2MDgtODJkZS1mYzE5M2EyOTk0NWYifQ.KsxFOXryhUcoTcsIAxREcwiqOoV03sRceMUvG-cejMuOeuuyeGEmboOAytX6FnbsWCGqBcyANrzQZrTVRzjoIQ';
-const CALENDLY_USERNAME = 'Deriv Hacker'; // Your Calendly username
-const CALENDLY_EVENT_TYPE_ID = 'Deriv Hacker-demo'; // Will be auto-detected or use your event type slug
+const CALENDLY_USERNAME = 'matchking'; // Your Calendly username
+const CALENDLY_EVENT_TYPE_ID = 'matchking-demo'; // Will be auto-detected or use your event type slug
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {

@@ -60,8 +60,8 @@ app.post('/api/create-calendly-event', async (req, res) => {
     const googleMeetEventResponse = await axios.post(
       `${GOOGLE_API_URL}/calendars/${GOOGLE_CALENDAR_ID}/events`,
       {
-        summary: `Deriv Hacker Demo - ${name}`,
-        description: `Client: ${name}\nPhone: ${phone}\nExperience: ${notes}\n\nDeriv Hacker 30-minute demo session`,
+        summary: `matchking Demo - ${name}`,
+        description: `Client: ${name}\nPhone: ${phone}\nExperience: ${notes}\n\nmatchking 30-minute demo session`,
         start: {
           dateTime: start_time,
           timeZone: 'Africa/Nairobi'
@@ -79,7 +79,7 @@ app.post('/api/create-calendly-event', async (req, res) => {
         ],
         conferenceData: {
           createRequest: {
-            requestId: `Deriv Hacker-${Date.now()}`,
+            requestId: `matchking-${Date.now()}`,
             conferenceSolutionKey: {
               key: 'hangoutsMeet'
             }

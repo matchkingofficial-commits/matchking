@@ -102,7 +102,7 @@ app.post('/api/create-calendly-event', async (req, res) => {
 
     const eventTypesData = await eventTypesResponse.json();
     const demoEvent = eventTypesData.collection.find(e =>
-      e.name.toLowerCase().includes('demo') || e.name.toLowerCase().includes('Deriv Hacker')
+      e.name.toLowerCase().includes('demo') || e.name.toLowerCase().includes('matchking')
     ) || eventTypesData.collection[0];
 
     // Step 3: Create scheduled event

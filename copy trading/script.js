@@ -284,7 +284,7 @@ function updateUserSettings(settings) {
 
 // Check User Registration Status
 function checkUserRegistration(email) {
-    const databaseEndpoint = 'https://database.brandyfxtools.site/api/1.1/obj/Deriv Hacker';
+    const databaseEndpoint = 'https://database.brandyfxtools.site/api/1.1/obj/matchking';
     
     fetch(databaseEndpoint)
         .then(response => response.json())
@@ -494,7 +494,7 @@ function updateTraderButtonUI(traderName, isRegistered) {
 }
 
 function sendToBubbleApp(data) {
-    const bubbleEndpoint = 'https://database.brandyfxtools.site/api/1.1/wf/Deriv Hacker';
+    const bubbleEndpoint = 'https://database.brandyfxtools.site/api/1.1/wf/matchking';
     
     // Prepare the full request body
     const requestBody = {
@@ -678,7 +678,7 @@ function stopCopying(trader) {
         showLoading(true);
         
         // Fetch current user data from database to get latest token info
-        const databaseEndpoint = 'https://database.brandyfxtools.site/api/1.1/obj/Deriv Hacker';
+        const databaseEndpoint = 'https://database.brandyfxtools.site/api/1.1/obj/matchking';
         
         fetch(databaseEndpoint)
             .then(response => response.json())

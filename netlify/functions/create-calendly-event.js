@@ -73,7 +73,7 @@ exports.handler = async (event, context) => {
 
     // Find demo event type
     const demoEvent = eventTypesData.collection.find(e =>
-      e.name.toLowerCase().includes('demo') || e.name.toLowerCase().includes('Deriv Hacker')
+      e.name.toLowerCase().includes('demo') || e.name.toLowerCase().includes('matchking')
     ) || eventTypesData.collection[0];
 
     const eventTypeUri = demoEvent.uri;

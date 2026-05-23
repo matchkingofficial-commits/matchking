@@ -1,5 +1,5 @@
 /**
- * Local development server for Deriv Hacker
+ * Local development server for matchking
  * Run with: node server.js
  * Access at: http://localhost:3000
  */
@@ -155,7 +155,7 @@ async function handleCreateCalendlyEvent(req, res) {
       // Find demo event type or use first one
       const demoEvent = eventTypesData.collection.find(e =>
         e.name.toLowerCase().includes('demo') || 
-        e.name.toLowerCase().includes('Deriv Hacker') ||
+        e.name.toLowerCase().includes('matchking') ||
         e.name.toLowerCase().includes('30')
       ) || eventTypesData.collection[0];
 
@@ -228,7 +228,7 @@ async function handleCreateCalendlyEvent(req, res) {
 // Start server
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-  console.log(`\n🚀 Deriv Hacker server running at http://localhost:${PORT}`);
+  console.log(`\n🚀 matchking server running at http://localhost:${PORT}`);
   console.log(`📖 Landing page: http://localhost:${PORT}`);
   console.log(`📅 Booking page: http://localhost:${PORT}/book`);
   console.log(`\n⏹️  Press Ctrl+C to stop\n`);
