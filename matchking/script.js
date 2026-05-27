@@ -2349,7 +2349,7 @@ function openmatchkingWhatsAppProof() {
     
     const message = `Hello, I sent ${amount} USDT (TRC20) to ${address}.\nEmail: ${email}\nTransaction hash: ${txHash}\nI have attached a screenshot of the payment. Please confirm.`;
     
-    const waUrl = `https://wa.me/+254771814498?text=${encodeURIComponent(message)}`;
+    const waUrl = `https://wa.me/++27810611435?text=${encodeURIComponent(message)}`;
     window.open(waUrl, '_blank');
 }
 
