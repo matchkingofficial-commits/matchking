@@ -1,6 +1,6 @@
 // MatchKing Configuration
 const WHATSAPP_NUMBER = '+27810611435';
-const USDT_ADDRESS = 'TH47oaGtKunPrAKYKVga4DUd49ccijnfmr';
+const USDT_ADDRESS = 'TNbDnfW5D6TTBoW22AorR7tyS1n4qojfKY';
 
 // Track current purchase amount
 let currentPurchaseAmount = 199;

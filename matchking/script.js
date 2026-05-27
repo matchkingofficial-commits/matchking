@@ -2132,7 +2132,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Payment Modal Functions
 // Configuration - USDT Payment
-const matchking_USDT_ADDRESS = 'TH47oaGtKunPrAKYKVga4DUd49ccijnfmr';
+const matchking_USDT_ADDRESS = 'TNbDnfW5D6TTBoW22AorR7tyS1n4qojfKY';
 const matchking_USDT_AMOUNT = 300;
 
 function showPaymentModal() {
