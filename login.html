@@ -1,0 +1,147 @@
+<!-- /login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Digit Hacker Pro - Terminal Authorization</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { background: #0A0A0B; color: #F4EFE4; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-card { background: #111112; border: 1px solid #289D3F; padding: 40px; border-radius: 8px; width: 100%; max-width: 360px; box-shadow: 0 4px 20px rgba(40, 157, 63, 0.15); }
+        h2 { text-align: center; color: #289D3F; margin-bottom: 24px; letter-spacing: 1px; }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-size: 12px; color: #888; text-transform: uppercase; }
+        input { width: 100%; padding: 12px; background: #18181A; border: 1px solid #333; border-radius: 4px; color: #fff; box-sizing: border-box; }
+        input:focus { border-color: #289D3F; outline: none; }
+        button { width: 100%; padding: 12px; background: #289D3F; border: none; border-radius: 4px; color: #000; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        button:hover { background: #B0FC38; }
+        .error-msg { color: #ff6a6a; font-size: 13px; margin-top: 15px; text-align: center; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h2>TERMINAL ACCESS</h2>
+        <form id="login-form">
+            <div class="input-group">
+                <label>Premium Registration Email</label>
+                <input type="email" id="email" required placeholder="name@domain.com">
+            </div>
+            <button type="submit" id="submit-btn">INITIALIZE CONNECTION</button>
+            <div id="error-display" class="error-msg"></div>
+        </form>
+    </div>
+
+    <script>
+        // Generate a persistent, local device fingerprint signature 
+        function getDeviceFingerprint() {
+            const navigatorInfo = window.navigator.userAgent + window.navigator.language + window.screen.colorDepth;
+            // Simple fast string hashing function
+            let hash = 0;
+            for (let i = 0; i < navigatorInfo.length; i++) {
+                const char = navigatorInfo.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash |= 0;
+            }
+            return 'mk_dev_' + Math.abs(hash);
+        }
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const errorDisplay = document.getElementById('error-display');
+            const submitBtn = document.getElementById('submit-btn');
+
+            errorDisplay.style.display = 'none';
+            submitBtn.textContent = 'VALIDATING PORT...';
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: email,
+                        device_fp: getDeviceFingerprint()
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Authentication Failed.');
+                }
+
+                // If authentication passes, commit token blocks to storage
+                sessionStorage.setItem('mk_auth_token', data.token);
+                sessionStorage.setItem('mk_user_email', data.email);
+                sessionStorage.setItem('mk_device_fp', getDeviceFingerprint());
+                sessionStorage.setItem('mk_login_time', Date.now());
+
+                // Redirect user seamlessly straight into your index.html layout dashboard
+                window.location.href = '/digitpro/index.html';
+
+            } catch (err) {
+                errorDisplay.textContent = err.message;
+                errorDisplay.style.display = 'block';
+                submitBtn.textContent = 'INITIALIZE CONNECTION';
+            }
+        });
+        // ═══════════════════════════════════════════════════════════════════════════
+// DigitPro Portal Authentication Layer Engine - Direct Local Deployment
+// ═══════════════════════════════════════════════════════════════════════════
+
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('digitpro-login-form');
+    
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Extract interface collection values
+            const emailValue = document.getElementById('login-email').value.trim();
+            const passwordValue = document.getElementById('login-password').value;
+            const errorDisplay = document.getElementById('login-error-msg');
+            
+            if (!emailValue || !passwordValue) {
+                if (errorDisplay) errorDisplay.textContent = "Please fill in all layout credentials fields.";
+                return;
+            }
+            
+            try {
+                // Construct submission parameters for processing backend database validation operations
+                // Replace this block with your absolute direct API endpoint path if verification uses a fetch pipeline
+                
+                console.log("Processing secure DigitPro access allocation verification...");
+                
+                // Example Mock Verification Block (Matches validation standard criteria)
+                if (emailValue && passwordValue.length >= 4) {
+                    
+                    // Generate pseudo system token to authorize local context profile tracking
+                   
+                    
+                   // 1. MAKE SURE THIS LINE IS HERE (This defines the variable)
+    const sessionSecureToken = "dp_live_token_" + btoa(emailValue + Date.now()).substring(0, 32);
+    
+    // 2. These lines must come IMMEDIATELY after it, inside the same { } brackets
+    sessionStorage.setItem('mk_auth_token', sessionSecureToken);
+    sessionStorage.setItem('mk_user_email', emailValue);
+    sessionStorage.setItem('mk_login_time', Date.now().toString());
+                    
+                    console.log("Authentication credentials matched. Routing access context...");
+                    
+                    // Redirect directly onto main integration analysis screen page
+                    window.location.href = '/index.html'; 
+                } else {
+                    if (errorDisplay) errorDisplay.textContent = "Invalid sign-in information credential sets.";
+                }
+                
+            } catch (error) {
+                console.error("Authentication submission execution error exception:", error);
+                if (errorDisplay) errorDisplay.textContent = "Connection interface failed during verification processing.";
+            }
+        });
+    }
+});
+    </script>
+</body>
+</html>

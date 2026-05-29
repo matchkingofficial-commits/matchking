@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Console Manager — Whitelist Portal</title>
+    <style>
+        body { background-color: #0b0f19; color: #f3f4f6; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .admin-card { background: #111827; border: 1px solid #1f2937; border-radius: 8px; padding: 30px; width: 100%; max-width: 400px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5); }
+        h2 { margin-bottom: 20px; font-size: 1.5rem; text-align: center; color: #3b82f6; }
+        label { display: block; margin-bottom: 6px; font-size: 0.85rem; color: #9ca3af; }
+        input { width: 100%; padding: 10px; margin-bottom: 15px; background: #1f2937; border: 1px solid #374151; border-radius: 4px; color: #fff; box-sizing: border-box; }
+        input:focus { border-color: #3b82f6; outline: none; }
+        button { width: 100%; padding: 12px; background: #3b82f6; border: none; color: white; font-weight: 600; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #2563eb; }
+        .status-box { margin-top: 15px; padding: 10px; border-radius: 4px; font-size: 0.9rem; text-align: center; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="admin-card">
+    <h2>Whitelist Portal</h2>
+    
+    <label for="adminPassword">Admin Secret Password</label>
+    <input type="password" id="adminPassword" placeholder="Enter Admin Password" required>
+
+    <label for="clientEmail">Client Email Address</label>
+    <input type="email" id="clientEmail" placeholder="client@example.com" required>
+
+    <label for="clientToken">License Access Token</label>
+    <input type="text" id="clientToken" placeholder="e.g. MK_PREMIUM_992" required>
+
+    <button id="actionBtn" onclick="submitWhitelist()">WHITELIST CLIENT</button>
+    
+    <div id="statusBox" class="status-box"></div>
+</div>
+
+<script>
+async function submitWhitelist() {
+    const adminPassword = document.getElementById('adminPassword').value;
+    const email = document.getElementById('clientEmail').value;
+    const token = document.getElementById('clientToken').value;
+    const statusBox = document.getElementById('statusBox');
+    const btn = document.getElementById('actionBtn');
+
+    if(!adminPassword || !email || !token) {
+        alert('Please fill out all fields.');
+        return;
+    }
+
+    btn.textContent = 'PROCESSING...';
+    statusBox.style.display = 'none';
+
+    try {
+        const response = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, token, adminPassword }) // Sends password to backend
+        });
+
+        const data = await response.json();
+        statusBox.style.display = 'block';
+
+        if (response.ok) {
+            statusBox.style.background = 'rgba(16, 185, 129, 0.1)';
+            statusBox.style.color = '#34d399';
+            statusBox.style.border = '1px solid #065f46';
+            statusBox.textContent = data.message;
+            
+            // Clear inputs except the password for easier multi-entries
+            document.getElementById('clientEmail').value = '';
+            document.getElementById('clientToken').value = '';
+        } else {
+            throw new Error(data.error || 'Registration failed.');
+        }
+    } catch (err) {
+        statusBox.style.display = 'block';
+        statusBox.style.background = 'rgba(239, 68, 68, 0.1)';
+        statusBox.style.color = '#f87171';
+        statusBox.style.border = '1px solid #991b1b';
+        statusBox.textContent = err.message;
+    } finally {
+        btn.textContent = 'WHITELIST CLIENT';
+    }
+}
+</script>
+
+</body>
+</html>
