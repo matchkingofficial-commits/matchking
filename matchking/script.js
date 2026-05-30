@@ -553,11 +553,11 @@ function updatePredictionHighlights() {
         const predictionKey = `${pred.digit}-${pred.overallPercentage}`;
 
         const hasIndividualHighs = pred.markets.length > 0;
-        const statusIcon = hasIndividualHighs ? '🔥' : '📈';
+        const statusIcon = hasIndividualHighs ? '👑' : '📈';
 
         // Build market tags — full readable market name + percentage
         const marketTags = pred.markets.map(m =>
-            `<span class="prediction-market-tag">${getMarketName(m.symbol)} (${m.percentage}%)</span>`
+            `<span class="prediction-market-tag">${getMarketName(m.symbol)} </span>`
         ).join('');
 
         container.innerHTML = `
