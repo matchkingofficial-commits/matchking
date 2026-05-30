@@ -157,50 +157,45 @@
   </footer>
 
 </div>
-<script>
-  // Bulletproof Sidebar Controller
-  const hamburgerBtn = document.getElementById('sidebarToggle');
-  const closeBtn = document.querySelector('.mk-sb-close');
-  const sidebarNav = document.getElementById('sidebar');
-  
-  if (sidebarNav) {
-    // Explicitly add 'active' on hamburger click
-    if (hamburgerBtn) {
-      hamburgerBtn.onclick = function(e) {
-        e.preventDefault();
-        sidebarNav.classList.add('active');
-      };
-    }
-    // Explicitly remove 'active' on X click
-    if (closeBtn) {
-      closeBtn.onclick = function(e) {
-        e.preventDefault();
-        sidebarNav.classList.remove('active');
-      };
-    }
-  }
-</script>
-
 <script src="/matchking/script.js"></script>
+
 <script>
-  // Automatically sets the copyright year to the current year
-  document.getElementById('current-year').textContent = new Date().getFullYear();
-</script>
-<script>
-  // Failsafe script to ensure the mobile sidebar closes
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', () => {
+    const oldHamburger = document.getElementById('sidebarToggle');
+    const sidebarNav = document.getElementById('sidebar');
     const closeBtn = document.querySelector('.mk-sb-close');
-    const sidebar = document.getElementById('sidebar');
-    
-    if (closeBtn && sidebar) {
-      closeBtn.addEventListener('click', function(e) {
-        e.preventDefault(); // Stop any other broken scripts from interfering
-        sidebar.classList.remove('active'); // Hides the sidebar
-        sidebar.style.transform = 'translateX(-260px)'; // Fallback animation reset
+
+    if (oldHamburger && sidebarNav) {
+      // 1. Clone the button to instantly destroy any conflicting scripts attached to it
+      const newHamburger = oldHamburger.cloneNode(true);
+      oldHamburger.parentNode.replaceChild(newHamburger, oldHamburger);
+
+      // 2. Attach a fresh, unbreakable click event
+      newHamburger.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation(); // Prevents background clicks from interfering
+        sidebarNav.classList.add('active');
+      });
+
+      // 3. Close button logic
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          sidebarNav.classList.remove('active');
+        });
+      }
+
+      // 4. Bonus: Close the sidebar if you tap anywhere outside of it
+      document.addEventListener('click', function(e) {
+        if (sidebarNav.classList.contains('active')) {
+          if (!sidebarNav.contains(e.target) && !newHamburger.contains(e.target)) {
+            sidebarNav.classList.remove('active');
+          }
+        }
       });
     }
   });
-
 </script>
+
 </body>
 </html>

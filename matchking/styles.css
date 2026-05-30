@@ -402,3 +402,21 @@ html, body {
   box-shadow: 0 6px 25px rgba(229, 193, 88, 0.6);
   transform: translateY(-2px);
 }
+/* ── BULLETPROOF HAMBURGER POSITIONING ── */
+.mk-hamburger {
+  position: absolute !important;
+  left: 15px !important; /* Forces it to the extreme left */
+  top: 15px !important;  /* Adjust this slightly if it doesn't align with your logo */
+  z-index: 99999 !important; /* Extremely high to ensure NO invisible elements block clicks */
+  background: none;
+  border: none;
+  color: var(--gold, #E5C158); 
+  font-size: 28px !important;
+  padding: 10px;
+  cursor: pointer;
+}
+
+/* Ensure the header doesn't hide it */
+header, .mk-header, .top-bar {
+  position: relative !important;
+}
