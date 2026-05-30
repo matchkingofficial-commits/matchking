@@ -46,7 +46,7 @@
         <i class="fas fa-bars"></i>
       </button>
       <div class="mk-topbar-brand">
-        <a href="index.html" class="mk-topbar-crown">♛</a>
+        <a href="/index.html" class="mk-topbar-crown">♛</a>
         <div>
           <div class="mk-topbar-title" id="welcome-text">MatchKing Engine</div>
           <div class="mk-topbar-sub" id="connection-badge">● Synchronizing Core pipelines…</div>
@@ -164,6 +164,21 @@
 <script>
   // Automatically sets the copyright year to the current year
   document.getElementById('current-year').textContent = new Date().getFullYear();
+</script>
+<script>
+  // Failsafe script to ensure the mobile sidebar closes
+  document.addEventListener('DOMContentLoaded', function() {
+    const closeBtn = document.querySelector('.mk-sb-close');
+    const sidebar = document.getElementById('sidebar');
+    
+    if (closeBtn && sidebar) {
+      closeBtn.addEventListener('click', function(e) {
+        e.preventDefault(); // Stop any other broken scripts from interfering
+        sidebar.classList.remove('active'); // Hides the sidebar
+        sidebar.style.transform = 'translateX(-260px)'; // Fallback animation reset
+      });
+    }
+  });
 </script>
 </body>
 </html>

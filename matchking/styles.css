@@ -258,3 +258,47 @@ html, body {
 .mk-copyright span {
   color: var(--gold);
 }
+/* ==========================================================
+   URGENT OVERRIDES: HUGE TEXT & SIDEBAR FIX
+========================================================== */
+
+/* --- FIX HUGE YELLOW TEXT --- */
+/* Force any dynamically injected text in the prediction box to behave */
+#prediction-highlights h1, 
+#prediction-highlights h2, 
+#prediction-highlights h3,
+#prediction-highlights div[style*="yellow"],
+#prediction-highlights div[style*="font-size"] {
+    font-family: var(--ff-mono) !important;
+    font-size: 13px !important;           /* Small, presentable size */
+    color: var(--gold) !important;        /* Imperial gold instead of bright yellow */
+    text-shadow: 0 0 10px rgba(201, 168, 76, 0.3) !important; /* Subtle gold glow */
+    line-height: 1.6 !important;
+    white-space: normal !important;       /* Allows text to wrap nicely */
+    text-align: center !important;
+    max-width: 80% !important;            /* Keeps it inside the circle */
+    margin: 0 auto !important;            /* Centers it perfectly */
+    padding: 10px !important;
+}
+
+/* Ensure the circle container doesn't overflow */
+#prediction-highlights {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden !important;
+}
+
+/* --- FIX SIDEBAR CLOSE BUTTON --- */
+.mk-sb-close {
+    position: relative !important;
+    z-index: 9999 !important;             /* Forces it to the very front */
+    padding: 20px !important;             /* Creates a massive, thumb-friendly hit box */
+    margin: -10px !important;             /* Offsets the padding so it doesn't shift visually */
+    pointer-events: auto !important;      /* Ensures it registers clicks */
+}
+
+.mk-sb-close i {
+    font-size: 22px !important;           /* Makes the X slightly larger and easier to see */
+}
