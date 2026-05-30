@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════
-// MatchKing Premium Terminal Integration Layer - DigitPro Unified Edition
+// MatchKing Premium Terminal Integration Layer - matchking Unified Edition
 // ═══════════════════════════════════════════════════════════════════════════
 
 let derivWs;
@@ -83,12 +83,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * DigitPro Unified Access Control Guard
+ * matchking Unified Access Control Guard
  */
 
 
 /**
- * DigitPro Unified Access Control Guard
+ * matchking Unified Access Control Guard
  */
 function checkTerminalAccess() {
     const token = sessionStorage.getItem('mk_auth_token');
@@ -133,7 +133,7 @@ function checkTerminalAccess() {
         setTimeout(() => guardOverlay.remove(), 300);
     }
     
-    console.log(`🚀 Access authorized for DigitPro account: ${userEmail}`);
+    console.log(`🚀 Access authorized for matchking account: ${userEmail}`);
     
     // Proceed to boot data processing streams
     initializeTerminal();

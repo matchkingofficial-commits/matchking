@@ -78,7 +78,7 @@
                 sessionStorage.setItem('mk_login_time', Date.now());
 
                 // Redirect user seamlessly straight into your index.html layout dashboard
-                window.location.href = '/digitpro/index.html';
+                window.location.href = '/matchking/index.html';
 
             } catch (err) {
                 errorDisplay.textContent = err.message;
@@ -87,11 +87,11 @@
             }
         });
         // ═══════════════════════════════════════════════════════════════════════════
-// DigitPro Portal Authentication Layer Engine - Direct Local Deployment
+// matchking Portal Authentication Layer Engine - Direct Local Deployment
 // ═══════════════════════════════════════════════════════════════════════════
 
 document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('digitpro-login-form');
+    const loginForm = document.getElementById('matchking-login-form');
     
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Construct submission parameters for processing backend database validation operations
                 // Replace this block with your absolute direct API endpoint path if verification uses a fetch pipeline
                 
-                console.log("Processing secure DigitPro access allocation verification...");
+                console.log("Processing secure matchking access allocation verification...");
                 
                 // Example Mock Verification Block (Matches validation standard criteria)
                 if (emailValue && passwordValue.length >= 4) {
