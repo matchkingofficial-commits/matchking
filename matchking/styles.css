@@ -262,43 +262,69 @@ html, body {
    URGENT OVERRIDES: HUGE TEXT & SIDEBAR FIX
 ========================================================== */
 
-/* --- FIX HUGE YELLOW TEXT --- */
-/* Force any dynamically injected text in the prediction box to behave */
-#prediction-highlights h1, 
-#prediction-highlights h2, 
-#prediction-highlights h3,
-#prediction-highlights div[style*="yellow"],
-#prediction-highlights div[style*="font-size"] {
-    font-family: var(--ff-mono) !important;
-    font-size: 13px !important;           /* Small, presentable size */
-    color: var(--gold) !important;        /* Imperial gold instead of bright yellow */
-    text-shadow: 0 0 10px rgba(201, 168, 76, 0.3) !important; /* Subtle gold glow */
-    line-height: 1.6 !important;
-    white-space: normal !important;       /* Allows text to wrap nicely */
-    text-align: center !important;
-    max-width: 80% !important;            /* Keeps it inside the circle */
-    margin: 0 auto !important;            /* Centers it perfectly */
-    padding: 10px !important;
+/* ═══════════════════════════════════════════════
+   MATCHKING — PREDICTION RING TEXT FIX
+   ═══════════════════════════════════════════════ */
+
+/* 1. Lock the ring — nothing escapes it */
+.mk-prediction-ring {
+  overflow: hidden !important;
 }
 
-/* Ensure the circle container doesn't overflow */
+/* 2. Reset the container to flex column, small font */
 #prediction-highlights {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden !important;
+  font-size: 13px !important;         /* Kill the 110px default */
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  width: 100%;
+  height: 100%;
+  padding: 20px !important;
+  text-align: center !important;
+  line-height: 1.5 !important;
+  white-space: normal !important;
 }
 
-/* --- FIX SIDEBAR CLOSE BUTTON --- */
-.mk-sb-close {
-    position: relative !important;
-    z-index: 9999 !important;             /* Forces it to the very front */
-    padding: 20px !important;             /* Creates a massive, thumb-friendly hit box */
-    margin: -10px !important;             /* Offsets the padding so it doesn't shift visually */
-    pointer-events: auto !important;      /* Ensures it registers clicks */
+/* 3. Catch ALL children — any tag, any inline style */
+#prediction-highlights *,
+#prediction-highlights > * {
+  font-family: 'DM Mono', monospace !important;
+  font-size: 13px !important;
+  color: var(--gold-primary) !important;          /* Gold, not yellow */
+  text-shadow: 0 0 10px var(--gold-glow) !important;
+  line-height: 1.5 !important;
+  white-space: normal !important;
+  text-align: center !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: none !important;
 }
 
-.mk-sb-close i {
-    font-size: 22px !important;           /* Makes the X slightly larger and easier to see */
+/* 4. The signal digit — make it stand out but still contained */
+#prediction-highlights .mk-signal-digit,
+#prediction-highlights [class*="digit"],
+#prediction-highlights [class*="number"] {
+  font-family: 'Bebas Neue', sans-serif !important;
+  font-size: 48px !important;          /* Big, but fits in ring */
+  color: var(--gold-bright) !important;
+  text-shadow: 0 0 20px var(--gold-intense) !important;
+  display: block !important;
+  margin-bottom: 4px !important;
+}
+
+/* 5. Nuke any injected inline font-size/color via attribute selectors */
+#prediction-highlights [style*="font-size"],
+#prediction-highlights [style*="color"],
+#prediction-highlights [style*="yellow"],
+#prediction-highlights h1,
+#prediction-highlights h2,
+#prediction-highlights h3,
+#prediction-highlights h4 {
+  font-size: 13px !important;
+  color: var(--gold-primary) !important;
+  font-family: 'DM Mono', monospace !important;
+  text-shadow: 0 0 8px var(--gold-glow) !important;
 }
