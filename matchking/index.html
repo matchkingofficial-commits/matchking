@@ -3,20 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>MatchKing Terminal — Command the Market</title>
-  <meta name="description" content="MatchKing Terminal — Professional trading signals and digit analysis for Deriv matches">
-  <meta name="theme-color" content="#C9A84C">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="MatchKing Terminal">
-  <link rel="manifest" href="/matchking/manifest.json">
-  <link rel="icon" type="image/png" sizes="32x32" href="/matchking/icons/icon-32x32.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/matchking/icons/icon-192x192.png">
-  <link rel="shortcut icon" href="/favicon.ico">
+  <title>MatchKing Terminal — Premium Edition</title>
+  <meta name="description" content="MatchKing Terminal — Professional trading signals and digit analysis">
+  <meta name="theme-color" content="#E5C158">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -33,7 +25,6 @@
     </div>
     <button class="mk-sb-close" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
   </div>
-
   <div id="user-info-sidebar" class="mk-user-block">
     <div class="mk-user-avatar"><i class="fas fa-user"></i></div>
     <div class="mk-user-info">
@@ -41,7 +32,6 @@
       <div class="mk-user-status"><span class="mk-status-dot" style="background:#4caf50;"></span>LIVE ACCESS</div>
     </div>
   </div>
-
   <div class="mk-conn-block" style="margin-top:auto;">
     <div class="mk-conn-label">System Feed</div>
     <div class="mk-conn-val" id="connection-status-sidebar">Offline</div>
@@ -56,160 +46,104 @@
         <i class="fas fa-bars"></i>
       </button>
       <div class="mk-topbar-brand">
-        <a href="index.html" class="mk-topbar-crown" title="Refresh Dashboard">♛</a>
+        <a href="index.html" class="mk-topbar-crown">♛</a>
         <div>
-          <div class="mk-topbar-title" id="welcome-text">MatchKing Analysis Engine</div>
+          <div class="mk-topbar-title" id="welcome-text">MatchKing Engine</div>
           <div class="mk-topbar-sub" id="connection-badge">● Synchronizing Core pipelines…</div>
         </div>
       </div>
-    </div>
-
-    <div class="mk-topbar-right">
-      <button id="pwaInstallBtn" class="mk-btn mk-btn-gold mk-btn-sm pwa-install-btn" style="display:none">
-        <i class="fas fa-download"></i><span>Install App</span>
-      </button>
     </div>
   </header>
 
   <div class="mk-command-bar">
     <div class="mk-cmd-item">
-      <label class="mk-cmd-label">Analysis Asset Grid</label>
+      <label class="mk-cmd-label">Analysis Asset</label>
       <select id="symbol-select" class="mk-select" onchange="updateSymbol(this.value)">
         <option value="ALL" selected>🌐 All Volatility Markets</option>
         <option value="R_100">⚡ Volatility 100 Index</option>
         <option value="R_75">⚡ Volatility 75 Index</option>
-        <option value="R_50">⚡ Volatility 50 Index</option>
-        <option value="R_25">⚡ Volatility 25 Index</option>
-        <option value="R_10">⚡ Volatility 10 Index</option>
-        <option value="RDBEAR">🐻 Bear Market Index</option>
-        <option value="RDBULL">🐂 Bull Market Index</option>
-        <option value="1HZ10V">⚡ 1s Volatility 10 Index</option>
-        <option value="1HZ15V">⚡ 1s Volatility 15 Index</option>
-        <option value="1HZ30V">⚡ 1s Volatility 30 Index</option>
-        <option value="1HZ50V">⚡ 1s Volatility 50 Index</option>
-        <option value="1HZ75V">⚡ 1s Volatility 75 Index</option>
-        <option value="1HZ90V">⚡ 1s Volatility 90 Index</option>
-        <option value="1HZ100V">⚡ 1s Volatility 100 Index</option>
       </select>
     </div>
     <div class="mk-cmd-item">
-      <label class="mk-cmd-label">Analytical Evaluation Window</label>
+      <label class="mk-cmd-label">Evaluation Window</label>
       <select id="tick-count-select" class="mk-select" onchange="updateTickCount(this.value)">
-        <option value="50">50 Historical Ticks</option>
-        <option value="100">100 Historical Ticks</option>
-        <option value="120" selected>120 Historical Ticks</option>
-        <option value="150">150 Historical Ticks</option>
-        <option value="200">200 Historical Ticks</option>
+        <option value="100">100 Ticks</option>
+        <option value="120" selected>120 Ticks</option>
       </select>
     </div>
     <div class="mk-cmd-item stats-item">
-      <span id="active-markets">0/14 Assets Calibrated</span>
-      <span>Ticks Logged: <strong id="tick-counter">0</strong></span>
+      <span id="active-markets" class="mk-gold-highlight">System Armed</span>
+      <span>Ticks Logged: <strong id="tick-counter" class="mk-gold-highlight">0</strong></span>
     </div>
   </div>
 
-  <div class="mk-terminal-grid">
+  <div class="mk-premium-dashboard">
 
-    <div class="mk-col-centre">
-
-      <div class="mk-signal-throne">
-        <div class="mk-throne-head">
-          <div>
-            <div class="mk-card-title">🎯 Pattern Recognition</div>
-            <div class="mk-throne-sub">Real-time MATCHES digit prediction engine</div>
-          </div>
-          <div class="mk-countdown-badge" id="prediction-countdown">⏰ 45s</div>
-        </div>
-
-        <div id="prediction-highlights" class="mk-predictions">
-          <div class="mk-no-signal">
-            <div class="mk-no-signal-crown">♛</div>
-            <div class="mk-no-signal-title">Awaiting market data…</div>
-            <div class="mk-no-signal-sub">Patterns will appear once connected</div>
-          </div>
-        </div>
+    <div class="mk-lens-wrapper">
+      <div class="mk-lens-header">
+        <div class="mk-lens-title">🎯 PATTERN RECOGNITION</div>
+        <div class="mk-countdown-badge" id="prediction-countdown">⏰ 45s</div>
       </div>
 
-      <div class="mk-signal-throne">
-        <div class="mk-throne-head">
-          <div>
-            <div class="mk-card-title">📈 Market Activity</div>
-            <div class="mk-throne-sub">Live streaming tick analytics and transaction telemetry</div>
-          </div>
-          <div class="mk-activity-badge"><span class="mk-pulse-node"></span> Live Telemetry</div>
-        </div>
-
-        <div class="mk-activity-body">
-          <div class="mk-activity-metrics-grid">
-            <div class="mk-metric-card">
-              <div class="mk-metric-meta">
-                <i class="fas fa-fingerprint"></i>
-                <span>Last Digit</span>
-              </div>
-              <div class="mk-metric-display" id="last-digit">--</div>
-            </div>
-
-            <div class="mk-metric-card">
-              <div class="mk-metric-meta">
-                <i class="fas fa-coins"></i>
-                <span>Last Price</span>
-              </div>
-              <div class="mk-metric-display mk-gold-text" id="current-price">--</div>
+      <div class="mk-prediction-ring-container">
+        <div class="mk-prediction-ring">
+          <div class="mk-ring-spin-border"></div>
+          
+          <div id="prediction-highlights" class="mk-predictions-content">
+            <div class="mk-no-signal">
+              <i class="fas fa-satellite-dish mk-radar-icon"></i>
+              <div class="mk-no-signal-title">AWAITING SIGNAL</div>
+              <div class="mk-no-signal-sub">Establishing connection...</div>
             </div>
           </div>
+
         </div>
       </div>
 
-      <div class="mk-digit-trail-wrap">
-        <div class="mk-trail-segment mk-digit-trail-label">
-          <span class="mk-live-dot"></span>
-          <span>Digit Trail</span>
-        </div>
-        
-        <div class="mk-trail-segment mk-server-status">
-          <i class="fas fa-server"></i>
-          <span>Connected to Deriv API</span>
-          <span class="mk-inline-divider">·</span>
-          <i class="fas fa-bolt"></i>
-          <span>Real-time Analysis</span>
-        </div>
-        
-        <div class="mk-trail-segment mk-system-links">
-          <a href="/refund/">Refund Policy</a>
-          <span class="mk-inline-divider">·</span>
-          <a href="/">Home</a>
-          <span class="mk-inline-divider">·</span>
-          <span class="mk-brand-crown">♛ MatchKing</span>
-        </div>
+      <div class="mk-lens-footer">
+        <span class="mk-pulse-node"></span> ENGINE ACTIVE & READY
       </div>
+    </div>
 
-    </div></div><footer class="mk-footer">
-    <span><i class="fas fa-server"></i> Public Open Pipeline &nbsp;·&nbsp; <i class="fas fa-bolt"></i> Live WebSocket Channel</span>
+    <div class="mk-telemetry-panel">
+      <div class="mk-telemetry-header">
+        <span>📈 LIVE MARKET TELEMETRY</span>
+      </div>
+      <div class="mk-telemetry-grid">
+        
+        <div class="mk-telemetry-card">
+          <div class="mk-tel-label">LAST DIGIT DETECTED</div>
+          <div class="mk-tel-value" id="last-digit">--</div>
+        </div>
+
+        <div class="mk-telemetry-card mk-card-gold">
+          <div class="mk-tel-label">CURRENT PRICE ASSET</div>
+          <div class="mk-tel-value mk-text-glow" id="current-price">--</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="mk-digit-trail-wrap">
+      <div class="mk-trail-segment mk-digit-trail-label">
+        <span class="mk-live-dot"></span> <span>Digit Trail</span>
+      </div>
+      <div class="mk-trail-segment mk-server-status">
+        <i class="fas fa-server"></i> <span>Connected to Deriv API</span>
+        <span class="mk-inline-divider">·</span>
+        <i class="fas fa-bolt"></i> <span>Real-time</span>
+      </div>
+      <div class="mk-trail-segment mk-system-links">
+        <a href="/refund/">Refund Policy</a>
+        <span class="mk-inline-divider">·</span>
+        <span class="mk-brand-crown">♛ MatchKing</span>
+      </div>
+    </div>
+
+  </div><footer class="mk-footer">
     <span>♛ MatchKing Free Engine</span>
   </footer>
 
-</div><script src="/matchking/pwa-helper.js"></script>
-<script src="/matchking/script.js"></script>
-
-<script>
-(function(){
-  const pairs = [
-    ['current-price',   'current-price-2'],
-    ['current-price',   'current-price-3'],
-    ['current-symbol',  'current-symbol-2'],
-    ['last-digit',      'last-digit-2'],
-    ['tick-counter',    'tick-counter-2'],
-  ];
-  const obs = new MutationObserver(() => {
-    pairs.forEach(([src, dst]) => {
-      const s = document.getElementById(src), d = document.getElementById(dst);
-      if (s && d && s.textContent !== d.textContent) d.textContent = s.textContent;
-    });
-  });
-  document.querySelectorAll('#current-price,#current-symbol,#last-digit,#tick-counter').forEach(el => {
-    if (el) obs.observe(el, { childList:true, subtree:true, characterData:true });
-  });
-})();
-</script>
+</div><script src="/matchking/script.js"></script>
 </body>
 </html>

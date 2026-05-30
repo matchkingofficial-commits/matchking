@@ -1,612 +1,217 @@
 /* ═══════════════════════════════════════════════
-   MATCHKING TERMINAL — IMPERIAL COMMAND CENTRE
-   Gold & Black — Bebas Neue / Cormorant / DM Mono
+   MATCHKING TERMINAL — PREMIUM RADAR EDITION
    ═══════════════════════════════════════════════ */
 :root {
-  --gold:       #C9A84C;
-  --gold-lt:    #F0D080;
-  --gold-dk:    #8A6A20;
-  --gold-glow:  rgba(201,168,76,0.18);
-  --gold-line:  rgba(201,168,76,0.20);
-  --gold-bg:    rgba(201,168,76,0.07);
-  --void:       #050407;
-  --void2:      #0c0b0f;
-  --panel:      #100f14;
-  --panel2:     #16141a;
-  --panel3:     #1c1a22;
-  --cream:      #F4EFE4;
-  --muted:      rgba(244,239,228,0.45);
-  --dim:        rgba(244,239,228,0.20);
-  --faint:      rgba(244,239,228,0.10);
-  --green:      #27AE60;
-  --red:        #EB5757;
+  /* Richer, more intense gold palette */
+  --gold-primary: #E5C158;
+  --gold-bright:  #FFD700;
+  --gold-dark:    #997A15;
+  --gold-glow:    rgba(229, 193, 88, 0.35);
+  --gold-intense: rgba(255, 215, 0, 0.6);
+  --gold-border:  rgba(229, 193, 88, 0.15);
+  
+  /* Deep void aesthetics */
+  --bg-deep:      #050507;
+  --bg-panel:     #0a0a0e;
+  --bg-card:      linear-gradient(145deg, #121216, #09090c);
+  
+  --text-main:    #F4EFE4;
+  --text-muted:   rgba(244, 239, 228, 0.4);
 }
 
-/* ── BASE RESET CONFIGURATIONS (Prevents Side-Scrolling Gaps) ── */
+/* ── BASE RESET ── */
 html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-  background-color: var(--void);
-  color: var(--cream);
-  font-family: 'Cormorant Garamond', serif;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
+  margin: 0; padding: 0; width: 100%; overflow-x: hidden;
+  background-color: var(--bg-deep); color: var(--text-main);
+  font-family: 'DM Mono', monospace; box-sizing: border-box;
 }
+*, *:before, *:after { box-sizing: inherit; }
 
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
-/* ── LAYOUT STRUCTURE ── */
+/* ── SIDEBAR & TOPBAR (Preserved but styled up) ── */
 .mk-sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 260px;
-  height: 100vh;
-  background: var(--panel);
-  border-right: 1px solid var(--gold-line);
-  display: flex;
-  flex-direction: column;
-  z-index: 1000;
+  position: fixed; top: 0; left: 0; width: 260px; height: 100vh;
+  background: var(--bg-panel); border-right: 1px solid var(--gold-border);
+  display: flex; flex-direction: column; z-index: 1000;
   transition: transform 0.3s ease;
 }
-
 .mk-main {
-  margin-left: 260px;
-  width: calc(100% - 260px);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: var(--void2);
+  margin-left: 260px; width: calc(100% - 260px); min-height: 100vh;
+  display: flex; flex-direction: column; background: radial-gradient(circle at 50% 0%, #111118 0%, var(--bg-deep) 100%);
   transition: margin-left 0.3s ease, width 0.3s ease;
 }
-
-/* ── TOPBAR CONTROLS ── */
 .mk-topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 25px;
-  background: var(--panel);
-  border-bottom: 1px solid var(--gold-line);
-  height: 70px;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 15px 25px; background: rgba(10, 10, 14, 0.8); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--gold-border); height: 70px;
 }
+.mk-topbar-left { display: flex; align-items: center; gap: 15px; }
+.mk-hamburger { display: none; background: none; border: none; color: var(--gold-primary); font-size: 20px; }
+.mk-topbar-brand { display: flex; align-items: center; gap: 12px; }
+.mk-topbar-crown { font-size: 26px; color: var(--gold-bright); text-decoration: none; text-shadow: 0 0 15px var(--gold-intense); }
+.mk-topbar-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1.5px; color: #fff; line-height: 1; }
+.mk-topbar-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
-.mk-topbar-left {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.mk-hamburger {
-  display: none;
-  background: none;
-  border: none;
-  color: var(--gold);
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.mk-topbar-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.mk-topbar-crown {
-  font-size: 24px;
-  color: var(--gold);
-  text-decoration: none;
-  text-shadow: 0 0 10px var(--gold-glow);
-}
-
-.mk-topbar-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 20px;
-  letter-spacing: 1.5px;
-  color: #fff;
-  line-height: 1;
-}
-
-.mk-topbar-sub {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 2px;
-}
-
-/* ── COMMAND CONFIG OPTIONS BAR ── */
+/* ── COMMAND BAR ── */
 .mk-command-bar {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 12px 25px;
-  background: #0d0c10;
-  border-bottom: 1px solid rgba(201,168,76,0.08);
+  display: flex; align-items: center; gap: 20px; padding: 12px 25px;
+  background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(229, 193, 88, 0.05);
 }
-
-.mk-cmd-item {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.mk-cmd-item.stats-item {
-  flex-direction: row;
-  align-items: center;
-  gap: 15px;
-  margin-left: auto;
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  color: var(--muted);
-}
-
-.mk-cmd-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  text-transform: uppercase;
-  color: var(--dim);
-  letter-spacing: 0.5px;
-}
-
+.mk-cmd-item { display: flex; flex-direction: column; gap: 4px; }
+.mk-cmd-item.stats-item { flex-direction: row; align-items: center; gap: 15px; margin-left: auto; font-size: 11px; color: var(--text-muted); }
+.mk-cmd-label { font-size: 10px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; }
 .mk-select {
-  background: var(--panel2);
-  border: 1px solid var(--gold-line);
-  color: var(--cream);
-  padding: 6px 12px;
-  font-family: 'DM Mono', monospace;
-  font-size: 12px;
-  border-radius: 4px;
-  outline: none;
-  cursor: pointer;
+  background: var(--bg-panel); border: 1px solid var(--gold-border); color: var(--text-main);
+  padding: 6px 12px; font-family: 'DM Mono', monospace; font-size: 12px; border-radius: 4px; outline: none;
 }
-
-.mk-select:focus {
-  border-color: var(--gold-lt);
-  box-shadow: 0 0 8px var(--gold-glow);
-}
-
-/* ── MAIN ANALYTICAL TERMINAL GRID AREA ── */
-.mk-terminal-grid {
-  padding: 25px;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  flex: 1;
-}
-
-.mk-col-centre {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  width: 100%;
-}
-
-/* Unified Layout Foundations for Main Terminal Cards */
-.mk-signal-throne {
-  background: #13131a;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 6px;
-  padding: 24px;
-  box-sizing: border-box;
-  width: 100%;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.mk-signal-throne:hover {
-  border-color: rgba(201, 168, 76, 0.15);
-}
-
-/* Header Sections */
-.mk-throne-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-  padding-bottom: 16px;
-  margin-bottom: 20px;
-}
-
-.mk-card-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 22px;
-  letter-spacing: 1px;
-  color: #ffffff;
-  margin: 0 0 4px 0;
-}
-
-.mk-throne-sub {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.4);
-  margin: 0;
-}
-
-/* Badge Layout Matrices */
-.mk-countdown-badge,
-.mk-activity-badge {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  padding: 6px 12px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
-}
-
-.mk-countdown-badge {
-  background: rgba(255, 106, 106, 0.06);
-  border: 1px solid rgba(255, 106, 106, 0.15);
-  color: #ff6a6a;
-}
-
-.mk-activity-badge {
-  background: rgba(201, 168, 76, 0.05);
-  border: 1px solid rgba(201, 168, 76, 0.15);
-  color: var(--gold);
-}
-
-.mk-pulse-node {
-  width: 6px;
-  height: 6px;
-  background: var(--gold);
-  border-radius: 50%;
-  box-shadow: 0 0 6px var(--gold);
-  animation: mkBadgePulse 2s infinite ease-in-out;
-}
-
-/* Awaiting Stream Matrices */
-.mk-predictions {
-  min-height: 110px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.mk-no-signal {
-  text-align: center;
-  font-family: 'DM Mono', monospace;
-  color: rgba(255, 255, 255, 0.35);
-  font-size: 12px;
-}
-
-.mk-no-signal-crown {
-  font-size: 36px;
-  color: rgba(255, 255, 255, 0.06);
-  margin-bottom: 8px;
-}
-
-.mk-no-signal-title {
-  color: rgba(255, 255, 255, 0.5);
-  font-weight: 500;
-}
-
-.mk-no-signal-sub {
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.15);
-  margin-top: 4px;
-}
-
-/* ── MARKET ACTIVITY SUB-METRICS ── */
-.mk-activity-metrics-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  width: 100%;
-}
-
-.mk-metric-card {
-  background: #1a1a24;
-  border: 1px solid rgba(255, 255, 255, 0.02);
-  border-radius: 4px;
-  padding: 16px 20px;
-  box-sizing: border-box;
-}
-
-.mk-metric-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.4);
-  margin-bottom: 10px;
-}
-
-.mk-metric-meta i {
-  color: rgba(255, 255, 255, 0.2);
-  font-size: 10px;
-}
-
-.mk-metric-display {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 32px;
-  letter-spacing: 1px;
-  color: #ffffff;
-  line-height: 1;
-}
-
-.mk-gold-text {
-  color: var(--gold) !important;
-}
-
-/* ── UNIFORM DIGITAL TRAIL BAR METRIC (Perfect Screen Optimization) ── */
-.mk-digit-trail-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
-  padding: 14px 20px;
-  background: #13131a;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 6px;
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.5px;
-  color: rgba(255, 255, 255, 0.4);
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.mk-trail-segment {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  height: 20px;
-}
-
-.mk-digit-trail-label {
-  font-weight: 500;
-  color: #ffffff;
-  text-transform: uppercase;
-}
-
-.mk-live-dot {
-  width: 6px;
-  height: 6px;
-  background: #4caf50;
-  border-radius: 50%;
-  display: inline-block;
-  box-shadow: 0 0 6px rgba(76, 175, 80, 0.6);
-  animation: mkEngineHeartbeat 1.8s infinite ease-in-out;
-}
-
-.mk-server-status {
-  color: rgba(255, 255, 255, 0.35);
-}
-
-.mk-server-status i {
-  color: var(--gold);
-  font-size: 10px;
-}
-
-.mk-system-links a {
-  color: rgba(255, 255, 255, 0.4);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.mk-system-links a:hover {
-  color: var(--gold);
-}
-
-.mk-brand-crown {
-  color: var(--gold);
-  font-weight: 600;
-}
-
-.mk-inline-divider {
-  color: rgba(255, 255, 255, 0.1);
-  user-select: none;
-}
-
-/* ── SIDEBAR INTERIOR COMPONENTS ── */
-.mk-sidebar-topbar {
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid rgba(201,168,76,0.05);
-}
-
-.mk-sidebar-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.mk-sb-crown {
-  font-size: 22px;
-  color: var(--gold);
-}
-
-.mk-sb-name {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 18px;
-  letter-spacing: 1px;
-  line-height: 1;
-}
-
-.mk-sb-tag {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  color: var(--gold);
-  text-transform: uppercase;
-}
-
-.mk-sb-close {
-  display: none;
-  background: none;
-  border: none;
-  color: var(--muted);
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.mk-user-block {
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border-bottom: 1px solid rgba(201,168,76,0.05);
-}
-
-.mk-user-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--panel2);
-  border: 1px solid var(--gold-line);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--gold);
-}
-
-.mk-user-name {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 14px;
-  letter-spacing: 0.5px;
-}
-
-.mk-user-status {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px;
-  color: var(--muted);
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 2px;
-}
-
-.mk-status-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-}
-
-.mk-conn-block {
-  padding: 20px;
-  background: rgba(0,0,0,0.15);
-  border-top: 1px solid rgba(201,168,76,0.03);
-}
-
-.mk-conn-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-
-.mk-conn-val {
-  font-family: 'DM Mono', monospace;
-  font-size: 12px;
-  font-weight: 500;
-  margin-top: 2px;
-}
-
-/* ── FOOTER DRAWER ── */
-.mk-footer {
-  padding: 15px 25px;
-  background: var(--void);
-  border-top: 1px solid rgba(201,168,76,0.05);
-  display: flex;
-  justify-content: space-between;
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  color: var(--dim);
-  margin-top: auto;
-}
-
-/* ── KEYFRAME SEQUENCES ── */
-@keyframes mkEngineHeartbeat {
-  0%, 100% { opacity: 0.3; transform: scale(0.95); }
-  50% { opacity: 1; transform: scale(1.05); }
-}
-@keyframes mkBadgePulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
-}
+.mk-select:focus { border-color: var(--gold-primary); box-shadow: 0 0 10px var(--gold-glow); }
+.mk-gold-highlight { color: var(--gold-primary); font-weight: 500; }
 
 /* ═══════════════════════════════════════════════
-   RESPONSIVE DESIGN SYSTEM (Eradicates Screen Stretching)
+   THE NEW PREMIUM DASHBOARD LAYOUT
    ═══════════════════════════════════════════════ */
+.mk-premium-dashboard {
+  padding: 30px 25px; width: 100%; max-width: 900px; margin: 0 auto; flex: 1;
+  display: flex; flex-direction: column; gap: 30px;
+}
+
+/* ── 1. THE PREDICTION LENS (Target Design) ── */
+.mk-lens-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--gold-border);
+  border-radius: 12px;
+  padding: 30px;
+  display: flex; flex-direction: column; align-items: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(229, 193, 88, 0.02);
+  position: relative;
+  overflow: hidden;
+}
+
+.mk-lens-header {
+  width: 100%; display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px;
+}
+.mk-lens-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: #fff; letter-spacing: 2px; }
+
+/* The Glowing Circle Container */
+.mk-prediction-ring-container {
+  padding: 20px;
+}
+
+.mk-prediction-ring {
+  width: 240px; height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, #1a1a24 0%, #050505 100%);
+  border: 2px solid var(--gold-primary);
+  box-shadow: 0 0 35px var(--gold-glow), inset 0 0 30px rgba(229, 193, 88, 0.15);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+
+/* Spinning outer dashed ring */
+.mk-ring-spin-border {
+  position: absolute; top: -10px; left: -10px; right: -10px; bottom: -10px;
+  border-radius: 50%;
+  border: 1px dashed var(--gold-primary);
+  opacity: 0.4;
+  animation: radarSpin 15s linear infinite;
+  pointer-events: none;
+}
+
+/* Prediction Output Area (Forces JS output to look massive) */
+#prediction-highlights {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 110px; /* Massive digit size */
+  color: var(--gold-bright);
+  text-shadow: 0 0 30px var(--gold-intense);
+  line-height: 1;
+}
+
+/* Awaiting Signal State (Overrides massive font for text) */
+.mk-no-signal {
+  font-family: 'DM Mono', monospace; font-size: 14px;
+  color: var(--text-muted); text-shadow: none; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.mk-radar-icon { font-size: 28px; color: var(--gold-primary); opacity: 0.5; margin-bottom: 5px; animation: pulseFade 2s infinite; }
+.mk-no-signal-title { color: #fff; font-weight: 500; letter-spacing: 1px; }
+.mk-no-signal-sub { font-size: 10px; color: rgba(255,255,255,0.3); }
+
+.mk-lens-footer {
+  margin-top: 30px; font-size: 11px; color: var(--gold-primary); letter-spacing: 1px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ── 2. TELEMETRY PANEL (Sleek Market Activity) ── */
+.mk-telemetry-panel { width: 100%; }
+.mk-telemetry-header { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; letter-spacing: 1px; }
+.mk-telemetry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+.mk-telemetry-card {
+  background: var(--bg-card); border: 1px solid rgba(255,255,255,0.03);
+  padding: 20px; border-radius: 8px;
+  display: flex; flex-direction: column; gap: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+.mk-card-gold { border-color: rgba(229, 193, 88, 0.2); background: radial-gradient(circle at top right, rgba(229,193,88,0.05), transparent); }
+
+.mk-tel-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; }
+.mk-tel-value { font-family: 'Bebas Neue', sans-serif; font-size: 38px; color: #fff; line-height: 1; letter-spacing: 1.5px; }
+.mk-text-glow { color: var(--gold-primary); text-shadow: 0 0 15px var(--gold-glow); }
+
+/* ── 3. DIGITAL TRAIL BAR (Unified Footer) ── */
+.mk-digit-trail-wrap {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  padding: 14px 20px; background: rgba(0,0,0,0.4); border: 1px solid var(--gold-border); border-radius: 6px;
+  font-size: 11px; color: var(--text-muted); width: 100%;
+}
+.mk-trail-segment { display: flex; align-items: center; gap: 8px; }
+.mk-digit-trail-label { color: #fff; text-transform: uppercase; }
+.mk-live-dot, .mk-pulse-node {
+  width: 6px; height: 6px; border-radius: 50%; display: inline-block;
+  background: var(--gold-primary); box-shadow: 0 0 8px var(--gold-primary);
+  animation: pulseFade 1.5s infinite ease-in-out;
+}
+.mk-server-status i { color: var(--gold-primary); }
+.mk-system-links a { color: var(--text-muted); text-decoration: none; transition: color 0.2s ease; }
+.mk-system-links a:hover { color: var(--gold-primary); }
+.mk-brand-crown { color: var(--gold-primary); font-weight: 600; }
+.mk-inline-divider { color: rgba(255, 255, 255, 0.1); }
+
+/* ── UTILITIES & SIDEBAR EXTRAS ── */
+.mk-sidebar-topbar { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--gold-border); }
+.mk-sb-crown { font-size: 22px; color: var(--gold-bright); }
+.mk-sb-name { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 1px; }
+.mk-sb-tag { font-size: 10px; color: var(--gold-primary); text-transform: uppercase; }
+.mk-sb-close { display: none; background: none; border: none; color: var(--text-muted); font-size: 16px; }
+.mk-user-block, .mk-conn-block { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+.mk-user-avatar { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--gold-primary); display: flex; align-items: center; justify-content: center; color: var(--gold-primary); }
+.mk-user-info { display: flex; flex-direction: column; gap: 4px; margin-left: 12px; }
+.mk-user-name { font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 1px; }
+.mk-user-status { font-size: 9px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+.mk-conn-label { font-size: 9px; color: var(--text-muted); text-transform: uppercase; }
+.mk-conn-val { font-size: 12px; color: var(--gold-primary); margin-top: 4px; }
+.mk-countdown-badge { background: rgba(229, 193, 88, 0.1); border: 1px solid var(--gold-border); color: var(--gold-bright); padding: 4px 10px; border-radius: 4px; font-size: 11px; }
+.mk-footer { padding: 15px 25px; text-align: center; font-size: 11px; color: var(--text-muted); border-top: 1px solid rgba(255,255,255,0.02); }
+
+/* ── ANIMATIONS ── */
+@keyframes radarSpin { 100% { transform: rotate(360deg); } }
+@keyframes pulseFade { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+/* ── RESPONSIVE RULES ── */
 @media (max-width: 992px) {
-  .mk-sidebar {
-    transform: translateX(-100%);
-  }
-  .mk-sidebar.active {
-    transform: translateX(0);
-  }
-  .mk-sidebar.active .mk-sb-close {
-    display: block;
-  }
-  .mk-main {
-    margin-left: 0;
-    width: 100%;
-  }
-  .mk-hamburger {
-    display: block;
-  }
+  .mk-sidebar { transform: translateX(-100%); }
+  .mk-sidebar.active { transform: translateX(0); }
+  .mk-sidebar.active .mk-sb-close, .mk-hamburger { display: block; }
+  .mk-main { margin-left: 0; width: 100%; }
 }
-
 @media (max-width: 768px) {
-  .mk-command-bar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-    padding: 15px;
-  }
-  .mk-cmd-item.stats-item {
-    margin-left: 0;
-    justify-content: space-between;
-    border-top: 1px solid rgba(255,255,255,0.03);
-    padding-top: 8px;
-  }
-  .mk-terminal-grid {
-    padding: 15px;
-  }
-  .mk-digit-trail-wrap {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 12px;
-    padding: 16px;
-  }
-  .mk-trail-segment {
-    justify-content: center;
-    width: 100%;
-  }
-  .mk-system-links {
-    border-top: 1px solid rgba(255, 255, 255, 0.03);
-    padding-top: 10px;
-    margin-top: 2px;
-  }
-  .mk-footer {
-    flex-direction: column;
-    gap: 8px;
-    text-align: center;
-  }
-}
-
-@media (max-width: 520px) {
-  .mk-activity-metrics-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  .mk-throne-head {
-    flex-direction: column;
-    gap: 12px;
-  }
-  .mk-countdown-badge, 
-  .mk-activity-badge {
-    align-self: flex-start;
-  }
+  .mk-command-bar { flex-direction: column; align-items: stretch; }
+  .mk-cmd-item.stats-item { justify-content: space-between; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); }
+  .mk-premium-dashboard { padding: 15px; gap: 20px; }
+  .mk-prediction-ring { width: 200px; height: 200px; }
+  #prediction-highlights { font-size: 90px; }
+  .mk-telemetry-grid { grid-template-columns: 1fr; }
+  .mk-digit-trail-wrap { flex-direction: column; text-align: center; }
 }
