@@ -1,497 +1,244 @@
+// ═══════════════════════════════════════════════════════════════════════════
+// MatchKing Premium Terminal Integration Layer - DigitPro Unified Edition
+// ═══════════════════════════════════════════════════════════════════════════
+
 let derivWs;
-let marketsData = {};         // Store data for all markets
-let activeMarkets = ["R_100", "R_75", "R_50", "R_25", "R_10", "RDBEAR", "RDBULL", "1HZ10V", "1HZ15V", "1HZ30V", "1HZ50V", "1HZ75V", "1HZ90V", "1HZ100V"];
-let tickCount = 120;          // Default tick count
-let totalProcessedTicks = 0;  // Total counter for all ticks
-let predictionTimer = null;   // Countdown timer
-let countdownSeconds = 0;     // Current countdown value
-let currentPrediction = null; // Track current prediction digit
-let isAuthenticated = false;  // Authentication state flag
+let marketsData = {};         
+let activeMarkets = ["R_100", "R_75", "R_50", "R_25", "R_10",  "1HZ10V", "1HZ15V", "1HZ30V", "1HZ50V", "1HZ75V", "1HZ90V", "1HZ100V"];
+let tickCount = 100;          
+let totalProcessedTicks = 0;  
+let predictionTimer = null;   
+let countdownSeconds = 0;     
+let currentPrediction = null;
+let cooldownTimer = null;      // 60-second gap between predictions
 
-// =============== SIDEBAR FUNCTIONALITY ===============
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    if (sidebar) {
-        sidebar.classList.toggle('active');
-    }
-}
+// Simple tracking state derived from unified login system
+let isAuthenticated = false;
+let currentUser = { hasAccess: true }; // Grants default premium state for validated tokens
 
-function closeSidebarOnMobile() {
-    const sidebar = document.getElementById('sidebar');
-    if (sidebar && window.innerWidth <= 768) {
-        sidebar.classList.remove('active');
-    }
-}
-
-// Close sidebar when clicking on navigation links
-document.addEventListener('DOMContentLoaded', function() {
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            closeSidebarOnMobile();
-        });
-    });
-
-    // Handle window resize
-    window.addEventListener('resize', function() {
-        if (window.innerWidth > 768) {
-            const sidebar = document.getElementById('sidebar');
-            if (sidebar) {
-                sidebar.classList.remove('active');
-            }
-        }
-    });
-});
-
-// Market names mapping
-const marketNames = {
-    "R_100": "Volatility 100",
-    "R_75": "Volatility 75",
-    "R_50": "Volatility 50",
-    "R_25": "Volatility 25",
-    "R_10": "Volatility 10",
-    "1HZ10V": "1s Volatility 10",
-    "1HZ15V": "1s Volatility 15",
-    "1HZ30V": "1s Volatility 30",
-    "1HZ50V": "1s Volatility 50",
-    "1HZ75V": "1s Volatility 75",
-    "1HZ90V": "1s Volatility 90",
-    "1HZ100V": "1s Volatility 100"
-};
-
-// Helper function to get market name
-function getMarketName(symbol) {
-    return marketNames[symbol] || symbol;
-}
-
-// Helper function to get display name (replace specific name with Admin)
-function getDisplayName(userName) {
-    console.log('🔍 getDisplayName called with:', userName);
-    if (userName === 'Wallace Peter Karanja Guthera') {
-        console.log('✅ Name replacement: Wallace Peter Karanja Guthera -> Admin');
-        return 'Admin';
-    }
-    console.log('ℹ️ No replacement needed for:', userName);
-    return userName;
-}
-
-// Function to clear all stored authentication data
-function clearStoredAuthData() {
-    localStorage.removeItem('derivlite_user');
-    localStorage.removeItem('derivlite_token');
-    localStorage.removeItem('derivlite_auth_time');
-    console.log('🗑️ Cleared all stored authentication data');
-}
-
-// Initialize market data structure
-function initializeMarketData() {
-    activeMarkets.forEach(symbol => {
-        marketsData[symbol] = {
-            tickHistory: [],
-            decimalPlaces: 2,
-            processedTicks: 0,
-            lastPrice: null,
-            digitCounts: new Array(10).fill(0)
-        };
-    });
-}
-
-// Countdown timer functions
+// ── Prediction countdown (37s display lock) ───────────────────────────────
 function startPredictionCountdown() {
-    // Clear existing timer
-    if (predictionTimer) {
-        clearInterval(predictionTimer);
-    }
-    
+    if (predictionTimer) clearInterval(predictionTimer);
+
     countdownSeconds = 45;
     updateCountdownDisplay();
-    
+
     predictionTimer = setInterval(() => {
         countdownSeconds--;
         updateCountdownDisplay();
-        
+
         if (countdownSeconds <= 0) {
             clearInterval(predictionTimer);
             predictionTimer = null;
-            currentPrediction = null; // Clear current prediction when timer expires
-            
-            // Clear the prediction display when timer expires
+            currentPrediction = null;
+
+            // Show "calculating" message and start 60-second cooldown
             const container = document.getElementById('prediction-highlights');
             if (container) {
-                container.innerHTML = '<div class="no-predictions">No repeating patterns detected yet...</div>';
+                container.innerHTML = '<div class="no-predictions">⏳ Recalculating… next signal in 20s</div>';
             }
-            
-            console.log('🕐 Countdown expired - Prediction cleared, ready for new predictions');
+            const cdEl = document.getElementById('prediction-countdown');
+            if (cdEl) cdEl.style.display = 'none';
+
+            startCooldown();
+        }
+    }, 1000);
+}
+
+function startCooldown() {
+    if (cooldownTimer) clearInterval(cooldownTimer);
+    let cooldownSeconds = 20;
+
+    cooldownTimer = setInterval(() => {
+        cooldownSeconds--;
+        const container = document.getElementById('prediction-highlights');
+        if (container && container.querySelector('.no-predictions')) {
+            container.querySelector('.no-predictions').textContent =
+                `⏳ Recalculating… next signal in ${cooldownSeconds}s`;
+        }
+
+        if (cooldownSeconds <= 0) {
+            clearInterval(cooldownTimer);
+            cooldownTimer = null;
+            // Allow a fresh prediction to be calculated
         }
     }, 1000);
 }
 
 function updateCountdownDisplay() {
-    const countdownElement = document.getElementById('prediction-countdown');
-    if (countdownElement) {
+    const el = document.getElementById('prediction-countdown');
+    if (el) {
         if (countdownSeconds > 0) {
-            countdownElement.textContent = `⏰ ${countdownSeconds}s`;
-            countdownElement.style.display = 'block';
+            el.textContent = `⏰ ${countdownSeconds}s`;
+            el.style.display = 'block';
         } else {
-            countdownElement.style.display = 'none';
+            el.style.display = 'none';
         }
     }
 }
 
-// UI Update Functions
-function updateConnectionStatus(connected) {
-    // Update main status element (in top bar)
-    const statusBadge = document.getElementById('connection-badge');
-    if (statusBadge) {
-        statusBadge.textContent = connected ? '● Connected' : '● Offline';
-        statusBadge.style.color = connected ? '#4caf50' : '#ff6a6a';
-    }
-    
-    // Update sidebar status element
-    const sidebarStatus = document.getElementById('connection-status-sidebar');
-    if (sidebarStatus) {
-        sidebarStatus.textContent = connected ? 'Connected' : 'Offline';
-        sidebarStatus.className = connected ? 'status-connected' : 'status-disconnected';
-    }
-    
-    // Update body class for styling
-    if (connected) {
-        document.body.classList.remove('offline');
-        document.body.classList.add('online');
-    } else {
-        document.body.classList.remove('online');
-        document.body.classList.add('offline');
-    }
-}
+// Guard check executes as soon as DOM loads
+document.addEventListener('DOMContentLoaded', () => {
+    checkTerminalAccess();
+});
 
-function updateAggregatedPrice() {
-    // Display the most recent price from any market
-    let latestPrice = null;
-    let latestSymbol = null;
-    let latestTime = 0;
-    
-    Object.keys(marketsData).forEach(symbol => {
-        const market = marketsData[symbol];
-        if (market.tickHistory.length > 0) {
-            const lastTick = market.tickHistory[market.tickHistory.length - 1];
-            if (lastTick.time > latestTime) {
-                latestTime = lastTick.time;
-                latestPrice = lastTick.quote;
-                latestSymbol = symbol;
-            }
-        }
-    });
-    
-    if (latestPrice !== null) {
-        const priceElement = document.getElementById('current-price');
-        const lastDigitElement = document.getElementById('last-digit');
-        const symbolElement = document.getElementById('current-symbol');
-        
-        if (priceElement) {
-            priceElement.textContent = latestPrice.toFixed(marketsData[latestSymbol].decimalPlaces);
-            priceElement.style.animation = 'pulse 0.5s ease-in-out';
-            setTimeout(() => {
-                priceElement.style.animation = '';
-            }, 500);
-        }
-        
-        if (lastDigitElement) {
-            const lastDigit = getLastDigit(latestPrice, marketsData[latestSymbol].decimalPlaces);
-            lastDigitElement.textContent = `Last Digit: ${lastDigit}`;
-            lastDigitElement.className = `last-digit digit-${lastDigit}`;
-        }
-        
-        if (symbolElement) {
-            symbolElement.textContent = latestSymbol;
-        }
-    }
-}
+/**
+ * DigitPro Unified Access Control Guard
+ */
 
-function updateDigitPercentages() {
-    // Aggregate digit counts from all markets
-    let aggregatedDigitCounts = new Array(10).fill(0);
-    let totalTicks = 0;
-    
-    Object.values(marketsData).forEach(market => {
-        market.digitCounts.forEach((count, digit) => {
-            aggregatedDigitCounts[digit] += count;
-        });
-        totalTicks += market.tickHistory.length;
-    });
-    
-    if (totalTicks === 0) return;
-    
-    const digitPercentages = aggregatedDigitCounts.map(count => ((count / totalTicks) * 100).toFixed(2));
-    
-    digitPercentages.forEach((percentage, digit) => {
-        const percentageElement = document.getElementById(`digit-${digit}`);
-        const barElement = document.getElementById(`bar-${digit}`);
-        
-        if (percentageElement) {
-            percentageElement.textContent = `${percentage}%`;
-        }
-        
-        if (barElement) {
-            barElement.style.width = `${percentage}%`;
-            barElement.style.backgroundColor = getDigitColor(digit);
-        }
-    });
-    
-    // Update extremes
-    let highestDigit = digitPercentages.indexOf(Math.max(...digitPercentages.map(p => parseFloat(p))).toFixed(2));
-    let lowestDigit = digitPercentages.indexOf(Math.min(...digitPercentages.map(p => parseFloat(p))).toFixed(2));
-    
-    updateExtremes(highestDigit, lowestDigit);
-    
-    // Bubble.io integration for aggregated data
-    digitPercentages.forEach((percentage, digit) => {
-        if (typeof window[`bubble_fn_${digit}`] === "function") {
-            window[`bubble_fn_${digit}`](parseFloat(percentage));
-        }
-    });
-    
-    if (typeof window.bubble_fn_highest === "function") {
-        window.bubble_fn_highest(highestDigit);
-    }
-    
-    if (typeof window.bubble_fn_lowest === "function") {
-        window.bubble_fn_lowest(lowestDigit);
-    }
-}
 
-function updateExtremes(highest, lowest) {
-    const highestElement = document.getElementById('highest-digit');
-    const lowestElement = document.getElementById('lowest-digit');
-    
-    if (highestElement) {
-        highestElement.textContent = highest;
-        highestElement.className = `extreme-value digit-${highest}`;
-    }
-    if (lowestElement) {
-        lowestElement.textContent = lowest;
-        lowestElement.className = `extreme-value digit-${lowest}`;
-    }
-}
+/**
+ * DigitPro Unified Access Control Guard
+ */
+function checkTerminalAccess() {
+    const token = sessionStorage.getItem('mk_auth_token');
+    const userEmail = sessionStorage.getItem('mk_user_email');
 
-function updateLast50Digits() {
-    // Get last 50 digits from all markets combined, sorted by timestamp
-    let allRecentTicks = [];
-    
-    Object.keys(marketsData).forEach(symbol => {
-        const market = marketsData[symbol];
-        market.tickHistory.forEach(tick => {
-            allRecentTicks.push({
-                time: tick.time,
-                quote: tick.quote,
-                symbol: symbol,
-                decimalPlaces: market.decimalPlaces
-            });
-        });
-    });
-    
-    // Sort by timestamp and take last 50
-    allRecentTicks.sort((a, b) => a.time - b.time);
-    const last50Ticks = allRecentTicks.slice(-50);
-    
-    const last50Digits = last50Ticks.map(tick => getLastDigit(tick.quote, tick.decimalPlaces));
-    const digitsString = last50Digits.join(',');
-    
-    const container = document.getElementById('last-50-digits');
-    if (container) {
-        container.innerHTML = last50Digits.map((digit, index) => {
-            const tick = last50Ticks[index];
-            return `<span class="digit-chip digit-${digit}" title="${tick.symbol}: ${tick.quote.toFixed(tick.decimalPlaces)}">${digit}</span>`;
-        }).join('');
-    }
-    
-    // Bubble.io integration
-    if (typeof window.bubble_fn_last50 === "function") {
-        window.bubble_fn_last50(digitsString);
-    }
-    
-    console.log("✅ Last 50 Digits (All Markets):", digitsString);
-}
-
-function updateTickCounter() {
-    const counter = document.getElementById('tick-counter');
-    if (counter) {
-        counter.textContent = totalProcessedTicks;
-    }
-}
-
-function updatePredictionHighlights() {
-    // Find digits above threshold and their markets
-    const threshold = 18.2;
-    const requiredTicks = tickCount; // Require exactly the full tick count for accurate analysis
-    const predictions = [];
-    
-    // Check if we have exactly the required number of ticks for each market
-    const marketsWithFullData = Object.keys(marketsData).filter(symbol => 
-        marketsData[symbol].tickHistory.length >= requiredTicks
-    );
-    
-    const totalActiveMarkets = Object.keys(marketsData).length;
-    
-    if (marketsWithFullData.length === 0) {
-        const container = document.getElementById('prediction-highlights');
-        if (container) {
-            container.innerHTML = '<div class="no-predictions">Fetching historical data (120 ticks per market)...</div>';
-        }
-        return;
-    } else if (marketsWithFullData.length < totalActiveMarkets) {
-        const container = document.getElementById('prediction-highlights');
-        if (container) {
-            container.innerHTML = `<div class="no-predictions">Loading: ${marketsWithFullData.length}/${totalActiveMarkets} markets ready with ${requiredTicks} ticks...</div>`;
-        }
+    // 1. ALWAYS DO THE SECURITY CHECK FIRST
+    // If session tokens do not exist from the login portal, redirect immediately
+    if (!token || !userEmail) {
+        console.warn('⛔ Unauthorized session context detected. Redirecting to login portal...');
+        clearLocalSession();
+        window.location.href = '/login.html'; 
         return;
     }
+
+    // 2. NOW THAT ACCESS IS VALIDATED, RUN UI UPDATES SAFELY
+    // Define the welcome heading element properly to prevent crashes
+    const welcomeHeading = document.getElementById('welcome-text');
+    if (welcomeHeading && userEmail) {
+        // Splits "alex@gmail.com" at the '@' and turns "alex" into "ALEX"
+        const standardName = userEmail.split('@')[0].toUpperCase(); 
+        // Changes "Loading workspace..." to "Welcome Back, ALEX!"
+        welcomeHeading.textContent = `Welcome Back, ${standardName}!`;
+    }
+
+    // Fire the personalized welcome popup overlay window
+    showWelcomeModal(userEmail);
     
-    console.log(`📊 Analysis ready: All ${totalActiveMarkets} markets have ${requiredTicks} ticks for accurate predictions`);
+    // Auth validation matches token state
+    isAuthenticated = true;
+
+    // Display user identity inside the platform sidebar layout
+    const nameDisplay = document.getElementById('user-name-sidebar');
+    if (nameDisplay) {
+        nameDisplay.textContent = userEmail.split('@')[0].toUpperCase();
+        nameDisplay.title = userEmail;
+    }
+
+    // Hide or remove secure protection overlay screen guard to reveal interface
+    const guardOverlay = document.getElementById('auth-guard-overlay');
+    if (guardOverlay) {
+        guardOverlay.style.opacity = '0';
+        setTimeout(() => guardOverlay.remove(), 300);
+    }
     
-    // Check each digit (0-9)
-    for (let digit = 0; digit <= 9; digit++) {
-        let digitMarkets = [];
-        let totalCount = 0;
-        let totalTicks = 0;
-        
-        // Check each market for this digit (only markets with full data)
-        marketsWithFullData.forEach(symbol => {
-            const market = marketsData[symbol];
-            const marketDigitCount = market.digitCounts[digit];
-            const marketTotalTicks = market.tickHistory.length;
-            const marketPercentage = ((marketDigitCount / marketTotalTicks) * 100);
-            
-            if (marketPercentage >= threshold) {
-                digitMarkets.push({
-                    symbol: symbol,
-                    percentage: marketPercentage.toFixed(2),
-                    count: marketDigitCount,
-                    total: marketTotalTicks
-                });
-            }
-            
-            totalCount += marketDigitCount;
-            totalTicks += marketTotalTicks;
+    console.log(`🚀 Access authorized for DigitPro account: ${userEmail}`);
+    
+    // Proceed to boot data processing streams
+    initializeTerminal();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// WELCOME MODAL INTERACTION FUNCTIONS
+// ═══════════════════════════════════════════════════════════════════════════
+
+function showWelcomeModal(userEmail) {
+    const welcomeModal = document.getElementById('welcome-modal');
+    const modalHeading = document.getElementById('modal-welcome-text');
+    
+    if (modalHeading && userEmail) {
+        const standardName = userEmail.split('@')[0].toUpperCase();
+        modalHeading.textContent = `WELCOME BACK, ${standardName}!`;
+    }
+
+    if (welcomeModal) {
+        welcomeModal.style.display = 'flex';
+        // Force reflow to ensure CSS transitions trigger correctly
+        void welcomeModal.offsetWidth;
+        welcomeModal.style.opacity = '1';
+        welcomeModal.style.visibility = 'visible';
+    }
+}
+
+function hideWelcomeModal() {
+    const welcomeModal = document.getElementById('welcome-modal');
+    if (welcomeModal) {
+        welcomeModal.style.opacity = '0';
+        welcomeModal.style.visibility = 'hidden';
+        setTimeout(() => {
+            welcomeModal.style.display = 'none';
+        }, 300);
+    }
+}
+/**
+ * Clean session variables on disconnect or explicit user logout
+ */
+function clearLocalSession() {
+   sessionStorage.removeItem('mk_auth_token');
+    sessionStorage.removeItem('mk_user_email');
+    sessionStorage.removeItem('mk_device_fp');
+    sessionStorage.removeItem('mk_login_time');
+    isAuthenticated = false;
+    if (predictionTimer) { clearInterval(predictionTimer); predictionTimer = null; }
+    if (cooldownTimer) { clearInterval(cooldownTimer); cooldownTimer = null; }
+}
+
+/**
+ * Manual Portal Logout Action
+ */
+function logout() {
+    clearLocalSession();
+    window.location.href = '/login.html';
+}
+
+/**
+ * Primary system terminal activation
+ */
+function initializeTerminal() {
+    initializeMarketData();
+    startWebSocket(); // Connects directly via public pipeline
+
+    // Layout response controls
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            closeSidebarOnMobile();
         });
-        
-        // Calculate overall percentage for this digit
-        const overallPercentage = totalTicks > 0 ? ((totalCount / totalTicks) * 100) : 0;
-        
-        // Debug logging
-        if (overallPercentage >= threshold || digitMarkets.length > 0) {
-            console.log(`🎯 Digit ${digit}: Overall ${overallPercentage.toFixed(2)}%, Markets above threshold: ${digitMarkets.length}`);
+    });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) sidebar.classList.remove('active');
         }
-        
-        // If overall percentage is above threshold OR any individual market is above threshold
-        if (overallPercentage >= threshold || digitMarkets.length > 0) {
-            predictions.push({
-                digit: digit,
-                overallPercentage: overallPercentage.toFixed(2),
-                markets: digitMarkets,
-                totalCount: totalCount,
-                totalTicks: totalTicks
-            });
-        }
-    }
-    
-    // Sort by overall percentage (highest first)
-    predictions.sort((a, b) => parseFloat(b.overallPercentage) - parseFloat(a.overallPercentage));
-    
-    // Only show the first (highest) prediction
-    const topPredictions = predictions.length > 0 ? [predictions[0]] : [];
-    
-    // Update the UI
-    const container = document.getElementById('prediction-highlights');
-    if (container) {
-        // If there's an active timer, don't update the display - keep current prediction
-        if (predictionTimer !== null) {
-            console.log('⏳ Timer active - keeping current prediction displayed');
-            return; // Don't update anything while timer is running
-        }
-        
-        // Only update when no timer is running
-        if (topPredictions.length === 0) {
-            container.innerHTML = '<div class="no-predictions">No repeating patterns detected yet...</div>';
-            currentPrediction = null;
-        } else {
-            // Show new prediction and start timer
-            const newPrediction = topPredictions[0];
-            const predictionKey = `${newPrediction.digit}-${newPrediction.overallPercentage}`;
-            
-            container.innerHTML = topPredictions.map(pred => {
-            const marketTags = pred.markets.map(market => 
-                `<span class="prediction-market-tag">${getMarketName(market.symbol)}</span>`
-            ).join('');
-            
-            const hasIndividualHighs = pred.markets.length > 0;
-            const statusIcon = hasIndividualHighs ? '👑' : '📈';
-            
-            return `
-                <div class="prediction-item">
-                    <div class="prediction-digit">${statusIcon} ${pred.digit}</div>
-                    <div id="prediction-countdown" class="prediction-countdown">⏰ 37s</div>
-                    <div class="prediction-markets">
-                        ${hasIndividualHighs ? 
-                            `<strong></strong><br>${marketTags}` : 
-                            `<strong>Overall Average</strong><br>Across all markets`
-                        }
-                    </div>
-                </div>
-            `;
-            }).join('');
-            
-            // Start countdown for new prediction
-            currentPrediction = predictionKey;
-            startPredictionCountdown();
-            console.log(`🎯 New prediction detected: Digit ${newPrediction.digit} (${newPrediction.overallPercentage}%) - Starting 45s countdown`);
-        }
-    }
-    
-    console.log(`🎯 Prediction Highlights: ${predictions.length} digits above ${threshold}%, showing top ${topPredictions.length}`);
-    
-    // Bubble.io integration for predictions (send only the top prediction)
-    if (typeof window.bubble_fn_predictions === "function") {
-        const predictionData = topPredictions.map(p => ({
-            digit: p.digit,
-            percentage: p.overallPercentage,
-            markets: p.markets.length
-        }));
-        window.bubble_fn_predictions(JSON.stringify(predictionData));
-    }
+    });
 }
 
-function updateMarketsList() {
-    const marketsElement = document.getElementById('active-markets');
-    if (marketsElement) {
-        const activeCount = Object.keys(marketsData).filter(symbol => 
-            marketsData[symbol].tickHistory.length > 0
-        ).length;
-        marketsElement.textContent = `${activeCount}/${activeMarkets.length} markets active`;
-    }
+// Market asset string labels
+const marketNames = {
+    "R_100": "Volatility 100", "R_75": "Volatility 75", "R_50": "Volatility 50",
+    "R_25": "Volatility 25", "R_10": "Volatility 10", "1HZ10V": "Volatility 10(1s)", "1HZ15V": "volatility 15(1s)", "1HZ30V": "volatility 30(1s)", "1HZ50V": "Volatility 50(1s)", "1HZ75V": "Volatility 75(1s)", "1HZ90V": "Volatility 90(1s)", "1HZ100V": "Volatility 100(1s)",
+};
+
+function getMarketName(symbol) { return marketNames[symbol] || symbol; }
+
+function initializeMarketData() {
+    activeMarkets.forEach(symbol => {
+        marketsData[symbol] = {
+            tickHistory: [], decimalPlaces: 2, processedTicks: 0, lastPrice: null, digitCounts: new Array(10).fill(0)
+        };
+    });
 }
 
-function getDigitColor(digit) {
-    const colors = [
-        '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
-        '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9'
-    ];
-    return colors[digit] || '#666';
-}
-
-// Function to start WebSocket connection
+/**
+ * Establishes WebSockets connection using Public Non-OAuth channels
+ * (Allows streaming structural ticks without Deriv individual user account tokens)
+ */
 function startWebSocket() {
-    // Check authentication before starting analysis
+    // Prevent stream access if local guard flags are invalid
     if (!isAuthenticated) {
-        console.warn('⚠️ Cannot start analysis without authentication');
-        lockDashboard();
-        return false;
-    }
-    // Ensure user has paid access before starting
-    if (!currentUser || !currentUser.hasAccess) {
-        console.warn('🚫 Cannot start analysis - user has not paid or access not granted');
-        // Lock UI and prompt payment
-        lockDashboard();
-        showPaymentModal();
+        console.warn('⚠️ Cannot start stream processing without a valid local login session.');
         return false;
     }
 
@@ -499,41 +246,32 @@ function startWebSocket() {
         try {
             derivWs.close();
         } catch (e) {
-            console.warn('⚠️ Error closing previous WebSocket:', e);
+            console.warn('⚠️ Closing existing pipeline channel connection:', e);
         }
     }
 
-    // Initialize market data
     initializeMarketData();
-    updateConnectionStatus(false);
     totalProcessedTicks = 0;
     updateTickCounter();
 
-    // Try with the official Deriv API endpoint with better error handling
+    // Direct access to public infrastructure stream 
     const wsEndpoint = 'wss://ws.derivws.com/websockets/v3?app_id=1089';
     
     try {
         derivWs = new WebSocket(wsEndpoint);
-        console.log(`🔗 Attempting WebSocket connection to: ${wsEndpoint}`);
+        console.log(`🔗 Initializing real-time public data feed pipeline: ${wsEndpoint}`);
     } catch (error) {
-        console.error('❌ Failed to create WebSocket:', error);
-        showNotification('WebSocket connection failed. Please refresh the page.', 'error');
+        console.error('❌ Failed to construct WebSocket stream target instance:', error);
         return false;
     }
 
     derivWs.onopen = function () {
-        console.log(`✅ Connected to Deriv API for ${activeMarkets.length} markets`);
+        console.log(`✅ Pipeline successfully locked onto feed data for ${activeMarkets.length} markets.`);
         updateConnectionStatus(true);
-       
         
-        // Request exactly tickCount (120) historical ticks for all markets
+        // Request historical background feed ticks array matching selected parameters
         activeMarkets.forEach(symbol => {
-            console.log(`📡 Requesting ${tickCount} historical ticks for ${symbol}`);
-            try {
-                requestTickHistory(symbol);
-            } catch (error) {
-                console.error(`❌ Error requesting ${symbol}:`, error);
-            }
+            requestTickHistory(symbol);
         });
     };
 
@@ -542,16 +280,12 @@ function startWebSocket() {
             const data = JSON.parse(event.data);
 
             if (data.error) {
-                console.error('❌ API Error:', data.error);
-                showNotification('API Error: ' + data.error.message, 'error');
+                console.error('❌ Data pipeline interface notice:', data.error);
                 return;
             }
 
             if (data.history) {
                 const symbol = data.echo_req.ticks_history;
-                const receivedCount = data.history.prices.length;
-                console.log(`📊 ${symbol}: Loaded ${receivedCount}/${tickCount} historical ticks`);
-                
                 marketsData[symbol].tickHistory = data.history.prices.map((price, index) => ({
                     time: data.history.times[index],
                     quote: parseFloat(price)
@@ -559,8 +293,6 @@ function startWebSocket() {
 
                 detectDecimalPlaces(symbol);
                 analyzeMarket(symbol);
-                
-                // Update aggregated displays
                 updateAllDisplays();
             }
 
@@ -569,8 +301,6 @@ function startWebSocket() {
                 let tickQuote = parseFloat(data.tick.quote);
                 
                 if (marketsData[symbol]) {
-                    console.log(`🔄 New Tick ${symbol}: ${tickQuote.toFixed(marketsData[symbol].decimalPlaces)}`);
-
                     marketsData[symbol].tickHistory.push({ 
                         time: data.tick.epoch, 
                         quote: tickQuote 
@@ -586,7 +316,7 @@ function startWebSocket() {
                     totalProcessedTicks++;
                     updateTickCounter();
 
-                    // Bubble.io integration for latest tick
+                    // Bubble.io Application Integrations
                     let lastDigit = getLastDigit(tickQuote, marketsData[symbol].decimalPlaces);
                     let isEven = lastDigit % 2 === 0 ? 1 : 0;
                     let isOdd = lastDigit % 2 !== 0 ? 1 : 0;
@@ -594,244 +324,335 @@ function startWebSocket() {
                     if (typeof window.bubble_fn_wsEvent1 === "function") {
                         window.bubble_fn_wsEvent1(lastDigit);
                     }
-
                     if (typeof window.bubble_fn_price1 === "function") {
                         window.bubble_fn_price1(tickQuote.toFixed(marketsData[symbol].decimalPlaces));
                     }
-
                     if (typeof window.bubble_fn_even === "function") {
                         window.bubble_fn_even(isEven);
                     }
-
                     if (typeof window.bubble_fn_odd === "function") {
                         window.bubble_fn_odd(isOdd);
                     }
                 }
             }
         } catch (error) {
-            console.error('❌ Error processing WebSocket message:', error);
+            console.error('❌ Error handling downstream data packet:', error);
         }
     };
 
     derivWs.onerror = function (error) {
-        console.error("❌ WebSocket Error:", error);
+        console.error("❌ WebSocket Stream Anomaly Error:", error);
         updateConnectionStatus(false);
-        showNotification('Connection error. Attempting to reconnect...', 'warning');
-        
-        // Attempt to reconnect after 3 seconds
-        setTimeout(() => {
-            console.log('🔄 Attempting to reconnect...');
-            startWebSocket();
-        }, 3000);
+        setTimeout(startWebSocket, 3000); // Re-establish connectivity pipelines
     };
 
     derivWs.onclose = function () {
-        console.warn("⚠️ WebSocket Disconnected");
+        console.warn("⚠️ WebSocket Data Pipeline Connection Dropped");
         updateConnectionStatus(false);
-        
-        // Attempt to reconnect after 5 seconds
         if (isAuthenticated) {
-            console.log('🔄 Reconnecting in 5 seconds...');
-            setTimeout(() => {
-                startWebSocket();
-            }, 5000);
+            setTimeout(startWebSocket, 5000);
         }
     };
     
     return true;
 }
 
-// Function to request tick history for a specific symbol
 function requestTickHistory(symbol) {
-    const request = {
-        ticks_history: symbol,
-        count: tickCount,
-        end: "latest",
-        style: "ticks",
-        subscribe: 1
-    };
-    derivWs.send(JSON.stringify(request));
+    if (derivWs && derivWs.readyState === WebSocket.OPEN) {
+        const request = {
+            ticks_history: symbol,
+            count: tickCount,
+            end: "latest",
+            style: "ticks",
+            subscribe: 1
+        };
+        derivWs.send(JSON.stringify(request));
+    }
 }
 
-// Function to detect the number of decimal places dynamically for a market
 function detectDecimalPlaces(symbol) {
     const market = marketsData[symbol];
     let decimalCounts = market.tickHistory.map(tick => {
         let decimalPart = tick.quote.toString().split(".")[1] || "";
         return decimalPart.length;
     });
-
     market.decimalPlaces = Math.max(...decimalCounts, 2);
-    console.log(`🔍 Detected Decimal Places for ${symbol}: ${market.decimalPlaces}`);
 }
 
-// Function to extract the last digit
 function getLastDigit(price, decimalPlaces = 2) {
     let priceStr = price.toString();
     let priceParts = priceStr.split(".");
     let decimals = priceParts[1] || "";
-
-    while (decimals.length < decimalPlaces) {
-        decimals += "0";
-    }
-
+    while (decimals.length < decimalPlaces) { decimals += "0"; }
     return Number(decimals.slice(-1));
 }
 
-// Function to analyze a specific market
 function analyzeMarket(symbol) {
     const market = marketsData[symbol];
     if (market.tickHistory.length === 0) return;
-
-    // Reset counts
     market.digitCounts.fill(0);
-
-    // Analyze digits
     market.tickHistory.forEach(tick => {
         let lastDigit = getLastDigit(tick.quote, market.decimalPlaces);
         market.digitCounts[lastDigit]++;
     });
-
-    console.log(`✅ Analyzed ${symbol}: ${market.tickHistory.length} ticks`);
 }
 
-// Function to update all displays with aggregated data
 function updateAllDisplays() {
     updateMarketsList();
+    updateAggregatedPrice();
     updatePredictionHighlights();
     updateEvenOddPredictions();
 }
 
-// Even/Odd Prediction System
-function updateEvenOddPredictions() {
-    const container = document.getElementById('even-odd-predictions');
-    if (!container) return;
-    
-    const evenDigits = [0, 2, 4, 6, 8];
-    const oddDigits = [1, 3, 5, 7, 9];
-    const requiredTicks = tickCount;
-    const confidenceThreshold = 55; // Minimum confidence to show prediction
-    
-    // Always show all activeMarkets, even if no signal
-    const predictions = activeMarkets.map(symbol => {
-        const market = marketsData[symbol];
-        const totalTicks = market.tickHistory.length;
-        if (totalTicks < requiredTicks) {
-            return {
-                symbol,
-                marketName: getMarketName(symbol),
-                prediction: null,
-                signalStrength: 'neutral',
-                loading: true
-            };
-        }
-        // Count even and odd occurrences
-        let evenCount = 0;
-        let oddCount = 0;
-        evenDigits.forEach(digit => { evenCount += market.digitCounts[digit]; });
-        oddDigits.forEach(digit => { oddCount += market.digitCounts[digit]; });
-        const evenPercentage = (evenCount / totalTicks) * 100;
-        const oddPercentage = (oddCount / totalTicks) * 100;
-        const prediction = evenPercentage > oddPercentage ? 'EVEN' : 'ODD';
-        const difference = Math.abs(evenPercentage - oddPercentage);
-        let signalStrength = 'weak';
-        if (difference >= 10) signalStrength = 'strong';
-        else if (difference >= 5) signalStrength = 'medium';
-        if (difference < 3) signalStrength = 'neutral';
-        return {
-            symbol,
-            marketName: getMarketName(symbol),
-            prediction: signalStrength === 'neutral' ? null : prediction,
-            signalStrength,
-            loading: false
-        };
-    });
-
-    container.innerHTML = predictions.map(pred => {
-        if (pred.loading) {
-            return `<div class="even-odd-card neutral"><div class="eo-market"><span class="eo-market-name">${pred.marketName}</span></div><div class="eo-prediction"><span class="eo-badge neutral">Loading...</span></div></div>`;
-        } else if (!pred.prediction) {
-            return `<div class="even-odd-card neutral"><div class="eo-market"><span class="eo-market-name">${pred.marketName}</span></div><div class="eo-prediction"><span class="eo-badge neutral">No Signal</span></div></div>`;
-        } else {
-            const predictionClass = pred.prediction === 'EVEN' ? 'even' : 'odd';
-            const strengthClass = `strength-${pred.signalStrength}`;
-            return `<div class="even-odd-card ${predictionClass} ${strengthClass}"><div class="eo-market"><span class="eo-market-name">${pred.marketName}</span></div><div class="eo-prediction"><span class="eo-badge ${predictionClass}">${pred.prediction}</span></div><div class="eo-signal ${strengthClass}"><i class="fas fa-signal"></i> ${pred.signalStrength.toUpperCase()} SIGNAL</div></div>`;
-        }
-    }).join('');
-
-    // Bubble.io integration
-    if (typeof window.bubble_fn_evenOddPredictions === "function") {
-        window.bubble_fn_evenOddPredictions(JSON.stringify(predictions));
+function updateConnectionStatus(connected) {
+    const statusBadge = document.getElementById('connection-badge');
+    if (statusBadge) {
+        statusBadge.textContent = connected ? '● Connected' : '● Offline';
+        statusBadge.style.color = connected ? '#289D3F' : '#C0392B';
     }
-
-    console.log(`🎲 Even/Odd Predictions updated: ${predictions.length} markets analyzed`);
+    const sidebarStatus = document.getElementById('connection-status-sidebar');
+    if (sidebarStatus) {
+        sidebarStatus.textContent = connected ? 'Connected' : 'Offline';
+    }
 }
 
-// Function to update symbol (now updates which markets to analyze)
+function updateTickCounter() {
+    const counter = document.getElementById('tick-counter');
+    if (counter) counter.textContent = totalProcessedTicks;
+}
+
+function updateMarketsList() {
+    const marketsElement = document.getElementById('active-markets');
+    if (marketsElement) {
+        const activeCount = Object.keys(marketsData).filter(symbol => 
+            marketsData[symbol].tickHistory.length > 0
+        ).length;
+        marketsElement.textContent = `${activeCount}/${activeMarkets.length} markets active`;
+    }
+}
+
+function updateAggregatedPrice() {
+    let latestPrice = null, latestSymbol = null, latestTime = 0;
+    
+    Object.keys(marketsData).forEach(symbol => {
+        const market = marketsData[symbol];
+        if (market.tickHistory.length > 0) {
+            const lastTick = market.tickHistory[market.tickHistory.length - 1];
+            if (lastTick.time > latestTime) {
+                latestTime = lastTick.time;
+                latestPrice = lastTick.quote;
+                latestSymbol = symbol;
+            }
+        }
+    });
+    
+    if (latestPrice !== null && marketsData[latestSymbol]) {
+        const priceElement = document.getElementById('current-price');
+        const symbolElement = document.getElementById('current-symbol');
+        if (priceElement) priceElement.textContent = latestPrice.toFixed(marketsData[latestSymbol].decimalPlaces);
+        if (symbolElement) symbolElement.textContent = latestSymbol;
+        
+        const lastDigitElement = document.getElementById('last-digit');
+        if (lastDigitElement) {
+            const priceString = latestPrice.toFixed(marketsData[latestSymbol].decimalPlaces);
+            lastDigitElement.textContent = priceString.slice(-1);
+        }
+    }
+}
+
+/**
+ * Process Statistical Digit Pattern Matches
+ * ─ Full port of script1.js algorithm ─
+ * • Threshold: 18.2% (same as script1)
+ * • Requires ALL markets to have full tick data before any prediction
+ * • Shows exactly which market(s) are driving the signal with their names
+ * • 37-second display lock → 60-second cooldown → next prediction cycle
+ */
+function updatePredictionHighlights() {
+    const threshold = 18.2;
+    const requiredTicks = tickCount;
+    const predictions = [];
+    const container = document.getElementById('prediction-highlights');
+
+    // ── Gate 1: block while 37s display timer is running ─────────────────
+    if (predictionTimer !== null) {
+        console.log('⏳ Timer active – keeping current prediction displayed');
+        return;
+    }
+
+    // ── Gate 2: block during 60-second cooldown between predictions ───────
+    if (cooldownTimer !== null) {
+        return;
+    }
+
+    // ── Gate 3: wait until ALL markets have the full required tick data ───
+    const marketsWithFullData = Object.keys(marketsData).filter(symbol =>
+        marketsData[symbol].tickHistory.length >= requiredTicks
+    );
+    const totalActiveMarkets = Object.keys(marketsData).length;
+
+    if (marketsWithFullData.length === 0) {
+        if (container) container.innerHTML = `<div class="no-predictions">Fetching historical data (${requiredTicks} ticks per market)...</div>`;
+        return;
+    } else if (marketsWithFullData.length < totalActiveMarkets) {
+        if (container) container.innerHTML = `<div class="no-predictions">Loading: ${marketsWithFullData.length}/${totalActiveMarkets} markets ready with ${requiredTicks} ticks...</div>`;
+        return;
+    }
+
+    console.log(`📊 Analysis ready: All ${totalActiveMarkets} markets have ${requiredTicks} ticks for accurate predictions`);
+
+    // ── Core algorithm — exact script1 logic ─────────────────────────────
+    for (let digit = 0; digit <= 9; digit++) {
+        let digitMarkets = [];
+        let totalCount = 0;
+        let totalTicks = 0;
+
+        marketsWithFullData.forEach(symbol => {
+            const market = marketsData[symbol];
+            const marketDigitCount = market.digitCounts[digit];
+            const marketTotalTicks = market.tickHistory.length;
+            const marketPercentage = (marketDigitCount / marketTotalTicks) * 100;
+
+            if (marketPercentage >= threshold) {
+                digitMarkets.push({
+                    symbol: symbol,
+                    percentage: marketPercentage.toFixed(2),
+                    count: marketDigitCount,
+                    total: marketTotalTicks
+                });
+            }
+            totalCount += marketDigitCount;
+            totalTicks += marketTotalTicks;
+        });
+
+        const overallPercentage = totalTicks > 0 ? (totalCount / totalTicks) * 100 : 0;
+
+        if (overallPercentage >= threshold || digitMarkets.length > 0) {
+            console.log(`🎯 Digit ${digit}: Overall ${overallPercentage.toFixed(2)}%, Markets above threshold: ${digitMarkets.length}`);
+            predictions.push({
+                digit: digit,
+                overallPercentage: overallPercentage.toFixed(2),
+                markets: digitMarkets,
+                totalCount: totalCount,
+                totalTicks: totalTicks
+            });
+        }
+    }
+
+    // Sort by highest overall percentage, show single top prediction
+    predictions.sort((a, b) => parseFloat(b.overallPercentage) - parseFloat(a.overallPercentage));
+    const topPredictions = predictions.length > 0 ? [predictions[0]] : [];
+
+    if (!container) return;
+
+    if (topPredictions.length === 0) {
+        container.innerHTML = '<div class="no-predictions">No repeating patterns detected yet...</div>';
+        currentPrediction = null;
+    } else {
+        const pred = topPredictions[0];
+        const predictionKey = `${pred.digit}-${pred.overallPercentage}`;
+
+        const hasIndividualHighs = pred.markets.length > 0;
+        const statusIcon = hasIndividualHighs ? '🔥' : '📈';
+
+        // Build market tags — full readable market name + percentage
+        const marketTags = pred.markets.map(m =>
+            `<span class="prediction-market-tag">${getMarketName(m.symbol)} (${m.percentage}%)</span>`
+        ).join('');
+
+        container.innerHTML = `
+            <div class="prediction-item">
+                <div class="prediction-digit">${statusIcon} ${pred.digit}</div>
+                <div id="prediction-countdown" class="prediction-countdown">⏰ 45s</div>
+                
+                <div class="prediction-markets">
+                    ${hasIndividualHighs
+                        ? `<strong>Market:</strong><br>${marketTags}`
+                        : `<strong>Overall Average</strong><br>Across all markets`
+                    }
+                </div>
+            </div>`;
+
+        currentPrediction = predictionKey;
+        startPredictionCountdown();
+        console.log(`🎯 New prediction: Digit ${pred.digit}  – 45s display then 30s cooldown`);
+    }
+
+    console.log(`🎯 Prediction scan: ${predictions.length} digits above ${threshold}%, showing top ${topPredictions.length}`);
+
+    if (typeof window.bubble_fn_predictions === "function") {
+        const predictionData = topPredictions.map(p => ({
+            digit: p.digit,
+            percentage: p.overallPercentage,
+            markets: p.markets.length
+        }));
+        window.bubble_fn_predictions(JSON.stringify(predictionData));
+    }
+}
+
+/**
+ * Even/Odd Metric Evaluation Systems
+ */
+
+
+// User Action Interface Callbacks
 window.updateSymbol = function (newSymbol) {
-    console.log(`🔄 Updating to analyze: ${newSymbol}`);
     if (newSymbol === 'ALL') {
         activeMarkets = ["R_100", "R_75", "R_50", "R_25", "R_10", "RDBEAR", "RDBULL", "1HZ10V", "1HZ15V", "1HZ30V", "1HZ50V", "1HZ75V", "1HZ90V", "1HZ100V"];
     } else {
         activeMarkets = [newSymbol];
     }
-    // If authenticated and WebSocket is open, just request new tick history for the selected market(s)
-    if (isAuthenticated && derivWs && derivWs.readyState === WebSocket.OPEN) {
-        activeMarkets.forEach(symbol => {
-            try {
-                requestTickHistory(symbol);
-            } catch (error) {
-                console.error(`❌ Error requesting tick history for ${symbol}:`, error);
-            }
-        });
-    }
+    initializeMarketData();
+    if (isAuthenticated) startWebSocket();
 };
 
-// Function to update tick count
 window.updateTickCount = function (newTickCount) {
-    console.log(`🔄 Updating tick count to: ${newTickCount}`);
     tickCount = newTickCount;
-    // If authenticated and WebSocket is open, just request new tick history for all markets
-    if (isAuthenticated && derivWs && derivWs.readyState === WebSocket.OPEN) {
-        activeMarkets.forEach(symbol => {
-            try {
-                requestTickHistory(symbol);
-            } catch (error) {
-                console.error(`❌ Error requesting tick history for ${symbol}:`, error);
-            }
-        });
-    }
+    if (isAuthenticated) startWebSocket();
 };
+// ═══════════════════════════════════════════════════════════════════════════
+// REFRESH & EXIT SECURITY GUARD (FORCES LOGIN ON RELOAD OR NAVIGATING AWAY)
+// ═══════════════════════════════════════════════════════════════════════════
 
-// Start WebSocket on page load
-document.addEventListener('DOMContentLoaded', function() {
-    // Clear any stored authentication data to ensure fresh login
-    clearStoredAuthData();
+window.addEventListener('beforeunload', () => {
+    // This runs the instant the page is refreshed or left
+    sessionStorage.removeItem('mk_auth_token');
+    sessionStorage.removeItem('mk_user_email');
+    sessionStorage.removeItem('mk_login_time');
     
-    // Don't auto-start WebSocket - wait for authentication
-    // startWebSocket(); // Moved to after authentication
-    
-    // Add some visual feedback for controls
-    const symbolSelect = document.getElementById('symbol-select');
-    const tickCountSelect = document.getElementById('tick-count');
-    
-    if (symbolSelect) {
-        symbolSelect.addEventListener('change', function() {
-            this.style.animation = 'pulse 0.3s ease-in-out';
-            setTimeout(() => {
-                this.style.animation = '';
-            }, 300);
-        });
-    }
-    
-    if (tickCountSelect) {
-        tickCountSelect.addEventListener('change', function() {
-            this.style.animation = 'pulse 0.3s ease-in-out';
-            setTimeout(() => {
-                this.style.animation = '';
-            }, 300);
-        });
+    // Safely close the active live feed if it exists
+    if (typeof derivWs !== 'undefined' && derivWs.readyState === WebSocket.OPEN) {
+        derivWs.close();
     }
 });
+// Function to extract email name and present modal structure smoothly
+function showWelcomeModal(userEmail) {
+    const welcomeModal = document.getElementById('welcome-modal');
+    const modalHeading = document.getElementById('modal-welcome-text');
+    
+    // Extract name pattern (e.g., "john" from "john@domain.com")
+    if (modalHeading && userEmail) {
+        const standardName = userEmail.split('@')[0].toUpperCase();
+        modalHeading.textContent = `WELCOME BACK, ${standardName}!`;
+    }
 
-// Deriv OAuth Configuration
+    if (welcomeModal) {
+        welcomeModal.style.display = 'flex';
+        // Force reflow to ensure transition is applied
+        void welcomeModal.offsetWidth;
+        welcomeModal.style.opacity = '1';
+        welcomeModal.style.visibility = 'visible';
+    }
+}
+
+// Hide welcome modal smoothly
+function hideWelcomeModal() {
+    const welcomeModal = document.getElementById('welcome-modal');
+    if (welcomeModal) {
+        welcomeModal.style.opacity = '0';
+        welcomeModal.style.visibility = 'hidden';
+        setTimeout(() => {
+            welcomeModal.style.display = 'none';
+        }, 300);
+    }
+}
