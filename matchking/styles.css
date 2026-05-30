@@ -1115,3 +1115,74 @@ body::before {
         align-self: flex-start;
     }
 }
+/* ==========================================================
+   MOBILE RESPONSIVE PATCH FOR MATCHKING TERMINAL
+========================================================== */
+
+/* 1. Eliminate the right-side gap by killing horizontal overflow */
+html, body, .mk-main {
+    overflow-x: hidden !important;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* 2. Force the middle content and columns to stack perfectly on phones */
+@media screen and (max-width: 1024px) {
+    .mk-terminal-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100%;
+        gap: 20px;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    /* Ensure all columns fit the phone screen exactly */
+    .col-left, 
+    .col-centre, 
+    .col-right {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important; /* Critical: prevents inner elements from breaking out */
+        margin: 0 !important;
+    }
+}
+
+/* 3. Fix the Footer, Digit Trail, and Deriv Connection layout */
+.mk-footer, 
+.mk-footer-content {
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+/* Force the digit trail and any long flex rows to wrap to the next line */
+.mk-digit-trail,
+.mk-brand-crown,
+.mk-system-links,
+[class*="digit-"] {
+    display: flex;
+    flex-wrap: wrap !important; /* This stops the horizontal stretching */
+    max-width: 100%;
+    box-sizing: border-box;
+    align-items: center;
+}
+
+/* Center footer elements nicely on smaller screens */
+@media screen and (max-width: 768px) {
+    .mk-system-links {
+        justify-content: center;
+        gap: 10px;
+        padding: 15px 10px;
+        text-align: center;
+        line-height: 1.8; /* Gives clickable links breathing room on touch screens */
+    }
+    
+    .mk-inline-divider {
+        display: none; /* Hide the little dot dividers on mobile for a cleaner stacked look */
+    }
+}
