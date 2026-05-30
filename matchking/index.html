@@ -158,17 +158,29 @@
 
 </div>
 <script>
-  // Forces the sidebar to work regardless of other script errors
+  // Bulletproof Sidebar Controller
   const hamburgerBtn = document.getElementById('sidebarToggle');
+  const closeBtn = document.querySelector('.mk-sb-close');
   const sidebarNav = document.getElementById('sidebar');
   
-  if (hamburgerBtn && sidebarNav) {
-    hamburgerBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      sidebarNav.classList.toggle('active');
-    });
+  if (sidebarNav) {
+    // Explicitly add 'active' on hamburger click
+    if (hamburgerBtn) {
+      hamburgerBtn.onclick = function(e) {
+        e.preventDefault();
+        sidebarNav.classList.add('active');
+      };
+    }
+    // Explicitly remove 'active' on X click
+    if (closeBtn) {
+      closeBtn.onclick = function(e) {
+        e.preventDefault();
+        sidebarNav.classList.remove('active');
+      };
+    }
   }
 </script>
+
 <script src="/matchking/script.js"></script>
 <script>
   // Automatically sets the copyright year to the current year
@@ -188,6 +200,7 @@
       });
     }
   });
+
 </script>
 </body>
 </html>

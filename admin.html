@@ -3,32 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Console Manager — Whitelist Portal</title>
+    <title>MatchKing Terminal — Whitelist Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
     <style>
-        body { background-color: #0b0f19; color: #f3f4f6; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .admin-card { background: #111827; border: 1px solid #1f2937; border-radius: 8px; padding: 30px; width: 100%; max-width: 400px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5); }
-        h2 { margin-bottom: 20px; font-size: 1.5rem; text-align: center; color: #3b82f6; }
-        label { display: block; margin-bottom: 6px; font-size: 0.85rem; color: #9ca3af; }
-        input { width: 100%; padding: 10px; margin-bottom: 15px; background: #1f2937; border: 1px solid #374151; border-radius: 4px; color: #fff; box-sizing: border-box; }
-        input:focus { border-color: #3b82f6; outline: none; }
-        button { width: 100%; padding: 12px; background: #3b82f6; border: none; color: white; font-weight: 600; border-radius: 4px; cursor: pointer; }
-        button:hover { background: #2563eb; }
-        .status-box { margin-top: 15px; padding: 10px; border-radius: 4px; font-size: 0.9rem; text-align: center; display: none; }
+        :root {
+            --gold: #E5C158;
+            --gold-glow: rgba(229, 193, 88, 0.35);
+            --void: #050507;
+            --text-main: #F4EFE4;
+            --text-muted: rgba(244, 239, 228, 0.4);
+        }
+
+        body { 
+            background: var(--void); color: var(--text-main); 
+            font-family: 'DM Mono', monospace; display: flex; 
+            justify-content: center; align-items: center; 
+            height: 100vh; margin: 0; padding: 20px; box-sizing: border-box;
+        }
+
+        .admin-card { 
+            background: linear-gradient(145deg, #121216, #09090c); 
+            border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; 
+            padding: 40px; width: 100%; max-width: 450px; 
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8); 
+        }
+
+        .header-wrap { text-align: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 20px; }
+        
+        .mk-crown { font-size: 40px; color: var(--gold); margin-bottom: 10px; line-height: 1; }
+
+        h2 { 
+            font-family: 'Bebas Neue', sans-serif; font-size: 28px; 
+            color: #fff; margin: 0 0 5px 0; letter-spacing: 2px; 
+        }
+
+        .subtitle { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+        .input-group { margin-bottom: 20px; }
+        
+        label { 
+            display: block; margin-bottom: 8px; font-size: 10px; 
+            color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; 
+        }
+
+        input { 
+            width: 100%; padding: 14px; background: #050505; 
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; 
+            color: #fff; font-family: 'DM Mono', monospace; font-size: 13px; 
+            box-sizing: border-box; transition: all 0.3s ease; 
+        }
+
+        input:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 10px var(--gold-glow); }
+
+        button { 
+            width: 100%; padding: 16px; margin-top: 10px;
+            background: linear-gradient(135deg, var(--gold), #997A15); 
+            border: none; color: #000; font-family: 'DM Mono', monospace; 
+            font-weight: 600; font-size: 13px; border-radius: 6px; cursor: pointer; 
+            text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s ease; 
+        }
+
+        button:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(229, 193, 88, 0.3); }
+
+        .status-box { 
+            margin-top: 20px; padding: 12px; border-radius: 6px; 
+            font-size: 11px; text-align: center; display: none; line-height: 1.5;
+        }
     </style>
 </head>
 <body>
 
 <div class="admin-card">
-    <h2>Whitelist Portal</h2>
+    <div class="header-wrap">
+        <div class="mk-crown">♛</div>
+        <h2>CONSOLE MANAGER</h2>
+        <div class="subtitle">Administrative Whitelist Portal</div>
+    </div>
     
-    <label for="adminPassword">Admin Secret Password</label>
-    <input type="password" id="adminPassword" placeholder="Enter Admin Password" required>
+    <div class="input-group">
+        <label for="adminPassword">Admin Secret Password</label>
+        <input type="password" id="adminPassword" placeholder="Enter strictly authorized key..." required>
+    </div>
 
-    <label for="clientEmail">Client Email Address</label>
-    <input type="email" id="clientEmail" placeholder="client@example.com" required>
+    <div class="input-group">
+        <label for="clientEmail">Client Email Address</label>
+        <input type="email" id="clientEmail" placeholder="client@example.com" required>
+    </div>
 
-    <label for="clientToken">License Access Token</label>
-    <input type="text" id="clientToken" placeholder="e.g. MK_PREMIUM_992" required>
+    <div class="input-group">
+        <label for="clientToken">License Access Token</label>
+        <input type="text" id="clientToken" placeholder="e.g. MK_PREMIUM_992" required>
+    </div>
 
     <button id="actionBtn" onclick="submitWhitelist()">WHITELIST CLIENT</button>
     
@@ -44,7 +112,7 @@ async function submitWhitelist() {
     const btn = document.getElementById('actionBtn');
 
     if(!adminPassword || !email || !token) {
-        alert('Please fill out all fields.');
+        alert('System Error: Please fill out all required fields.');
         return;
     }
 
@@ -55,19 +123,18 @@ async function submitWhitelist() {
         const response = await fetch('/api/auth/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, token, adminPassword }) // Sends password to backend
+            body: JSON.stringify({ email, token, adminPassword })
         });
 
         const data = await response.json();
         statusBox.style.display = 'block';
 
         if (response.ok) {
-            statusBox.style.background = 'rgba(16, 185, 129, 0.1)';
-            statusBox.style.color = '#34d399';
-            statusBox.style.border = '1px solid #065f46';
+            statusBox.style.background = 'rgba(39, 174, 96, 0.1)';
+            statusBox.style.color = '#4caf50';
+            statusBox.style.border = '1px solid rgba(39, 174, 96, 0.2)';
             statusBox.textContent = data.message;
             
-            // Clear inputs except the password for easier multi-entries
             document.getElementById('clientEmail').value = '';
             document.getElementById('clientToken').value = '';
         } else {
@@ -75,9 +142,9 @@ async function submitWhitelist() {
         }
     } catch (err) {
         statusBox.style.display = 'block';
-        statusBox.style.background = 'rgba(239, 68, 68, 0.1)';
-        statusBox.style.color = '#f87171';
-        statusBox.style.border = '1px solid #991b1b';
+        statusBox.style.background = 'rgba(255, 106, 106, 0.1)';
+        statusBox.style.color = '#ff6a6a';
+        statusBox.style.border = '1px solid rgba(255, 106, 106, 0.2)';
         statusBox.textContent = err.message;
     } finally {
         btn.textContent = 'WHITELIST CLIENT';
