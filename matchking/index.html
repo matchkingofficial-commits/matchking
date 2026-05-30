@@ -141,9 +141,29 @@
     </div>
 
   </div><footer class="mk-footer">
-    <span>♛ MatchKing Free Engine</span>
+    <span>♛ MatchKing Premium Engine</span>
+    <div class="mk-copyright">
+  &copy; <span id="current-year"></span> MatchKing Terminal. All rights reserved.
+</div>
   </footer>
 
-</div><script src="/matchking/script.js"></script>
+</div>
+<script>
+  // Forces the sidebar to work regardless of other script errors
+  const hamburgerBtn = document.getElementById('sidebarToggle');
+  const sidebarNav = document.getElementById('sidebar');
+  
+  if (hamburgerBtn && sidebarNav) {
+    hamburgerBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      sidebarNav.classList.toggle('active');
+    });
+  }
+</script>
+<script src="/matchking/script.js"></script>
+<script>
+  // Automatically sets the copyright year to the current year
+  document.getElementById('current-year').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>

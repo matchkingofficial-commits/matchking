@@ -45,7 +45,18 @@ html, body {
   border-bottom: 1px solid var(--gold-border); height: 70px;
 }
 .mk-topbar-left { display: flex; align-items: center; gap: 15px; }
-.mk-hamburger { display: none; background: none; border: none; color: var(--gold-primary); font-size: 20px; }
+/* Forces the menu button to the absolute top layer so it can be clicked */
+.mk-hamburger { 
+  display: none; 
+  background: none; 
+  border: none; 
+  color: var(--gold-primary); 
+  font-size: 26px; 
+  cursor: pointer; 
+  z-index: 9999; 
+  position: relative;
+  padding: 8px; /* Makes the tap target larger on phones */
+}
 .mk-topbar-brand { display: flex; align-items: center; gap: 12px; }
 .mk-topbar-crown { font-size: 26px; color: var(--gold-bright); text-decoration: none; text-shadow: 0 0 15px var(--gold-intense); }
 .mk-topbar-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1.5px; color: #fff; line-height: 1; }
@@ -134,9 +145,27 @@ html, body {
   color: var(--text-muted); text-shadow: none; text-align: center;
   display: flex; flex-direction: column; align-items: center; gap: 8px;
 }
-.mk-radar-icon { font-size: 28px; color: var(--gold-primary); opacity: 0.5; margin-bottom: 5px; animation: pulseFade 2s infinite; }
-.mk-no-signal-title { color: #fff; font-weight: 500; letter-spacing: 1px; }
-.mk-no-signal-sub { font-size: 10px; color: rgba(255,255,255,0.3); }
+.mk-radar-icon { 
+  font-size: 28px !important; 
+  color: var(--gold-primary); 
+  opacity: 0.5; 
+  margin-bottom: 5px; 
+  animation: pulseFade 2s infinite; 
+}
+/* Forces the awaiting signal text to stay small inside the ring */
+.mk-no-signal-title { 
+  color: #fff; 
+  font-weight: 500; 
+  letter-spacing: 1px; 
+  font-size: 18px !important; 
+  line-height: 1.2;
+}
+
+.mk-no-signal-sub { 
+  font-size: 11px !important; 
+  color: rgba(255,255,255,0.3); 
+  line-height: 1.2;
+}
 
 .mk-lens-footer {
   margin-top: 30px; font-size: 11px; color: var(--gold-primary); letter-spacing: 1px;
@@ -214,4 +243,18 @@ html, body {
   #prediction-highlights { font-size: 90px; }
   .mk-telemetry-grid { grid-template-columns: 1fr; }
   .mk-digit-trail-wrap { flex-direction: column; text-align: center; }
+}
+.mk-copyright {
+  font-family: var(--ff-mono); /* Uses your existing DM Mono font */
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--dim); /* Faint cream color from your variables */
+  text-align: center;
+  width: 100%;
+  padding: 10px 0;
+}
+
+/* Optional: Make the brand name stand out slightly in gold */
+.mk-copyright span {
+  color: var(--gold);
 }
