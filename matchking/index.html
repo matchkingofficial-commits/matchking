@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>MatchKing Terminal — Command the Market</title>
   <meta name="description" content="MatchKing Terminal — Professional trading signals and digit analysis for Deriv matches">
   <meta name="theme-color" content="#C9A84C">
@@ -22,41 +22,7 @@
 </head>
 <body>
 
-
- <div id="welcome-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(13, 17, 23, 0.85); justify-content: center; align-items: center; z-index: 9999; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; backdrop-filter: blur(4px);">
-    
-    <div style="background-color: #161b22; border: 1px solid #30363d; padding: 35px; border-radius: 12px; text-align: center; max-width: 420px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-        <div style="font-size: 3rem; color: #58a6ff; margin-bottom: 15px;">
-            <i class="fas fa-id-card-clip"></i>
-        </div>
-        
-        <h1 id="modal-welcome-text" style="color: #fff; margin: 0 0 10px 0; font-size: 1.8rem;">Welcome Back!</h1>
-        <p style="color: #8b949e; margin-bottom: 25px; font-size: 0.95rem;">Access granted. Your secure workspace is ready.</p>
-        
-        <button onclick="hideWelcomeModal()" style="background-color: #58a6ff; color: #ffffff; border: none; padding: 12px 24px; font-size: 1rem; font-weight: bold; border-radius: 6px; cursor: pointer; width: 100%; transition: background 0.2s;">
-            Enter Terminal Interface
-        </button>
-    </div>
-</div>
-
-
-
-<!-- ══ WELCOME MODAL ══ -->
-<div id="welcome-modal" class="mk-overlay">
-  <div class="mk-modal-box" style="text-align:center">
-    <div class="mk-auth-crown" style="font-size:56px;margin-bottom:12px">♛</div>
-    <h2 class="mk-modal-title">Welcome to MatchKing Terminal</h2>
-    <p class="mk-modal-desc">Your account has been successfully authenticated.</p>
-    <div class="mk-welcome-details" id="welcome-user-info"></div>
-    <button class="mk-btn mk-btn-gold mk-btn-full" style="margin-top:20px" onclick="hideWelcomeModal()">
-      <i class="fas fa-rocket"></i><span>Start Trading</span>
-    </button>
-  </div>
-</div>
-
-<!-- ══ SIDEBAR ══ -->
 <aside class="mk-sidebar" id="sidebar">
-  <!-- Sidebar top bar visible on mobile -->
   <div class="mk-sidebar-topbar">
     <div class="mk-sidebar-brand">
       <span class="mk-sb-crown">♛</span>
@@ -68,59 +34,46 @@
     <button class="mk-sb-close" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
   </div>
 
-  <!-- Markets -->
-  
-
-  <!-- Tools -->
-  
-
-  
-
-  <!-- User -->
-  <div id="user-info-sidebar" class="mk-user-block" style="display:none">
+  <div id="user-info-sidebar" class="mk-user-block">
     <div class="mk-user-avatar"><i class="fas fa-user"></i></div>
     <div class="mk-user-info">
-      <div class="mk-user-name" id="user-name-sidebar">Trader</div>
-      <div class="mk-user-status"><span class="mk-status-dot"></span>Active</div>
+      <div class="mk-user-name" id="user-name-sidebar">PUBLIC TRADER</div>
+      <div class="mk-user-status"><span class="mk-status-dot" style="background:#4caf50;"></span>LIVE ACCESS</div>
     </div>
-    <button class="mk-logout-btn" onclick="logout()" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
   </div>
 
-  <!-- Connection -->
-  <div class="mk-conn-block">
-    <div class="mk-conn-label">Connection</div>
+  <div class="mk-conn-block" style="margin-top:auto;">
+    <div class="mk-conn-label">System Feed</div>
     <div class="mk-conn-val" id="connection-status-sidebar">Offline</div>
   </div>
 </aside>
 
-<!-- ══ MAIN ══ -->
 <div class="mk-main" id="mainContent">
 
-  <!-- ── TOP BAR ── -->
   <header class="mk-topbar">
     <div class="mk-topbar-left">
-      
+      <button class="mk-hamburger" id="sidebarToggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </button>
       <div class="mk-topbar-brand">
-        <a href="../index.html" class="mk-topbar-crown" title="Back Home">  ♛</a>
+        <a href="index.html" class="mk-topbar-crown" title="Refresh Dashboard">♛</a>
         <div>
-          <div class="mk-topbar-title">MatchKing Terminal</div>
-          <div class="mk-topbar-sub" id="connection-badge">● Connecting…</div>
+          <div class="mk-topbar-title" id="welcome-text">MatchKing Analysis Engine</div>
+          <div class="mk-topbar-sub" id="connection-badge">● Synchronizing Core pipelines…</div>
         </div>
       </div>
     </div>
 
     <div class="mk-topbar-right">
-      
       <button id="pwaInstallBtn" class="mk-btn mk-btn-gold mk-btn-sm pwa-install-btn" style="display:none">
-        <i class="fas fa-download"></i><span>Install</span>
+        <i class="fas fa-download"></i><span>Install App</span>
       </button>
     </div>
   </header>
 
-  <!-- ── COMMAND BAR ── -->
   <div class="mk-command-bar">
     <div class="mk-cmd-item">
-      <label class="mk-cmd-label">Analysis Mode</label>
+      <label class="mk-cmd-label">Analysis Asset Grid</label>
       <select id="symbol-select" class="mk-select" onchange="updateSymbol(this.value)">
         <option value="ALL" selected>🌐 All Volatility Markets</option>
         <option value="R_100">⚡ Volatility 100 Index</option>
@@ -128,6 +81,8 @@
         <option value="R_50">⚡ Volatility 50 Index</option>
         <option value="R_25">⚡ Volatility 25 Index</option>
         <option value="R_10">⚡ Volatility 10 Index</option>
+        <option value="RDBEAR">🐻 Bear Market Index</option>
+        <option value="RDBULL">🐂 Bull Market Index</option>
         <option value="1HZ10V">⚡ 1s Volatility 10 Index</option>
         <option value="1HZ15V">⚡ 1s Volatility 15 Index</option>
         <option value="1HZ30V">⚡ 1s Volatility 30 Index</option>
@@ -137,118 +92,106 @@
         <option value="1HZ100V">⚡ 1s Volatility 100 Index</option>
       </select>
     </div>
-    
+    <div class="mk-cmd-item">
+      <label class="mk-cmd-label">Analytical Evaluation Window</label>
+      <select id="tick-count-select" class="mk-select" onchange="updateTickCount(this.value)">
+        <option value="50">50 Historical Ticks</option>
+        <option value="100">100 Historical Ticks</option>
+        <option value="120" selected>120 Historical Ticks</option>
+        <option value="150">150 Historical Ticks</option>
+        <option value="200">200 Historical Ticks</option>
+      </select>
+    </div>
+    <div class="mk-cmd-item stats-item">
+      <span id="active-markets">0/14 Assets Calibrated</span>
+      <span>Ticks Logged: <strong id="tick-counter">0</strong></span>
+    </div>
   </div>
 
-  <!-- ══════════════════════════════════
-       MAIN TERMINAL GRID
-  ══════════════════════════════════ -->
   <div class="mk-terminal-grid">
 
-    <!-- ── LEFT COLUMN: Live price + market vitals ── -->
-    
+    <div class="mk-col-centre">
 
-    <!-- ── CENTRE COLUMN: Pattern recognition (main signal) ── -->
-   <div class="mk-col-centre" style="display: flex; flex-direction: column; gap: 20px;">
+      <div class="mk-signal-throne">
+        <div class="mk-throne-head">
+          <div>
+            <div class="mk-card-title">🎯 Pattern Recognition</div>
+            <div class="mk-throne-sub">Real-time MATCHES digit prediction engine</div>
+          </div>
+          <div class="mk-countdown-badge" id="prediction-countdown">⏰ 45s</div>
+        </div>
 
-  <div class="mk-signal-throne">
-    <div class="mk-throne-head">
-      <div>
-        <div class="mk-card-title">🎯 Pattern Recognition</div>
-        <div class="mk-throne-sub">Real-time MATCHES digit prediction engine</div>
+        <div id="prediction-highlights" class="mk-predictions">
+          <div class="mk-no-signal">
+            <div class="mk-no-signal-crown">♛</div>
+            <div class="mk-no-signal-title">Awaiting market data…</div>
+            <div class="mk-no-signal-sub">Patterns will appear once connected</div>
+          </div>
+        </div>
       </div>
-      <div class="mk-countdown-badge" id="prediction-countdown">⏰ 45s</div>
-    </div>
 
-    <div id="prediction-highlights" class="mk-predictions">
-      <div class="mk-no-signal">
-        <div class="mk-no-signal-crown">♛</div>
-        <div class="mk-no-signal-title">Awaiting market data…</div>
-        <div class="mk-no-signal-sub">Patterns will appear once connected</div>
+      <div class="mk-signal-throne">
+        <div class="mk-throne-head">
+          <div>
+            <div class="mk-card-title">📈 Market Activity</div>
+            <div class="mk-throne-sub">Live streaming tick analytics and transaction telemetry</div>
+          </div>
+          <div class="mk-activity-badge"><span class="mk-pulse-node"></span> Live Telemetry</div>
+        </div>
+
+        <div class="mk-activity-body">
+          <div class="mk-activity-metrics-grid">
+            <div class="mk-metric-card">
+              <div class="mk-metric-meta">
+                <i class="fas fa-fingerprint"></i>
+                <span>Last Digit</span>
+              </div>
+              <div class="mk-metric-display" id="last-digit">--</div>
+            </div>
+
+            <div class="mk-metric-card">
+              <div class="mk-metric-meta">
+                <i class="fas fa-coins"></i>
+                <span>Last Price</span>
+              </div>
+              <div class="mk-metric-display mk-gold-text" id="current-price">--</div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <div class="mk-signal-throne">
-    <div class="mk-throne-head">
-      <div>
-        <div class="mk-card-title">📈 Market Activity</div>
-        <div class="mk-throne-sub">Live streaming tick analytics and transaction telemetry</div>
-      </div>
-      <div class="mk-activity-badge"><span class="mk-pulse-node"></span> Live Telemetry</div>
-    </div>
-
-    <div class="mk-activity-body">
-      <div class="mk-activity-metrics-grid">
+      <div class="mk-digit-trail-wrap">
+        <div class="mk-trail-segment mk-digit-trail-label">
+          <span class="mk-live-dot"></span>
+          <span>Digit Trail</span>
+        </div>
         
-        <div class="mk-metric-card">
-          <div class="mk-metric-meta">
-            <i class="fas fa-fingerprint"></i>
-            <span>Last Digit</span>
-          </div>
-          <div class="mk-metric-display" id="last-digit">--</div>
+        <div class="mk-trail-segment mk-server-status">
+          <i class="fas fa-server"></i>
+          <span>Connected to Deriv API</span>
+          <span class="mk-inline-divider">·</span>
+          <i class="fas fa-bolt"></i>
+          <span>Real-time Analysis</span>
         </div>
-
-        <div class="mk-metric-card">
-          <div class="mk-metric-meta">
-            <i class="fas fa-coins"></i>
-            <span>Last Price</span>
-          </div>
-          <div class="mk-metric-display mk-gold-text" id="current-price">--</div>
+        
+        <div class="mk-trail-segment mk-system-links">
+          <a href="/refund/">Refund Policy</a>
+          <span class="mk-inline-divider">·</span>
+          <a href="/">Home</a>
+          <span class="mk-inline-divider">·</span>
+          <span class="mk-brand-crown">♛ MatchKing</span>
         </div>
-
-      </div>
-    </div>
-  </div>
-
-</div>
-        <!-- Digit trail visualiser -->
-    <div class="mk-digit-trail-wrap">
-  
-  <div class="mk-trail-segment mk-digit-trail-label">
-    <span class="mk-live-dot"></span>
-    <span class="mk-segment-text">Digit Trail</span>
-  </div>
-  
-  <div class="mk-trail-segment mk-server-status">
-    <i class="fas fa-server"></i>
-    <span>Connected to Deriv API</span>
-    <span class="mk-inline-divider">·</span>
-    <i class="fas fa-bolt"></i>
-    <span>Real-time Analysis</span>
-  </div>
-  
-  <div class="mk-trail-segment mk-system-links">
-    <a href="/refund/">Refund Policy</a>
-    <span class="mk-inline-divider">·</span>
-    <a href="/">Home</a>
-    <span class="mk-inline-divider">·</span>
-    <span class="mk-brand-crown">♛ MatchKing</span>
-  </div>
-
-</div>
       </div>
 
-    </div><!-- /col-centre -->
-
-    <!-- ── RIGHT COLUMN: Even/Odd + activity ── -->
-    
-
-                </div><!-- /terminal-grid -->
-
-  <!-- FOOTER -->
-  <footer class="mk-footer">
-    
+    </div></div><footer class="mk-footer">
+    <span><i class="fas fa-server"></i> Public Open Pipeline &nbsp;·&nbsp; <i class="fas fa-bolt"></i> Live WebSocket Channel</span>
+    <span>♛ MatchKing Free Engine</span>
   </footer>
 
-</div><!-- /mk-main -->
-
-<script src="/matchking/pwa-helper.js"></script>
+</div><script src="/matchking/pwa-helper.js"></script>
 <script src="/matchking/script.js"></script>
 
-<!-- Sync duplicate IDs so script.js targets either set -->
 <script>
-// Mirror values from primary IDs to secondary where we have duplication
 (function(){
   const pairs = [
     ['current-price',   'current-price-2'],
