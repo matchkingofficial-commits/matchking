@@ -151,53 +151,84 @@
     
 
     <!-- ── CENTRE COLUMN: Pattern recognition (main signal) ── -->
-    <div class="mk-col-centre">
+   <div class="mk-col-centre" style="display: flex; flex-direction: column; gap: 20px;">
 
-      <div class="mk-signal-throne">
-        <div class="mk-throne-head">
-          <div>
-            <div class="mk-card-title" style="font-size:18px">🎯 Pattern Recognition</div>
-            <div class="mk-throne-sub">Real-time MATCHES digit prediction engine</div>
+  <div class="mk-signal-throne">
+    <div class="mk-throne-head">
+      <div>
+        <div class="mk-card-title">🎯 Pattern Recognition</div>
+        <div class="mk-throne-sub">Real-time MATCHES digit prediction engine</div>
+      </div>
+      <div class="mk-countdown-badge" id="prediction-countdown">⏰ 45s</div>
+    </div>
+
+    <div id="prediction-highlights" class="mk-predictions">
+      <div class="mk-no-signal">
+        <div class="mk-no-signal-crown">♛</div>
+        <div class="mk-no-signal-title">Awaiting market data…</div>
+        <div class="mk-no-signal-sub">Patterns will appear once connected</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mk-signal-throne">
+    <div class="mk-throne-head">
+      <div>
+        <div class="mk-card-title">📈 Market Activity</div>
+        <div class="mk-throne-sub">Live streaming tick analytics and transaction telemetry</div>
+      </div>
+      <div class="mk-activity-badge"><span class="mk-pulse-node"></span> Live Telemetry</div>
+    </div>
+
+    <div class="mk-activity-body">
+      <div class="mk-activity-metrics-grid">
+        
+        <div class="mk-metric-card">
+          <div class="mk-metric-meta">
+            <i class="fas fa-fingerprint"></i>
+            <span>Last Digit</span>
           </div>
-          <div class="mk-countdown-badge" id="prediction-countdown">⏰ 45s</div>
+          <div class="mk-metric-display" id="last-digit">--</div>
         </div>
 
-        <!-- Prediction area — JS writes here -->
-        <div id="prediction-highlights" class="mk-predictions">
-          <div class="mk-no-signal">
-            <div class="mk-no-signal-crown">♛</div>
-            <div>Awaiting market data…</div>
-            <div class="mk-no-signal-sub">Patterns will appear once connected</div>
+        <div class="mk-metric-card">
+          <div class="mk-metric-meta">
+            <i class="fas fa-coins"></i>
+            <span>Last Price</span>
           </div>
+          <div class="mk-metric-display mk-gold-text" id="current-price">--</div>
         </div>
-                    <div class="glass-card">
-                    <div class="card-header">
-                        <h3 class="card-title">📈 Market Activity</h3>
-                    </div>
-                    <div class="card-content">
-                        <div class="activity-stats">
-                           <div class="info-row">
-                                <span class="info-label">Last Digit</span>
-                                <span class="info-value" id="last-digit">--</span>
-                            </div>
-                            <div class="activity-stat">
-                                <span class="activity-label">Last Price</span>
-                                <span class="activity-value" id="current-price">--</span>
-                            </div>
-                        </div>
-                    </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
         <!-- Digit trail visualiser -->
-        <div class="mk-digit-trail-wrap">
-          <div class="mk-digit-trail-label">
-            <span class="mk-live-dot"></span> Digit Trail
-          </div>
-          <span><i class="fas fa-server"></i> Connected to Deriv API &nbsp;·&nbsp; <i class="fas fa-bolt"></i> Real-time Analysis</span>
-    <span>
-      <a href="/refund/">Refund Policy</a> &nbsp;·&nbsp;
-      <a href="/">Home</a> &nbsp;·&nbsp;
-      ♛ MatchKing
-    </span>
-        </div>
+    <div class="mk-digit-trail-wrap">
+  
+  <div class="mk-trail-segment mk-digit-trail-label">
+    <span class="mk-live-dot"></span>
+    <span class="mk-segment-text">Digit Trail</span>
+  </div>
+  
+  <div class="mk-trail-segment mk-server-status">
+    <i class="fas fa-server"></i>
+    <span>Connected to Deriv API</span>
+    <span class="mk-inline-divider">·</span>
+    <i class="fas fa-bolt"></i>
+    <span>Real-time Analysis</span>
+  </div>
+  
+  <div class="mk-trail-segment mk-system-links">
+    <a href="/refund/">Refund Policy</a>
+    <span class="mk-inline-divider">·</span>
+    <a href="/">Home</a>
+    <span class="mk-inline-divider">·</span>
+    <span class="mk-brand-crown">♛ MatchKing</span>
+  </div>
+
+</div>
       </div>
 
     </div><!-- /col-centre -->

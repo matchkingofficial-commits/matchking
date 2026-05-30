@@ -835,3 +835,283 @@ body::before {
     0 0 18px rgba(244,196,48,0.35),
     0 0 38px rgba(244,196,48,0.20);
 }
+/* ═══════════════════════════════════════════════════════════════════════════
+   MATCHKING TERMINAL — DIGIT TRAIL UNIFORM FOOTER WRAPPER
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.mk-digit-trail-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 14px 20px;
+    background: #13131a; /* Perfectly coordinates with the center panel layout */
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; /* Matches standard lower metadata sizes */
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.4);
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Base Uniform Alignment Component for all segments */
+.mk-trail-segment {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 20px; /* Forces exact parallel vertical line-height across elements */
+}
+
+/* Left Section: Active Label */
+.mk-digit-trail-label {
+    font-weight: 500;
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+/* Pulsing Network State Tracker Indicator */
+.mk-live-dot {
+    width: 6px;
+    height: 6px;
+    background: #4caf50;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 6px rgba(76, 175, 80, 0.6);
+    animation: mkEngineHeartbeat 1.8s infinite ease-in-out;
+}
+
+/* Center Section: Core Pipeline Metrics */
+.mk-server-status {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.mk-server-status i {
+    color: #C9A84C; /* MatchKing signature gold color */
+    font-size: 10px;
+}
+
+/* Right Section: Core Hyperlinks */
+.mk-system-links a {
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+    transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mk-system-links a:hover {
+    color: #C9A84C; /* Transitions smoothly to gold when highlighted */
+}
+
+.mk-brand-crown {
+    color: #C9A84C;
+    font-weight: 600;
+}
+
+/* Clean UI Dividers replacing un-uniform non-breaking spaces */
+.mk-inline-divider {
+    color: rgba(255, 255, 255, 0.1);
+    user-select: none;
+}
+
+/* Pulsing Engine Animation Sequence */
+@keyframes mkEngineHeartbeat {
+    0%, 100% { opacity: 0.3; transform: scale(0.95); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+
+/* Responsive Breakpoint: Stack gracefully into balanced lines on compact screens */
+@media (max-width: 768px) {
+    .mk-digit-trail-wrap {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 12px;
+        padding: 16px;
+    }
+    
+    .mk-trail-segment {
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .mk-system-links {
+        border-top: 1px solid rgba(255, 255, 255, 0.03);
+        padding-top: 10px;
+        margin-top: 2px;
+    }
+}
+/* ═══════════════════════════════════════════════════════════════════════════
+   MATCHKING TERMINAL — UNIFIED WORKSPACE COMPONENT CORES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Unified Layout Foundations for Main Terminal Cards */
+.mk-signal-throne {
+    background: #13131a; /* Pure deep matchking panel color */
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 6px;
+    padding: 24px;
+    box-sizing: border-box;
+    width: 100%;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mk-signal-throne:hover {
+    border-color: rgba(201, 168, 76, 0.15); /* Slight illumination when active */
+}
+
+/* Header Sections */
+.mk-throne-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+}
+
+.mk-card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: #ffffff;
+    margin: 0 0 4px 0;
+}
+
+.mk-throne-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+}
+
+/* Badge System Modules */
+.mk-countdown-badge,
+.mk-activity-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.mk-countdown-badge {
+    background: rgba(255, 106, 106, 0.06);
+    border: 1px solid rgba(255, 106, 106, 0.15);
+    color: #ff6a6a;
+}
+
+.mk-activity-badge {
+    background: rgba(201, 168, 76, 0.05);
+    border: 1px solid rgba(201, 168, 76, 0.15);
+    color: #C9A84C;
+}
+
+/* Pulse Node Indicator */
+.mk-pulse-node {
+    width: 6px;
+    height: 6px;
+    background: #C9A84C;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #C9A84C;
+    animation: mkBadgePulse 2s infinite ease-in-out;
+}
+
+/* Awaiting Market Data Blank States */
+.mk-predictions {
+    min-height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mk-no-signal {
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 12px;
+}
+
+.mk-no-signal-crown {
+    font-size: 36px;
+    color: rgba(255, 255, 255, 0.06);
+    margin-bottom: 8px;
+}
+
+.mk-no-signal-sub {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.15);
+    margin-top: 4px;
+}
+
+/* ── Market activity interior content metrics template layouts ── */
+.mk-activity-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    width: 100%;
+}
+
+.mk-metric-card {
+    background: #1a1a24; /* Elevated inner box color */
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+    padding: 16px 20px;
+    box-sizing: border-box;
+}
+
+.mk-metric-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 10px;
+}
+
+.mk-metric-meta i {
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 10px;
+}
+
+.mk-metric-display {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 1px;
+    color: #ffffff;
+    line-height: 1;
+}
+
+.mk-gold-text {
+    color: #C9A84C !important;
+}
+
+/* Animation Timelines */
+@keyframes mkBadgePulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+}
+
+/* Responsive Scaling: collapse data grids nicely on smartphone sizes */
+@media (max-width: 520px) {
+    .mk-activity-metrics-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .mk-throne-head {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .mk-countdown-badge, 
+    .mk-activity-badge {
+        align-self: flex-start;
+    }
+}
