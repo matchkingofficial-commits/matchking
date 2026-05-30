@@ -420,3 +420,13 @@ html, body {
 header, .mk-header, .top-bar {
   position: relative !important;
 }
+/* ── HEADER SAFE ZONE (PREVENTS CROWN COLLISION) ── */
+header, .mk-header, .top-bar {
+  /* Creates a dedicated 65px empty space on the left edge specifically for the menu button */
+  padding-left: 65px !important; 
+}
+
+/* Optional: Gives the crown a little extra breathing room if it still feels too close */
+.mk-logo, .mk-brand, .mk-brand-crown {
+  margin-left: 5px !important;
+}
