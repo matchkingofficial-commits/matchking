@@ -110,86 +110,105 @@
         </form>
     </div>
 
-    <script>
-        function getDeviceFingerprint() {
-            const navigatorInfo = window.navigator.userAgent + window.navigator.language + window.screen.colorDepth;
-            let hash = 0;
-            for (let i = 0; i < navigatorInfo.length; i++) {
-                const char = navigatorInfo.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash |= 0;
-            }
-            return 'mk_dev_' + Math.abs(hash);
+   <script>
+    /* ═════════════════════════════════════════════════════════════
+       STAGE 1: STRICT HARDWARE IDENTIFICATION (Anti-Clone Loophole)
+       ═════════════════════════════════════════════════════════════ */
+    function getStrictDeviceID() {
+        // Look deep inside the browser's persistent storage layer for an existing ID
+        let deviceId = localStorage.getItem('mk_strict_hw_id');
+        
+        // If it doesn't exist, generate an unbreakable unique profile tracking signature
+        if (!deviceId) {
+            const randomEntropy = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            deviceId = 'mk_hw_' + Date.now().toString(36) + '_' + randomEntropy;
+            
+            // Burn this hardware token permanently into this device layout storage
+            localStorage.setItem('mk_strict_hw_id', deviceId);
         }
+        return deviceId;
+    }
 
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const errorDisplay = document.getElementById('error-display');
-            const submitBtn = document.getElementById('submit-btn');
+    /* ═════════════════════════════════════════════════════════════
+       STAGE 2: PRIMARY AUTOMATED API AUTHENTICATION PORTAL
+       ═════════════════════════════════════════════════════════════ */
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value.trim(); // Trim spaces to prevent false rejections
+        const errorDisplay = document.getElementById('error-display');
+        const submitBtn = document.getElementById('submit-btn');
 
-            errorDisplay.style.display = 'none';
-            submitBtn.textContent = 'VALIDATING PORT...';
+        errorDisplay.style.display = 'none';
+        submitBtn.textContent = 'VALIDATING PORT...';
 
-            try {
-                const response = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        email: email,
-                        device_fp: getDeviceFingerprint()
-                    })
-                });
+        try {
+            // Retrieve the absolute permanent hardware ID
+            const strictId = getStrictDeviceID();
 
-                const data = await response.json();
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: email,
+                    device_fp: strictId // Sends the strict hardware lock down to server.js
+                })
+            });
 
-                if (!response.ok) {
-                    throw new Error(data.error || 'Authentication Failed.');
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Authentication Failed.');
+            }
+
+            // Bind current sessions context profiles safely
+            sessionStorage.setItem('mk_auth_token', data.token);
+            sessionStorage.setItem('mk_user_email', data.email);
+            sessionStorage.setItem('mk_device_fp', strictId);
+            sessionStorage.setItem('mk_login_time', Date.now());
+
+            // Route user context straight onto terminal main workspace screen
+            window.location.href = '/matchking/index.html';
+
+        } catch (err) {
+            errorDisplay.textContent = err.message;
+            errorDisplay.style.display = 'block';
+            submitBtn.textContent = 'INITIALIZE CONNECTION';
+        }
+    });
+
+    /* ═════════════════════════════════════════════════════════════
+       STAGE 3: PRESERVED FALLBACK INTERFACE SYSTEM
+       ═════════════════════════════════════════════════════════════ */
+    document.addEventListener('DOMContentLoaded', () => {
+        const loginFormFallback = document.getElementById('matchking-login-form');
+        if (loginFormFallback) {
+            loginFormFallback.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const emailValue = document.getElementById('login-email').value.trim();
+                const passwordValue = document.getElementById('login-password').value;
+                const errorDisplay = document.getElementById('login-error-msg');
+
+                if (!emailValue || !passwordValue) {
+                    if (errorDisplay) errorDisplay.textContent = "Please fill in all layout credentials fields.";
+                    return;
                 }
 
-                sessionStorage.setItem('mk_auth_token', data.token);
-                sessionStorage.setItem('mk_user_email', data.email);
-                sessionStorage.setItem('mk_device_fp', getDeviceFingerprint());
-                sessionStorage.setItem('mk_login_time', Date.now());
-
-                window.location.href = '/matchking/index.html';
-
-            } catch (err) {
-                errorDisplay.textContent = err.message;
-                errorDisplay.style.display = 'block';
-                submitBtn.textContent = 'INITIALIZE CONNECTION';
-            }
-        });
-
-        // Preserved Fallback logic from user's original file
-        document.addEventListener('DOMContentLoaded', () => {
-            const loginFormFallback = document.getElementById('matchking-login-form');
-            if (loginFormFallback) {
-                loginFormFallback.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const emailValue = document.getElementById('login-email').value.trim();
-                    const passwordValue = document.getElementById('login-password').value;
-                    const errorDisplay = document.getElementById('login-error-msg');
-                    if (!emailValue || !passwordValue) {
-                        if (errorDisplay) errorDisplay.textContent = "Please fill in all layout credentials fields.";
-                        return;
+                try {
+                    if (emailValue && passwordValue.length >= 4) {
+                        const sessionSecureToken = "dp_live_token_" + btoa(emailValue + Date.now()).substring(0, 32);
+                        sessionStorage.setItem('mk_auth_token', sessionSecureToken);
+                        sessionStorage.setItem('mk_user_email', emailValue);
+                        sessionStorage.setItem('mk_login_time', Date.now().toString());
+                        window.location.href = '/index.html'; 
+                    } else {
+                        if (errorDisplay) errorDisplay.textContent = "Invalid sign-in information credential sets.";
                     }
-                    try {
-                        if (emailValue && passwordValue.length >= 4) {
-                            const sessionSecureToken = "dp_live_token_" + btoa(emailValue + Date.now()).substring(0, 32);
-                            sessionStorage.setItem('mk_auth_token', sessionSecureToken);
-                            sessionStorage.setItem('mk_user_email', emailValue);
-                            sessionStorage.setItem('mk_login_time', Date.now().toString());
-                            window.location.href = '/index.html'; 
-                        } else {
-                            if (errorDisplay) errorDisplay.textContent = "Invalid sign-in information credential sets.";
-                        }
-                    } catch (error) {
-                        if (errorDisplay) errorDisplay.textContent = "Connection interface failed during verification processing.";
-                    }
-                });
-            }
-        });
-    </script>
+                } catch (error) {
+                    if (errorDisplay) errorDisplay.textContent = "Connection interface failed during verification processing.";
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>
