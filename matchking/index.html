@@ -1,201 +1,243 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>MatchKing Terminal — Premium Edition</title>
-  <meta name="description" content="MatchKing Terminal — Professional trading signals and digit analysis">
-  <meta name="theme-color" content="#E5C158">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<!-- ══ PREMIUM WELCOME MODAL ══ -->
-<div id="welcome-modal" class="mk-modal-overlay">
-  <div class="mk-modal-box">
-    <div class="mk-modal-icon">♛</div>
-    <h2 class="mk-modal-title" id="modal-welcome-text">WELCOME BACK!</h2>
-    <p class="mk-modal-text">Your secure connection to the MatchKing Analysis Engine has been established.</p>
-    <button class="mk-modal-btn" onclick="hideWelcomeModal()">INITIALIZE SYSTEM</button>
-  </div>
-</div>
-
-<aside class="mk-sidebar" id="sidebar">
-  <div class="mk-sidebar-topbar">
-    <div class="mk-sidebar-brand">
-      <span class="mk-sb-crown">♛</span>
-      <div>
-        <div class="mk-sb-name">MatchKing</div>
-        <div class="mk-sb-tag">Terminal</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>MatchKing Terminal — Premium Edition</title>
+    <meta
+      name="description"
+      content="MatchKing Terminal — Professional trading signals and digit analysis"
+    />
+    <meta name="theme-color" content="#E5C158" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- ══ PREMIUM WELCOME MODAL ══ -->
+    <div id="welcome-modal" class="mk-modal-overlay">
+      <div class="mk-modal-box">
+        <div class="mk-modal-icon">♛</div>
+        <h2 class="mk-modal-title" id="modal-welcome-text">WELCOME BACK!</h2>
+        <p class="mk-modal-text">
+          Your secure connection to the MatchKing Analysis Engine has been
+          established.
+        </p>
+        <button class="mk-modal-btn" onclick="hideWelcomeModal()">
+          INITIALIZE SYSTEM
+        </button>
       </div>
     </div>
-    <button class="mk-sb-close" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
-  </div>
-  <div id="user-info-sidebar" class="mk-user-block">
-    <div class="mk-user-avatar"><i class="fas fa-user"></i></div>
-    <div class="mk-user-info">
-      <div class="mk-user-name" id="user-name-sidebar">PREMIUM TRADER</div>
-      <div class="mk-user-status"><span class="mk-status-dot" style="background:#4caf50;"></span>LIVE ACCESS</div>
-    </div>
-  </div>
-  <div class="mk-conn-block" style="margin-top:auto;">
-    <div class="mk-conn-label">System Feed</div>
-    <div class="mk-conn-val" id="connection-status-sidebar">Offline</div>
-  </div>
-</aside>
 
-<div class="mk-main" id="mainContent">
-
-  <header class="mk-topbar">
-    <div class="mk-topbar-left">
-      <button class="mk-hamburger" id="sidebarToggle" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i>
-      </button>
-      <div class="mk-topbar-brand">
-        <a href="/index.html" class="mk-topbar-crown">♛</a>
-        <div>
-          <div class="mk-topbar-title" id="welcome-text">MatchKing Engine</div>
-          <div class="mk-topbar-sub" id="connection-badge">● Synchronizing Core pipelines…</div>
+    <aside class="mk-sidebar" id="sidebar">
+      <div class="mk-sidebar-topbar">
+        <div class="mk-sidebar-brand">
+          <span class="mk-sb-crown">♛</span>
+          <div>
+            <div class="mk-sb-name">MatchKing</div>
+            <div class="mk-sb-tag">Terminal</div>
+          </div>
+        </div>
+        <button class="mk-sb-close" onclick="toggleSidebar()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="user-info-sidebar" class="mk-user-block">
+        <div class="mk-user-avatar"><i class="fas fa-user"></i></div>
+        <div class="mk-user-info">
+          <div class="mk-user-name" id="user-name-sidebar">PREMIUM TRADER</div>
+          <div class="mk-user-status">
+            <span class="mk-status-dot" style="background: #4caf50"></span>LIVE
+            ACCESS
+          </div>
         </div>
       </div>
-    </div>
-  </header>
+      <div class="mk-conn-block" style="margin-top: auto">
+        <div class="mk-conn-label">System Feed</div>
+        <div class="mk-conn-val" id="connection-status-sidebar">Offline</div>
+      </div>
+    </aside>
 
-  <div class="mk-command-bar">
-    <div class="mk-cmd-item">
-      <label class="mk-cmd-label">Analysis Asset</label>
-      <select id="symbol-select" class="mk-select" onchange="updateSymbol(this.value)">
-        <option value="ALL" selected>🌐 All Volatility Markets</option>
-        <option value="R_100">⚡ Volatility 100 Index</option>
-        <option value="R_75">⚡ Volatility 75 Index</option>
-      </select>
-    </div>
-    <div class="mk-cmd-item">
-      <label class="mk-cmd-label">Evaluation Window</label>
-      <select id="tick-count-select" class="mk-select" onchange="updateTickCount(this.value)">
-        <option value="100">100 Ticks</option>
-        <option value="120" selected>120 Ticks</option>
-      </select>
-    </div>
-    <div class="mk-cmd-item stats-item">
-      <span id="active-markets" class="mk-gold-highlight">System Armed</span>
-      <span>Ticks Logged: <strong id="tick-counter" class="mk-gold-highlight">0</strong></span>
-    </div>
-  </div>
+    <div class="mk-main" id="mainContent">
+      <header class="mk-topbar">
+        <div class="mk-topbar-left">
+          <button
+            class="mk-hamburger"
+            id="sidebarToggle"
+            onclick="toggleSidebar()"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="mk-topbar-brand">
+            <a href="/index.html" class="mk-topbar-crown">♛</a>
+            <div>
+              <div class="mk-topbar-title" id="welcome-text">
+                MatchKing Engine
+              </div>
+              <div class="mk-topbar-sub" id="connection-badge">
+                ● Synchronizing Core pipelines…
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
 
-  <div class="mk-premium-dashboard">
-
-    <div class="mk-lens-wrapper">
-      <div class="mk-lens-header">
-        <div class="mk-lens-title">🎯 PATTERN RECOGNITION</div>
-        <div class="mk-countdown-badge" id="prediction-countdown">⏰ 45s</div>
+      <div class="mk-command-bar">
+        <div class="mk-cmd-item">
+          <label class="mk-cmd-label">Analysis Asset</label>
+          <select
+            id="symbol-select"
+            class="mk-select"
+            onchange="updateSymbol(this.value)"
+          >
+            <option value="ALL" selected>🌐 All Volatility Markets</option>
+            <option value="R_100">⚡ Volatility 100 Index</option>
+            <option value="R_75">⚡ Volatility 75 Index</option>
+          </select>
+        </div>
+        <div class="mk-cmd-item">
+          <label class="mk-cmd-label">Evaluation Window</label>
+          <select
+            id="tick-count-select"
+            class="mk-select"
+            onchange="updateTickCount(this.value)"
+          >
+            <option value="100">100 Ticks</option>
+            <option value="120" selected>120 Ticks</option>
+          </select>
+        </div>
+        <div class="mk-cmd-item stats-item">
+          <span id="active-markets" class="mk-gold-highlight"
+            >System Armed</span
+          >
+          <span
+            >Ticks Logged:
+            <strong id="tick-counter" class="mk-gold-highlight">0</strong></span
+          >
+        </div>
       </div>
 
-      <div class="mk-prediction-ring-container">
-        <div class="mk-prediction-ring">
-          <div class="mk-ring-spin-border"></div>
-          
-          <div id="prediction-highlights" class="mk-predictions-content">
-            <div class="mk-no-signal">
-              <i class="fas fa-satellite-dish mk-radar-icon"></i>
-              <div class="mk-no-signal-title">AWAITING SIGNAL</div>
-              <div class="mk-no-signal-sub">Establishing connection...</div>
+      <div class="mk-premium-dashboard">
+        <div class="mk-lens-wrapper">
+          <div class="mk-lens-header">
+            <div class="mk-lens-title">🎯 PATTERN RECOGNITION</div>
+            <div class="mk-countdown-badge" id="prediction-countdown">
+              ⏰ 45s
             </div>
           </div>
 
-        </div>
-      </div>
+          <div class="mk-prediction-ring-container">
+            <div class="mk-prediction-ring">
+              <div class="mk-ring-spin-border"></div>
 
-      <div class="mk-lens-footer">
-        <span class="mk-pulse-node"></span> ENGINE ACTIVE & READY
-      </div>
-    </div>
+              <div id="prediction-highlights" class="mk-predictions-content">
+                <div class="mk-no-signal">
+                  <i class="fas fa-satellite-dish mk-radar-icon"></i>
+                  <div class="mk-no-signal-title">AWAITING SIGNAL</div>
+                  <div class="mk-no-signal-sub">Establishing connection...</div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-    <div class="mk-telemetry-panel">
-      <div class="mk-telemetry-header">
-        <span>📈 LIVE MARKET TELEMETRY</span>
-      </div>
-      <div class="mk-telemetry-grid">
-        
-        <div class="mk-telemetry-card">
-          <div class="mk-tel-label">LAST DIGIT DETECTED</div>
-          <div class="mk-tel-value" id="last-digit">--</div>
-        </div>
-
-        <div class="mk-telemetry-card mk-card-gold">
-          <div class="mk-tel-label">CURRENT PRICE ASSET</div>
-          <div class="mk-tel-value mk-text-glow" id="current-price">--</div>
+          <div class="mk-lens-footer">
+            <span class="mk-pulse-node"></span> ENGINE ACTIVE & READY
+          </div>
         </div>
 
+        <div class="mk-telemetry-panel">
+          <div class="mk-telemetry-header">
+            <span>📈 LIVE MARKET TELEMETRY</span>
+          </div>
+          <div class="mk-telemetry-grid">
+            <div class="mk-telemetry-card">
+              <div class="mk-tel-label">LAST DIGIT DETECTED</div>
+              <div class="mk-tel-value" id="last-digit">--</div>
+            </div>
+
+            <div class="mk-telemetry-card mk-card-gold">
+              <div class="mk-tel-label">CURRENT PRICE ASSET</div>
+              <div class="mk-tel-value mk-text-glow" id="current-price">--</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mk-digit-trail-wrap">
+          <div class="mk-trail-segment mk-digit-trail-label">
+            <span class="mk-live-dot"></span> <span>Digit Trail</span>
+          </div>
+          <div class="mk-trail-segment mk-server-status">
+            <i class="fas fa-server"></i> <span>Connected to Deriv API</span>
+            <span class="mk-inline-divider">·</span>
+            <i class="fas fa-bolt"></i> <span>Real-time</span>
+          </div>
+          <div class="mk-trail-segment mk-system-links">
+            <a href="/refund/">Refund Policy</a>
+            <span class="mk-inline-divider">·</span>
+            <span class="mk-brand-crown">♛ MatchKing</span>
+          </div>
+        </div>
       </div>
+      <footer class="mk-footer">
+        <span>♛ MatchKing Premium Engine</span>
+        <div class="mk-copyright">
+          &copy; <span id="current-year"></span> MatchKing Terminal. All rights
+          reserved.
+        </div>
+      </footer>
     </div>
+    <script src="/matchking/script.js"></script>
 
-    <div class="mk-digit-trail-wrap">
-      <div class="mk-trail-segment mk-digit-trail-label">
-        <span class="mk-live-dot"></span> <span>Digit Trail</span>
-      </div>
-      <div class="mk-trail-segment mk-server-status">
-        <i class="fas fa-server"></i> <span>Connected to Deriv API</span>
-        <span class="mk-inline-divider">·</span>
-        <i class="fas fa-bolt"></i> <span>Real-time</span>
-      </div>
-      <div class="mk-trail-segment mk-system-links">
-        <a href="/refund/">Refund Policy</a>
-        <span class="mk-inline-divider">·</span>
-        <span class="mk-brand-crown">♛ MatchKing</span>
-      </div>
-    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const oldHamburger = document.getElementById("sidebarToggle");
+        const sidebarNav = document.getElementById("sidebar");
+        const closeBtn = document.querySelector(".mk-sb-close");
 
-  </div><footer class="mk-footer">
-    <span>♛ MatchKing Premium Engine</span>
-    <div class="mk-copyright">
-  &copy; <span id="current-year"></span> MatchKing Terminal. All rights reserved.
-</div>
-  </footer>
+        if (oldHamburger && sidebarNav) {
+          // 1. Clone the button to instantly destroy any conflicting scripts attached to it
+          const newHamburger = oldHamburger.cloneNode(true);
+          oldHamburger.parentNode.replaceChild(newHamburger, oldHamburger);
 
-</div>
-<script src="/matchking/script.js"></script>
+          // 2. Attach a fresh, unbreakable click event
+          newHamburger.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation(); // Prevents background clicks from interfering
+            sidebarNav.classList.add("active");
+          });
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const oldHamburger = document.getElementById('sidebarToggle');
-    const sidebarNav = document.getElementById('sidebar');
-    const closeBtn = document.querySelector('.mk-sb-close');
-
-    if (oldHamburger && sidebarNav) {
-      // 1. Clone the button to instantly destroy any conflicting scripts attached to it
-      const newHamburger = oldHamburger.cloneNode(true);
-      oldHamburger.parentNode.replaceChild(newHamburger, oldHamburger);
-
-      // 2. Attach a fresh, unbreakable click event
-      newHamburger.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation(); // Prevents background clicks from interfering
-        sidebarNav.classList.add('active');
-      });
-
-      // 3. Close button logic
-      if (closeBtn) {
-        closeBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          sidebarNav.classList.remove('active');
-        });
-      }
-
-      // 4. Bonus: Close the sidebar if you tap anywhere outside of it
-      document.addEventListener('click', function(e) {
-        if (sidebarNav.classList.contains('active')) {
-          if (!sidebarNav.contains(e.target) && !newHamburger.contains(e.target)) {
-            sidebarNav.classList.remove('active');
+          // 3. Close button logic
+          if (closeBtn) {
+            closeBtn.addEventListener("click", function (e) {
+              e.preventDefault();
+              sidebarNav.classList.remove("active");
+            });
           }
+
+          // 4. Bonus: Close the sidebar if you tap anywhere outside of it
+          document.addEventListener("click", function (e) {
+            if (sidebarNav.classList.contains("active")) {
+              if (
+                !sidebarNav.contains(e.target) &&
+                !newHamburger.contains(e.target)
+              ) {
+                sidebarNav.classList.remove("active");
+              }
+            }
+          });
         }
       });
-    }
-  });
-</script>
-
-</body>
+    </script>
+  </body>
 </html>

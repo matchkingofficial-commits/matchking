@@ -1,190 +1,224 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MatchKing — Book a Royal Session</title>
-<meta name="description" content="Book your free 30-minute MatchKing demo. See AI-powered volatility signals live.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
-<!-- Ambient particles -->
-<div class="ambient" aria-hidden="true">
-  <div class="amb-orb amb-1"></div>
-  <div class="amb-orb amb-2"></div>
-  <div class="amb-orb amb-3"></div>
-</div>
-
-<!-- NAV -->
-<nav class="book-nav">
-  <a href="/" class="book-nav-logo">
-    <span class="book-nav-crown">♛</span>
-    <div>
-      <div class="book-nav-name">MatchKing</div>
-      <div class="book-nav-tag">Rule Your Trades</div>
-    </div>
-  </a>
-  <a href="/" class="book-nav-back">
-    <i class="fas fa-arrow-left"></i>
-    <span>Back to Site</span>
-  </a>
-</nav>
-
-<!-- MAIN LAYOUT -->
-<div class="booking-wrap">
-
-  <!-- LEFT PANEL -->
-  <aside class="book-aside">
-
-    <div class="aside-kicker">
-      <span class="kicker-line"></span>
-      <span class="kicker-text">Free Session</span>
-      <span class="kicker-line"></span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MatchKing — Book a Royal Session</title>
+    <meta
+      name="description"
+      content="Book your free 30-minute MatchKing demo. See AI-powered volatility signals live."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Ambient particles -->
+    <div class="ambient" aria-hidden="true">
+      <div class="amb-orb amb-1"></div>
+      <div class="amb-orb amb-2"></div>
+      <div class="amb-orb amb-3"></div>
     </div>
 
-    <h1 class="aside-title">ROYAL<br><em>DEMO</em></h1>
-    <p class="aside-sub">See MatchKing trade live. 30 minutes. No commitment. No credit card.</p>
-
-    <!-- WhatsApp CTA -->
-    <a href="https://wa.me/+27810611435?text=Hi%20MatchKing%20%E2%99%9B%2C%20I%20just%20booked%20a%20demo%20session%20and%20wanted%20to%20confirm."
-       class="wa-confirm" target="_blank" rel="noopener">
-      <div class="wa-confirm-ring"></div>
-      <div class="wa-confirm-inner">
-        <i class="fab fa-whatsapp wa-icon"></i>
+    <!-- NAV -->
+    <nav class="book-nav">
+      <a href="/" class="book-nav-logo">
+        <span class="book-nav-crown">♛</span>
         <div>
-          <div class="wa-label">Confirm via WhatsApp</div>
-          <div class="wa-hint">Text after booking to lock your slot</div>
+          <div class="book-nav-name">MatchKing</div>
+          <div class="book-nav-tag">Rule Your Trades</div>
         </div>
-        <i class="fas fa-chevron-right wa-arrow"></i>
-      </div>
-    </a>
-
-    <!-- Session details -->
-    <div class="session-details">
-      <div class="session-detail">
-        <div class="sd-icon">🕐</div>
-        <div>
-          <div class="sd-label">Duration</div>
-          <div class="sd-val">30 minutes</div>
-        </div>
-      </div>
-      <div class="session-detail">
-        <div class="sd-icon">🌍</div>
-        <div>
-          <div class="sd-label">Your Timezone</div>
-          <div class="sd-val" id="userTimezone">Detecting…</div>
-        </div>
-      </div>
-      <div class="session-detail">
-        <div class="sd-icon">📡</div>
-        <div>
-          <div class="sd-label">Location</div>
-          <div class="sd-val">Google Meet (link sent via email)</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Demo includes -->
-    <div class="includes-block">
-      <div class="includes-title">
-        <span class="includes-line"></span>
-        <span>Demo Includes</span>
-      </div>
-      <ul class="includes-list">
-        <li>Live market signal generation</li>
-        <li>Confidence scoring walkthrough</li>
-        <li>Real-time entry &amp; exit points</li>
-        <li>Risk management overview</li>
-        <li>Q&amp;A with a trading expert</li>
-        <li>No credit card required</li>
-      </ul>
-    </div>
-
-    <!-- Stat strip -->
-    <div class="aside-stats">
-      <div class="aside-stat">
-        <span class="as-val">99%</span>
-        <span class="as-lbl">Accuracy</span>
-      </div>
-      <div class="aside-stat-div"></div>
-      <div class="aside-stat">
-        <span class="as-val">12+</span>
-        <span class="as-lbl">Signals/Day</span>
-      </div>
-      <div class="aside-stat-div"></div>
-      <div class="aside-stat">
-        <span class="as-val">24/7</span>
-        <span class="as-lbl">Markets</span>
-      </div>
-    </div>
-
-  </aside>
-
-  <!-- RIGHT PANEL — Calendly -->
-  <main class="book-main">
-
-    <div class="book-main-head">
-      <div class="bmh-crown">♛</div>
-      <div>
-        <div class="bmh-title">Select Your Session</div>
-        <div class="bmh-sub">Choose a date &amp; time that suits your schedule</div>
-      </div>
-    </div>
-
-    <div class="calendly-wrap">
-      <div class="calendly-inline-widget"
-           data-url="https://calendly.com/matchkingofficial/30min?hide_event_type_details=1&hide_gdpr_banner=1&background_color=0c0b0f&text_color=F2E8CC&primary_color=C9A84C"
-           style="min-width:320px;height:680px;"></div>
-      <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-    </div>
-
-    <!-- Fallback / alternative -->
-    <div class="alt-booking">
-      <span class="alt-line"></span>
-      <span class="alt-text">or reach us directly</span>
-      <span class="alt-line"></span>
-    </div>
-    <div class="direct-links">
-      <a href="https://wa.me/+27810611435" target="_blank" class="direct-link dl-wa">
-        <i class="fab fa-whatsapp"></i> WhatsApp
       </a>
-      <a href="https://t.me/matchkingchannel" target="_blank" class="direct-link dl-tg">
-        <i class="fab fa-telegram"></i> Telegram
+      <a href="/" class="book-nav-back">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back to Site</span>
       </a>
-      <a href="mailto:matchkingofficial@gmail.com" class="direct-link dl-em">
-        <i class="fas fa-envelope"></i> Email
-      </a>
+    </nav>
+
+    <!-- MAIN LAYOUT -->
+    <div class="booking-wrap">
+      <!-- LEFT PANEL -->
+      <aside class="book-aside">
+        <div class="aside-kicker">
+          <span class="kicker-line"></span>
+          <span class="kicker-text">Free Session</span>
+          <span class="kicker-line"></span>
+        </div>
+
+        <h1 class="aside-title">ROYAL<br /><em>DEMO</em></h1>
+        <p class="aside-sub">
+          See MatchKing trade live. 30 minutes. No commitment. No credit card.
+        </p>
+
+        <!-- WhatsApp CTA -->
+        <a
+          href="https://wa.me/+27836323414?text=Hi%20MatchKing%20%E2%99%9B%2C%20I%20just%20booked%20a%20demo%20session%20and%20wanted%20to%20confirm."
+          class="wa-confirm"
+          target="_blank"
+          rel="noopener"
+        >
+          <div class="wa-confirm-ring"></div>
+          <div class="wa-confirm-inner">
+            <i class="fab fa-whatsapp wa-icon"></i>
+            <div>
+              <div class="wa-label">Confirm via WhatsApp</div>
+              <div class="wa-hint">Text after booking to lock your slot</div>
+            </div>
+            <i class="fas fa-chevron-right wa-arrow"></i>
+          </div>
+        </a>
+
+        <!-- Session details -->
+        <div class="session-details">
+          <div class="session-detail">
+            <div class="sd-icon">🕐</div>
+            <div>
+              <div class="sd-label">Duration</div>
+              <div class="sd-val">30 minutes</div>
+            </div>
+          </div>
+          <div class="session-detail">
+            <div class="sd-icon">🌍</div>
+            <div>
+              <div class="sd-label">Your Timezone</div>
+              <div class="sd-val" id="userTimezone">Detecting…</div>
+            </div>
+          </div>
+          <div class="session-detail">
+            <div class="sd-icon">📡</div>
+            <div>
+              <div class="sd-label">Location</div>
+              <div class="sd-val">Google Meet (link sent via email)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Demo includes -->
+        <div class="includes-block">
+          <div class="includes-title">
+            <span class="includes-line"></span>
+            <span>Demo Includes</span>
+          </div>
+          <ul class="includes-list">
+            <li>Live market signal generation</li>
+            <li>Confidence scoring walkthrough</li>
+            <li>Real-time entry &amp; exit points</li>
+            <li>Risk management overview</li>
+            <li>Q&amp;A with a trading expert</li>
+            <li>No credit card required</li>
+          </ul>
+        </div>
+
+        <!-- Stat strip -->
+        <div class="aside-stats">
+          <div class="aside-stat">
+            <span class="as-val">99%</span>
+            <span class="as-lbl">Accuracy</span>
+          </div>
+          <div class="aside-stat-div"></div>
+          <div class="aside-stat">
+            <span class="as-val">12+</span>
+            <span class="as-lbl">Signals/Day</span>
+          </div>
+          <div class="aside-stat-div"></div>
+          <div class="aside-stat">
+            <span class="as-val">24/7</span>
+            <span class="as-lbl">Markets</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- RIGHT PANEL — Calendly -->
+      <main class="book-main">
+        <div class="book-main-head">
+          <div class="bmh-crown">♛</div>
+          <div>
+            <div class="bmh-title">Select Your Session</div>
+            <div class="bmh-sub">
+              Choose a date &amp; time that suits your schedule
+            </div>
+          </div>
+        </div>
+
+        <div class="calendly-wrap">
+          <div
+            class="calendly-inline-widget"
+            data-url="https://calendly.com/matchkingofficial/30min?hide_event_type_details=1&hide_gdpr_banner=1&background_color=0c0b0f&text_color=F2E8CC&primary_color=C9A84C"
+            style="min-width: 320px; height: 680px"
+          ></div>
+          <script
+            type="text/javascript"
+            src="https://assets.calendly.com/assets/external/widget.js"
+            async
+          ></script>
+        </div>
+
+        <!-- Fallback / alternative -->
+        <div class="alt-booking">
+          <span class="alt-line"></span>
+          <span class="alt-text">or reach us directly</span>
+          <span class="alt-line"></span>
+        </div>
+        <div class="direct-links">
+          <a
+            href="https://wa.me/+27836323414"
+            target="_blank"
+            class="direct-link dl-wa"
+          >
+            <i class="fab fa-whatsapp"></i> WhatsApp
+          </a>
+          <a
+            href="https://t.me/matchkingchannel"
+            target="_blank"
+            class="direct-link dl-tg"
+          >
+            <i class="fab fa-telegram"></i> Telegram
+          </a>
+          <a
+            href="mailto:matchkingofficial@gmail.com"
+            class="direct-link dl-em"
+          >
+            <i class="fas fa-envelope"></i> Email
+          </a>
+        </div>
+      </main>
     </div>
 
-  </main>
-</div>
+    <!-- FOOTER -->
+    <footer class="book-footer">
+      <div class="book-footer-inner">
+        <span class="book-footer-brand">♛ MatchKing</span>
+        <div class="book-footer-links">
+          <a href="mailto:matchkingofficial@gmail.com"
+            >matchkingofficial@gmail.com</a
+          >
+          <a href="https://wa.me/+27836323414" target="_blank">WhatsApp</a>
+          <a href="https://t.me/matchkingchannel" target="_blank">Telegram</a>
+          <a href="https://instagram.com/matchking.pro" target="_blank"
+            >Instagram</a
+          >
+          <a href="/refund/">Refund Policy</a>
+        </div>
+        <span class="book-footer-copy"
+          >&copy; <span id="year"></span> MatchKing</span
+        >
+      </div>
+    </footer>
 
-<!-- FOOTER -->
-<footer class="book-footer">
-  <div class="book-footer-inner">
-    <span class="book-footer-brand">♛ MatchKing</span>
-    <div class="book-footer-links">
-      <a href="mailto:matchkingofficial@gmail.com">matchkingofficial@gmail.com</a>
-      <a href="https://wa.me/+27810611435" target="_blank">WhatsApp</a>
-      <a href="https://t.me/matchkingchannel" target="_blank">Telegram</a>
-      <a href="https://instagram.com/matchking.pro" target="_blank">Instagram</a>
-      <a href="/refund/">Refund Policy</a>
-    </div>
-    <span class="book-footer-copy">&copy; <span id="year"></span> MatchKing</span>
-  </div>
-</footer>
-
-<script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-  try {
-    document.getElementById('userTimezone').textContent =
-      Intl.DateTimeFormat().resolvedOptions().timeZone.replace('_',' ');
-  } catch(e) {}
-</script>
-</body>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+      try {
+        document.getElementById("userTimezone").textContent =
+          Intl.DateTimeFormat().resolvedOptions().timeZone.replace("_", " ");
+      } catch (e) {}
+    </script>
+  </body>
 </html>

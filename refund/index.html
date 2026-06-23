@@ -1,628 +1,1054 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Refund Policy — MatchKing</title>
-  <meta name="description" content="MatchKing Refund Policy — Learn about our 30-day money-back guarantee and refund process.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    /* ═══════════════════════════════════
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Refund Policy — MatchKing</title>
+    <meta
+      name="description"
+      content="MatchKing Refund Policy — Learn about our 30-day money-back guarantee and refund process."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* ═══════════════════════════════════
        MATCHKING — REFUND POLICY
        Imperial Gold & Black
     ═══════════════════════════════════ */
-    :root {
-      --gold:       #C9A84C;
-      --gold-lt:    #F0D080;
-      --gold-dk:    #8A6A20;
-      --gold-glow:  rgba(201,168,76,0.18);
-      --gold-line:  rgba(201,168,76,0.22);
-      --gold-bg:    rgba(201,168,76,0.07);
-      --void:       #050407;
-      --void2:      #0c0b0f;
-      --panel:      #100f14;
-      --panel2:     #161420;
-      --cream:      #F2E8CC;
-      --muted:      #7A6E58;
-      --dim:        #3A3328;
-      --ff-display: 'Cormorant Garamond', Georgia, serif;
-      --ff-impact:  'Bebas Neue', Impact, sans-serif;
-      --ff-mono:    'DM Mono', monospace;
-      --ease:       cubic-bezier(0.25,0.46,0.45,0.94);
-    }
-
-    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
-    html { scroll-behavior:smooth }
-
-    body {
-      font-family: var(--ff-display);
-      background: var(--void);
-      color: var(--cream);
-      min-height: 100vh;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-      background-image:
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
-        linear-gradient(160deg, var(--void2) 0%, var(--void) 100%);
-    }
-
-    ::-webkit-scrollbar { width:4px }
-    ::-webkit-scrollbar-track { background:var(--void) }
-    ::-webkit-scrollbar-thumb { background:var(--gold-dk); border-radius:2px }
-    ::-webkit-scrollbar-thumb:hover { background:var(--gold) }
-
-    /* ── NAV ── */
-    .nav {
-      position:sticky;top:0;z-index:500;
-      display:flex;justify-content:space-between;align-items:center;
-      padding:0 48px;height:68px;
-      background:rgba(5,4,7,0.94);
-      border-bottom:1px solid var(--gold-line);
-      backdrop-filter:blur(16px);
-    }
-    .nav-logo { display:flex;flex-direction:column;gap:2px;text-decoration:none }
-    .nav-logo-name {
-      font-family:var(--ff-impact);font-size:22px;letter-spacing:3px;
-      color:var(--gold);line-height:1;
-    }
-    .nav-logo-tag {
-      font-family:var(--ff-mono);font-size:8px;letter-spacing:4px;
-      text-transform:uppercase;color:var(--gold-dk);
-    }
-    .nav-links { display:flex;align-items:center;gap:32px }
-    .nav-link {
-      font-family:var(--ff-mono);font-size:10px;letter-spacing:2px;
-      text-transform:uppercase;color:var(--muted);text-decoration:none;
-      transition:color 0.2s;position:relative;
-    }
-    .nav-link::after {
-      content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;
-      background:var(--gold);transition:width 0.3s var(--ease);
-    }
-    .nav-link:hover { color:var(--gold) }
-    .nav-link:hover::after { width:100% }
-    .nav-btn {
-      font-family:var(--ff-mono);font-size:10px;letter-spacing:2px;
-      text-transform:uppercase;text-decoration:none;padding:9px 20px;
-      transition:all 0.25s;border:1px solid;
-    }
-    .nav-btn-ghost { color:var(--gold);border-color:var(--gold-line);background:transparent }
-    .nav-btn-ghost:hover { background:var(--gold-bg);border-color:var(--gold) }
-    .nav-btn-gold { color:var(--void);background:var(--gold);border-color:var(--gold) }
-    .nav-btn-gold:hover { background:var(--gold-lt) }
-    .nav-burger {
-      display:none;background:none;border:none;
-      color:var(--gold);font-size:18px;cursor:pointer;
-    }
-
-    /* ── HERO HEADER ── */
-    .policy-hero {
-      position:relative;overflow:hidden;
-      padding:80px 0 60px;
-      border-bottom:1px solid var(--gold-line);
-      text-align:center;
-    }
-    .policy-hero::before {
-      content:'';position:absolute;top:0;left:50%;
-      transform:translateX(-50%);
-      width:500px;height:1px;
-      background:linear-gradient(90deg,transparent,var(--gold),transparent);
-    }
-    /* faint crown watermark */
-    .policy-hero::after {
-      content:'♛';
-      position:absolute;bottom:-60px;left:50%;
-      transform:translateX(-50%);
-      font-size:320px;color:rgba(201,168,76,0.025);
-      pointer-events:none;font-family:var(--ff-display);
-      line-height:1;
-    }
-    .policy-kicker {
-      font-family:var(--ff-mono);font-size:9px;letter-spacing:5px;
-      text-transform:uppercase;color:var(--gold);
-      display:inline-flex;align-items:center;gap:14px;margin-bottom:20px;
-    }
-    .policy-kicker::before,.policy-kicker::after {
-      content:'';width:28px;height:1px;background:var(--gold-line);
-    }
-    .policy-hero h1 {
-      font-family:var(--ff-impact);
-      font-size:clamp(56px,8vw,96px);
-      letter-spacing:4px;line-height:0.9;color:var(--cream);
-      margin-bottom:16px;
-    }
-    .policy-hero h1 em {
-      font-style:normal;
-      -webkit-text-stroke:1px var(--gold);color:transparent;
-    }
-    .policy-date {
-      font-family:var(--ff-mono);font-size:10px;letter-spacing:3px;
-      text-transform:uppercase;color:var(--dim);margin-top:16px;
-    }
-
-    /* ── LAYOUT ── */
-    .policy-wrap {
-      max-width:860px;margin:0 auto;padding:60px 48px 100px;
-      position:relative;z-index:1;
-    }
-
-    /* back link */
-    .back-link {
-      display:inline-flex;align-items:center;gap:10px;
-      font-family:var(--ff-mono);font-size:9px;letter-spacing:3px;
-      text-transform:uppercase;color:var(--muted);text-decoration:none;
-      margin-bottom:48px;transition:color 0.2s;
-      border:1px solid var(--gold-line);padding:8px 18px;
-    }
-    .back-link:hover { color:var(--gold);border-color:var(--gold) }
-
-    /* guarantee banner */
-    .guarantee-banner {
-      background:linear-gradient(135deg,rgba(201,168,76,0.08),rgba(201,168,76,0.04));
-      border:1px solid var(--gold-line);
-      padding:28px 32px;margin-bottom:56px;
-      position:relative;overflow:hidden;
-    }
-    .guarantee-banner::before {
-      content:'';position:absolute;top:0;left:0;right:0;height:1px;
-      background:linear-gradient(90deg,transparent,var(--gold),transparent);
-    }
-    .guarantee-inner { display:flex;align-items:center;gap:24px;flex-wrap:wrap }
-    .guarantee-icon { font-size:36px;flex-shrink:0 }
-    .guarantee-text h3 {
-      font-family:var(--ff-impact);font-size:22px;letter-spacing:2px;
-      color:var(--gold);margin-bottom:6px;
-    }
-    .guarantee-text p {
-      font-size:15px;font-weight:300;color:var(--muted);line-height:1.7;margin:0;
-    }
-    .guarantee-badge {
-      margin-left:auto;
-      font-family:var(--ff-impact);font-size:40px;letter-spacing:2px;
-      color:var(--gold);line-height:1;text-align:center;flex-shrink:0;
-    }
-    .guarantee-badge span {
-      display:block;font-family:var(--ff-mono);font-size:9px;
-      letter-spacing:3px;text-transform:uppercase;color:var(--gold-dk);margin-top:4px;
-    }
-
-    /* sections */
-    .policy-section { margin-bottom:48px }
-
-    .section-heading {
-      display:flex;align-items:center;gap:14px;margin-bottom:20px;
-    }
-    .section-num {
-      font-family:var(--ff-impact);font-size:13px;letter-spacing:2px;
-      color:var(--gold-dk);
-    }
-    .section-line { flex:0 0 24px;height:1px;background:var(--gold-line) }
-    .section-heading h2 {
-      font-family:var(--ff-impact);font-size:26px;letter-spacing:2px;
-      color:var(--cream);line-height:1;
-    }
-
-    .policy-section p {
-      font-size:15px;font-weight:300;line-height:1.9;
-      color:var(--muted);margin-bottom:14px;
-    }
-    .policy-section p strong { color:var(--cream);font-weight:600 }
-    .policy-section p a {
-      color:var(--gold);text-decoration:none;transition:color 0.2s;
-    }
-    .policy-section p a:hover { color:var(--gold-lt) }
-
-    /* lists */
-    .policy-list {
-      list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:14px;
-    }
-    .policy-list li {
-      font-size:14px;font-weight:300;color:var(--muted);
-      padding-left:24px;position:relative;line-height:1.7;
-    }
-    .policy-list li::before {
-      content:'♛';position:absolute;left:0;top:2px;
-      font-size:9px;color:var(--gold);
-    }
-    .policy-list li strong { color:var(--cream);font-weight:600 }
-    .policy-list li a { color:var(--gold);text-decoration:none }
-
-    .policy-ol {
-      list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:14px;
-      counter-reset:policy-counter;
-    }
-    .policy-ol li {
-      font-size:14px;font-weight:300;color:var(--muted);
-      padding-left:36px;position:relative;line-height:1.7;
-      counter-increment:policy-counter;
-    }
-    .policy-ol li::before {
-      content:counter(policy-counter);
-      position:absolute;left:0;top:0;
-      font-family:var(--ff-impact);font-size:16px;letter-spacing:1px;
-      color:var(--gold);width:24px;text-align:center;
-    }
-    .policy-ol li a { color:var(--gold);text-decoration:none }
-    .policy-ol li a:hover { color:var(--gold-lt) }
-
-    /* highlight box */
-    .policy-highlight {
-      border-left:2px solid var(--gold);
-      background:rgba(201,168,76,0.05);
-      padding:16px 20px;margin:20px 0;
-    }
-    .policy-highlight p { margin:0;font-size:14px }
-
-    /* sub heading */
-    .policy-section h3 {
-      font-family:var(--ff-display);font-size:16px;font-weight:600;
-      color:var(--cream);margin:24px 0 10px;
-    }
-
-    /* contact cards */
-    .contact-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px }
-    .contact-card {
-      background:var(--panel);border:1px solid var(--gold-line);
-      padding:16px;text-align:center;
-      transition:all 0.25s var(--ease);
-      text-decoration:none;display:block;
-    }
-    .contact-card:hover {
-      border-color:var(--gold);background:var(--panel2);
-      transform:translateY(-3px);
-    }
-    .contact-card-icon { font-size:20px;margin-bottom:8px;display:block }
-    .contact-card-label {
-      font-family:var(--ff-mono);font-size:8px;letter-spacing:3px;
-      text-transform:uppercase;color:var(--gold);margin-bottom:4px;
-    }
-    .contact-card-val { font-size:12px;font-weight:300;color:var(--muted) }
-
-    /* policy update box */
-    .policy-update {
-      background:var(--panel);border:1px solid var(--gold-line);
-      padding:24px 28px;margin-top:48px;position:relative;overflow:hidden;
-    }
-    .policy-update::before {
-      content:'';position:absolute;top:0;left:0;right:0;height:1px;
-      background:linear-gradient(90deg,transparent,var(--gold),transparent);
-    }
-    .policy-update p {
-      margin:0;font-size:13px;font-weight:300;color:var(--muted);line-height:1.8;
-    }
-    .policy-update strong { color:var(--gold) }
-
-    /* divider */
-    .section-divider {
-      height:1px;
-      background:linear-gradient(90deg,transparent,var(--gold-line),transparent);
-      margin:40px 0;
-    }
-
-    /* ── FOOTER ── */
-    .site-footer {
-      border-top:1px solid var(--gold-line);
-      background:var(--panel);
-      padding:32px 48px;
-    }
-    .footer-inner {
-      max-width:860px;margin:0 auto;
-      display:flex;justify-content:space-between;align-items:center;
-      flex-wrap:wrap;gap:16px;
-    }
-    .footer-brand {
-      font-family:var(--ff-impact);font-size:20px;letter-spacing:3px;color:var(--gold);
-    }
-    .footer-links { display:flex;gap:24px;flex-wrap:wrap }
-    .footer-links a {
-      font-family:var(--ff-mono);font-size:9px;letter-spacing:2px;
-      text-transform:uppercase;color:var(--muted);text-decoration:none;
-      transition:color 0.2s;
-    }
-    .footer-links a:hover { color:var(--gold) }
-    .footer-copy {
-      font-family:var(--ff-mono);font-size:9px;letter-spacing:2px;
-      text-transform:uppercase;color:var(--dim);
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width:768px) {
-      .nav { padding:0 24px }
-      .nav-links { display:none }
-      .nav-burger { display:block }
-      .nav-links.open {
-        display:flex;flex-direction:column;
-        position:absolute;top:68px;left:0;right:0;
-        background:rgba(5,4,7,0.97);
-        border-bottom:1px solid var(--gold-line);
-        padding:24px;gap:16px;z-index:400;
+      :root {
+        --gold: #c9a84c;
+        --gold-lt: #f0d080;
+        --gold-dk: #8a6a20;
+        --gold-glow: rgba(201, 168, 76, 0.18);
+        --gold-line: rgba(201, 168, 76, 0.22);
+        --gold-bg: rgba(201, 168, 76, 0.07);
+        --void: #050407;
+        --void2: #0c0b0f;
+        --panel: #100f14;
+        --panel2: #161420;
+        --cream: #f2e8cc;
+        --muted: #7a6e58;
+        --dim: #3a3328;
+        --ff-display: "Cormorant Garamond", Georgia, serif;
+        --ff-impact: "Bebas Neue", Impact, sans-serif;
+        --ff-mono: "DM Mono", monospace;
+        --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
       }
-      .policy-wrap { padding:40px 24px 80px }
-      .contact-grid { grid-template-columns:1fr }
-      .guarantee-inner { flex-direction:column;text-align:center }
-      .guarantee-badge { margin:0 auto }
-      .footer-inner { flex-direction:column;text-align:center }
-      .footer-links { justify-content:center }
-    }
-    @media (max-width:480px) {
-      .policy-wrap { padding:32px 18px 60px }
-      .site-footer { padding:24px 18px }
-    }
-  </style>
-</head>
-<body>
 
-<!-- ── NAV ── -->
-<nav class="nav" id="mainNav">
-  <a href="/" class="nav-logo">
-    <div class="nav-logo-name">MatchKing</div>
-    <div class="nav-logo-tag">Rule Your Trades</div>
-  </a>
-  <div class="nav-links" id="navLinks">
-    <a href="/#edge" class="nav-link">Features</a>
-    <a href="/#pricing" class="nav-link">Pricing</a>
-    <a href="/#challenge" class="nav-link">Challenge</a>
-    <a href="/book/" class="nav-btn nav-btn-ghost">Free Demo</a>
-    <a href="/tool/" class="nav-btn nav-btn-gold">Access Tool</a>
-  </div>
-  <button class="nav-burger" id="navBurger" aria-label="Menu">
-    <i class="fas fa-bars"></i>
-  </button>
-</nav>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
 
-<!-- ── HERO ── -->
-<div class="policy-hero">
-  <div class="policy-kicker">Legal</div>
-  <h1>REFUND<br><em>POLICY</em></h1>
-  <div class="policy-date">Last Updated: January 27, 2026</div>
-</div>
+      body {
+        font-family: var(--ff-display);
+        background: var(--void);
+        color: var(--cream);
+        min-height: 100vh;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        background-image:
+          url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
+          linear-gradient(160deg, var(--void2) 0%, var(--void) 100%);
+      }
 
-<!-- ── CONTENT ── -->
-<div class="policy-wrap">
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--void);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--gold-dk);
+        border-radius: 2px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--gold);
+      }
 
-  <a href="/" class="back-link">
-    <i class="fas fa-arrow-left"></i> Back to MatchKing
-  </a>
+      /* ── NAV ── */
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 500;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 48px;
+        height: 68px;
+        background: rgba(5, 4, 7, 0.94);
+        border-bottom: 1px solid var(--gold-line);
+        backdrop-filter: blur(16px);
+      }
+      .nav-logo {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        text-decoration: none;
+      }
+      .nav-logo-name {
+        font-family: var(--ff-impact);
+        font-size: 22px;
+        letter-spacing: 3px;
+        color: var(--gold);
+        line-height: 1;
+      }
+      .nav-logo-tag {
+        font-family: var(--ff-mono);
+        font-size: 8px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--gold-dk);
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+      }
+      .nav-link {
+        font-family: var(--ff-mono);
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+        position: relative;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: var(--gold);
+        transition: width 0.3s var(--ease);
+      }
+      .nav-link:hover {
+        color: var(--gold);
+      }
+      .nav-link:hover::after {
+        width: 100%;
+      }
+      .nav-btn {
+        font-family: var(--ff-mono);
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 9px 20px;
+        transition: all 0.25s;
+        border: 1px solid;
+      }
+      .nav-btn-ghost {
+        color: var(--gold);
+        border-color: var(--gold-line);
+        background: transparent;
+      }
+      .nav-btn-ghost:hover {
+        background: var(--gold-bg);
+        border-color: var(--gold);
+      }
+      .nav-btn-gold {
+        color: var(--void);
+        background: var(--gold);
+        border-color: var(--gold);
+      }
+      .nav-btn-gold:hover {
+        background: var(--gold-lt);
+      }
+      .nav-burger {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--gold);
+        font-size: 18px;
+        cursor: pointer;
+      }
 
-  <!-- Guarantee banner -->
-  <div class="guarantee-banner">
-    <div class="guarantee-inner">
-      <div class="guarantee-icon">♛</div>
-      <div class="guarantee-text">
-        <h3>Royal Guarantee</h3>
-        <p>We stand behind every purchase. If MatchKing doesn't deliver, you get your money back — no runaround, no questions asked.</p>
+      /* ── HERO HEADER ── */
+      .policy-hero {
+        position: relative;
+        overflow: hidden;
+        padding: 80px 0 60px;
+        border-bottom: 1px solid var(--gold-line);
+        text-align: center;
+      }
+      .policy-hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 500px;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--gold),
+          transparent
+        );
+      }
+      /* faint crown watermark */
+      .policy-hero::after {
+        content: "♛";
+        position: absolute;
+        bottom: -60px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 320px;
+        color: rgba(201, 168, 76, 0.025);
+        pointer-events: none;
+        font-family: var(--ff-display);
+        line-height: 1;
+      }
+      .policy-kicker {
+        font-family: var(--ff-mono);
+        font-size: 9px;
+        letter-spacing: 5px;
+        text-transform: uppercase;
+        color: var(--gold);
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+      .policy-kicker::before,
+      .policy-kicker::after {
+        content: "";
+        width: 28px;
+        height: 1px;
+        background: var(--gold-line);
+      }
+      .policy-hero h1 {
+        font-family: var(--ff-impact);
+        font-size: clamp(56px, 8vw, 96px);
+        letter-spacing: 4px;
+        line-height: 0.9;
+        color: var(--cream);
+        margin-bottom: 16px;
+      }
+      .policy-hero h1 em {
+        font-style: normal;
+        -webkit-text-stroke: 1px var(--gold);
+        color: transparent;
+      }
+      .policy-date {
+        font-family: var(--ff-mono);
+        font-size: 10px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--dim);
+        margin-top: 16px;
+      }
+
+      /* ── LAYOUT ── */
+      .policy-wrap {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 60px 48px 100px;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* back link */
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-family: var(--ff-mono);
+        font-size: 9px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        margin-bottom: 48px;
+        transition: color 0.2s;
+        border: 1px solid var(--gold-line);
+        padding: 8px 18px;
+      }
+      .back-link:hover {
+        color: var(--gold);
+        border-color: var(--gold);
+      }
+
+      /* guarantee banner */
+      .guarantee-banner {
+        background: linear-gradient(
+          135deg,
+          rgba(201, 168, 76, 0.08),
+          rgba(201, 168, 76, 0.04)
+        );
+        border: 1px solid var(--gold-line);
+        padding: 28px 32px;
+        margin-bottom: 56px;
+        position: relative;
+        overflow: hidden;
+      }
+      .guarantee-banner::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--gold),
+          transparent
+        );
+      }
+      .guarantee-inner {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+      .guarantee-icon {
+        font-size: 36px;
+        flex-shrink: 0;
+      }
+      .guarantee-text h3 {
+        font-family: var(--ff-impact);
+        font-size: 22px;
+        letter-spacing: 2px;
+        color: var(--gold);
+        margin-bottom: 6px;
+      }
+      .guarantee-text p {
+        font-size: 15px;
+        font-weight: 300;
+        color: var(--muted);
+        line-height: 1.7;
+        margin: 0;
+      }
+      .guarantee-badge {
+        margin-left: auto;
+        font-family: var(--ff-impact);
+        font-size: 40px;
+        letter-spacing: 2px;
+        color: var(--gold);
+        line-height: 1;
+        text-align: center;
+        flex-shrink: 0;
+      }
+      .guarantee-badge span {
+        display: block;
+        font-family: var(--ff-mono);
+        font-size: 9px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--gold-dk);
+        margin-top: 4px;
+      }
+
+      /* sections */
+      .policy-section {
+        margin-bottom: 48px;
+      }
+
+      .section-heading {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+      .section-num {
+        font-family: var(--ff-impact);
+        font-size: 13px;
+        letter-spacing: 2px;
+        color: var(--gold-dk);
+      }
+      .section-line {
+        flex: 0 0 24px;
+        height: 1px;
+        background: var(--gold-line);
+      }
+      .section-heading h2 {
+        font-family: var(--ff-impact);
+        font-size: 26px;
+        letter-spacing: 2px;
+        color: var(--cream);
+        line-height: 1;
+      }
+
+      .policy-section p {
+        font-size: 15px;
+        font-weight: 300;
+        line-height: 1.9;
+        color: var(--muted);
+        margin-bottom: 14px;
+      }
+      .policy-section p strong {
+        color: var(--cream);
+        font-weight: 600;
+      }
+      .policy-section p a {
+        color: var(--gold);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .policy-section p a:hover {
+        color: var(--gold-lt);
+      }
+
+      /* lists */
+      .policy-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      .policy-list li {
+        font-size: 14px;
+        font-weight: 300;
+        color: var(--muted);
+        padding-left: 24px;
+        position: relative;
+        line-height: 1.7;
+      }
+      .policy-list li::before {
+        content: "♛";
+        position: absolute;
+        left: 0;
+        top: 2px;
+        font-size: 9px;
+        color: var(--gold);
+      }
+      .policy-list li strong {
+        color: var(--cream);
+        font-weight: 600;
+      }
+      .policy-list li a {
+        color: var(--gold);
+        text-decoration: none;
+      }
+
+      .policy-ol {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 14px;
+        counter-reset: policy-counter;
+      }
+      .policy-ol li {
+        font-size: 14px;
+        font-weight: 300;
+        color: var(--muted);
+        padding-left: 36px;
+        position: relative;
+        line-height: 1.7;
+        counter-increment: policy-counter;
+      }
+      .policy-ol li::before {
+        content: counter(policy-counter);
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-family: var(--ff-impact);
+        font-size: 16px;
+        letter-spacing: 1px;
+        color: var(--gold);
+        width: 24px;
+        text-align: center;
+      }
+      .policy-ol li a {
+        color: var(--gold);
+        text-decoration: none;
+      }
+      .policy-ol li a:hover {
+        color: var(--gold-lt);
+      }
+
+      /* highlight box */
+      .policy-highlight {
+        border-left: 2px solid var(--gold);
+        background: rgba(201, 168, 76, 0.05);
+        padding: 16px 20px;
+        margin: 20px 0;
+      }
+      .policy-highlight p {
+        margin: 0;
+        font-size: 14px;
+      }
+
+      /* sub heading */
+      .policy-section h3 {
+        font-family: var(--ff-display);
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--cream);
+        margin: 24px 0 10px;
+      }
+
+      /* contact cards */
+      .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 16px;
+      }
+      .contact-card {
+        background: var(--panel);
+        border: 1px solid var(--gold-line);
+        padding: 16px;
+        text-align: center;
+        transition: all 0.25s var(--ease);
+        text-decoration: none;
+        display: block;
+      }
+      .contact-card:hover {
+        border-color: var(--gold);
+        background: var(--panel2);
+        transform: translateY(-3px);
+      }
+      .contact-card-icon {
+        font-size: 20px;
+        margin-bottom: 8px;
+        display: block;
+      }
+      .contact-card-label {
+        font-family: var(--ff-mono);
+        font-size: 8px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 4px;
+      }
+      .contact-card-val {
+        font-size: 12px;
+        font-weight: 300;
+        color: var(--muted);
+      }
+
+      /* policy update box */
+      .policy-update {
+        background: var(--panel);
+        border: 1px solid var(--gold-line);
+        padding: 24px 28px;
+        margin-top: 48px;
+        position: relative;
+        overflow: hidden;
+      }
+      .policy-update::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--gold),
+          transparent
+        );
+      }
+      .policy-update p {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 300;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+      .policy-update strong {
+        color: var(--gold);
+      }
+
+      /* divider */
+      .section-divider {
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--gold-line),
+          transparent
+        );
+        margin: 40px 0;
+      }
+
+      /* ── FOOTER ── */
+      .site-footer {
+        border-top: 1px solid var(--gold-line);
+        background: var(--panel);
+        padding: 32px 48px;
+      }
+      .footer-inner {
+        max-width: 860px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+      .footer-brand {
+        font-family: var(--ff-impact);
+        font-size: 20px;
+        letter-spacing: 3px;
+        color: var(--gold);
+      }
+      .footer-links {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+      .footer-links a {
+        font-family: var(--ff-mono);
+        font-size: 9px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .footer-links a:hover {
+        color: var(--gold);
+      }
+      .footer-copy {
+        font-family: var(--ff-mono);
+        font-size: 9px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--dim);
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 768px) {
+        .nav {
+          padding: 0 24px;
+        }
+        .nav-links {
+          display: none;
+        }
+        .nav-burger {
+          display: block;
+        }
+        .nav-links.open {
+          display: flex;
+          flex-direction: column;
+          position: absolute;
+          top: 68px;
+          left: 0;
+          right: 0;
+          background: rgba(5, 4, 7, 0.97);
+          border-bottom: 1px solid var(--gold-line);
+          padding: 24px;
+          gap: 16px;
+          z-index: 400;
+        }
+        .policy-wrap {
+          padding: 40px 24px 80px;
+        }
+        .contact-grid {
+          grid-template-columns: 1fr;
+        }
+        .guarantee-inner {
+          flex-direction: column;
+          text-align: center;
+        }
+        .guarantee-badge {
+          margin: 0 auto;
+        }
+        .footer-inner {
+          flex-direction: column;
+          text-align: center;
+        }
+        .footer-links {
+          justify-content: center;
+        }
+      }
+      @media (max-width: 480px) {
+        .policy-wrap {
+          padding: 32px 18px 60px;
+        }
+        .site-footer {
+          padding: 24px 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ── NAV ── -->
+    <nav class="nav" id="mainNav">
+      <a href="/" class="nav-logo">
+        <div class="nav-logo-name">MatchKing</div>
+        <div class="nav-logo-tag">Rule Your Trades</div>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="/#edge" class="nav-link">Features</a>
+        <a href="/#pricing" class="nav-link">Pricing</a>
+        <a href="/#challenge" class="nav-link">Challenge</a>
+        <a href="/book/" class="nav-btn nav-btn-ghost">Free Demo</a>
+        <a href="/tool/" class="nav-btn nav-btn-gold">Access Tool</a>
       </div>
-      <div class="guarantee-badge">
-        48 HOURS 
-        <span>Back Guarantee</span>
+      <button class="nav-burger" id="navBurger" aria-label="Menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </nav>
+
+    <!-- ── HERO ── -->
+    <div class="policy-hero">
+      <div class="policy-kicker">Legal</div>
+      <h1>REFUND<br /><em>POLICY</em></h1>
+      <div class="policy-date">Last Updated: January 27, 2026</div>
+    </div>
+
+    <!-- ── CONTENT ── -->
+    <div class="policy-wrap">
+      <a href="/" class="back-link">
+        <i class="fas fa-arrow-left"></i> Back to MatchKing
+      </a>
+
+      <!-- Guarantee banner -->
+      <div class="guarantee-banner">
+        <div class="guarantee-inner">
+          <div class="guarantee-icon">♛</div>
+          <div class="guarantee-text">
+            <h3>Royal Guarantee</h3>
+            <p>
+              We stand behind every purchase. If MatchKing doesn't deliver, you
+              get your money back — no runaround, no questions asked.
+            </p>
+          </div>
+          <div class="guarantee-badge">
+            48 HOURS
+            <span>Back Guarantee</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1. Overview -->
+      <div class="policy-section">
+        <div class="section-heading">
+          <span class="section-num">01</span>
+          <div class="section-line"></div>
+          <h2>OVERVIEW</h2>
+        </div>
+        <p>
+          MatchKing is committed to ensuring every trader's satisfaction with
+          our AI-powered market analysis tool. This policy outlines the terms
+          and conditions for requesting refunds on your purchase.
+        </p>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- 2. Money-Back Guarantee -->
+      <div class="policy-section">
+        <div class="section-heading">
+          <span class="section-num">02</span>
+          <div class="section-line"></div>
+          <h2>MONEY-BACK GUARANTEE</h2>
+        </div>
+        <p>
+          We offer a <strong>30-day money-back guarantee</strong> on all
+          MatchKing purchases. If you are not satisfied with the tool or our
+          service within 30 days of purchase, you are eligible for a full
+          refund.
+        </p>
+        <div class="policy-highlight">
+          <p>
+            <strong>♛ Guaranteed:</strong> Full refund within 30 days of your
+            purchase date. No complicated process. No questions asked.
+          </p>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- 3. Eligibility -->
+      <div class="policy-section">
+        <div class="section-heading">
+          <span class="section-num">03</span>
+          <div class="section-line"></div>
+          <h2>REFUND ELIGIBILITY</h2>
+        </div>
+        <p>
+          To be eligible for a refund, the following conditions must be met:
+        </p>
+        <ul class="policy-list">
+          <li>
+            Your request must be submitted <strong>within 30 days</strong> of
+            the original purchase date
+          </li>
+          <li>
+            You must provide <strong>proof of payment</strong> (transaction hash
+            or payment confirmation)
+          </li>
+          <li>Your account must not have violated our Terms of Service</li>
+          <li>
+            You have not shared or distributed access credentials to third
+            parties
+          </li>
+        </ul>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- 4. How to Request -->
+      <div class="policy-section">
+        <div class="section-heading">
+          <span class="section-num">04</span>
+          <div class="section-line"></div>
+          <h2>HOW TO REQUEST</h2>
+        </div>
+        <p>Follow these steps to submit your refund request:</p>
+        <ol class="policy-ol">
+          <li>
+            Contact our support team at
+            <a href="mailto:matchkingofficial@gmail.com"
+              >matchkingofficial@gmail.com</a
+            >
+            with the subject line <strong>"Refund Request"</strong>
+          </li>
+          <li>
+            Provide the email address associated with your purchase and the date
+            of purchase
+          </li>
+          <li>
+            Include your transaction hash or payment confirmation screenshot
+          </li>
+          <li>Briefly explain your reason for the refund request</li>
+          <li>
+            Our team will review your request and respond within
+            <strong>3–5 business days</strong>
+          </li>
+        </ol>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- 5. Processing -->
+      <div class="policy-section">
+        <div class="section-heading">
+          <span class="section-num">05</span>
+          <div class="section-line"></div>
+          <h2>REFUND PROCESSING</h2>
+        </div>
+        <p>
+          Once your refund request is approved, we will process the refund to
+          the original payment address. Please note the following timelines:
+        </p>
+        <ul class="policy-list">
+          <li>
+            <strong>USDT (TRC20) Refunds:</strong> 24–48 hours after approval
+          </li>
+          <li>
+            <strong>Bank Transfer Refunds:</strong> 3–5 business days after
+            approval
+          </li>
+          <li>
+            The refund will be sent to the wallet address from which the
+            original payment originated
+          </li>
+        </ul>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- 6. Non-Refundable -->
+      <div class="policy-section">
+        <div class="section-heading">
+          <span class="section-num">06</span>
+          <div class="section-line"></div>
+          <h2>NON-REFUNDABLE</h2>
+        </div>
+        <p>The following are not eligible for refund:</p>
+        <ul class="policy-list">
+          <li>Purchases made more than 30 days ago</li>
+          <li>Accounts suspended for Terms of Service violations</li>
+          <li>Duplicate or fraudulent transactions</li>
+          <li>
+            Extended access plans purchased after the initial 30-day period
+          </li>
+        </ul>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- 7. Account Deactivation -->
+      <div class="policy-section">
+        <div class="section-heading">
+          <span class="section-num">07</span>
+          <div class="section-line"></div>
+          <h2>ACCOUNT DEACTIVATION</h2>
+        </div>
+        <p>
+          Upon successful refund processing, your MatchKing account will be
+          automatically deactivated. All access to the tool will be revoked and
+          you will no longer be able to log in or access any previously
+          downloaded resources.
+        </p>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- 8. Partial Refunds -->
+      <div class="policy-section">
+        <div class="section-heading">
+          <span class="section-num">08</span>
+          <div class="section-line"></div>
+          <h2>PARTIAL REFUNDS</h2>
+        </div>
+        <p>Partial refunds are only granted in the following circumstances:</p>
+        <ul class="policy-list">
+          <li>Duplicate charges detected on your account</li>
+          <li>
+            Service unavailability due to technical issues for extended periods
+            (more than 7 days)
+          </li>
+          <li>
+            At the sole discretion of our support team for exceptional
+            circumstances
+          </li>
+        </ul>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- 9. Disputes -->
+      <div class="policy-section">
+        <div class="section-heading">
+          <span class="section-num">09</span>
+          <div class="section-line"></div>
+          <h2>DISPUTES & CHARGEBACKS</h2>
+        </div>
+        <p>
+          If you initiate a chargeback or dispute with your payment provider
+          <strong>without contacting our support team first</strong>, your
+          account will be permanently suspended and all access revoked
+          immediately.
+        </p>
+        <div class="policy-highlight">
+          <p>
+            <strong>We strongly recommend</strong> contacting us directly at
+            <a href="mailto:matchkingofficial@gmail.com"
+              >matchkingofficial@gmail.com</a
+            >
+            or via WhatsApp before pursuing any chargeback action. We will
+            always work with you to find a fair resolution.
+          </p>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- 10. Contact -->
+      <div class="policy-section">
+        <div class="section-heading">
+          <span class="section-num">10</span>
+          <div class="section-line"></div>
+          <h2>CONTACT US</h2>
+        </div>
+        <p>
+          If you have questions about this policy or need to submit a refund
+          request, reach the MatchKing team through any of these channels:
+        </p>
+        <div class="contact-grid">
+          <a href="mailto:matchkingofficial@gmail.com" class="contact-card">
+            <span class="contact-card-icon">📧</span>
+            <div class="contact-card-label">Email</div>
+            <div class="contact-card-val">matchkingofficial@gmail.com</div>
+          </a>
+          <a
+            href="https://wa.me/+27836323414"
+            target="_blank"
+            class="contact-card"
+          >
+            <span class="contact-card-icon">💬</span>
+            <div class="contact-card-label">WhatsApp</div>
+            <div class="contact-card-val">+27836323414</div>
+          </a>
+          <a
+            href="https://t.me/matchkingofficial"
+            target="_blank"
+            class="contact-card"
+          >
+            <span class="contact-card-icon">✈️</span>
+            <div class="contact-card-label">Telegram</div>
+            <div class="contact-card-val">@matchkingofficial</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Policy update notice -->
+      <div class="policy-update">
+        <p>
+          <strong>♛ Policy Updates:</strong> MatchKing reserves the right to
+          update this refund policy at any time. Please check this page
+          regularly for the latest information. Continued use of MatchKing
+          constitutes acceptance of our current refund policy.
+        </p>
       </div>
     </div>
-  </div>
+    <!-- /policy-wrap -->
 
-  <!-- 1. Overview -->
-  <div class="policy-section">
-    <div class="section-heading">
-      <span class="section-num">01</span>
-      <div class="section-line"></div>
-      <h2>OVERVIEW</h2>
-    </div>
-    <p>MatchKing is committed to ensuring every trader's satisfaction with our AI-powered market analysis tool. This policy outlines the terms and conditions for requesting refunds on your purchase.</p>
-  </div>
+    <!-- ── FOOTER ── -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <span class="footer-brand">♛ MATCHKING</span>
+        <div class="footer-links">
+          <a href="mailto:matchkingofficial@gmail.com">Email</a>
+          <a href="https://wa.me/+27836323414" target="_blank">WhatsApp</a>
+          <a href="https://t.me/matchkingchannel" target="_blank">Telegram</a>
+          <a href="https://instagram.com/matchking.pro" target="_blank"
+            >Instagram</a
+          >
+          <a href="/refund/">Refund Policy</a>
+        </div>
+        <span class="footer-copy"
+          >&copy; <span id="year"></span> MatchKing</span
+        >
+      </div>
+    </footer>
 
-  <div class="section-divider"></div>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
 
-  <!-- 2. Money-Back Guarantee -->
-  <div class="policy-section">
-    <div class="section-heading">
-      <span class="section-num">02</span>
-      <div class="section-line"></div>
-      <h2>MONEY-BACK GUARANTEE</h2>
-    </div>
-    <p>We offer a <strong>30-day money-back guarantee</strong> on all MatchKing purchases. If you are not satisfied with the tool or our service within 30 days of purchase, you are eligible for a full refund.</p>
-    <div class="policy-highlight">
-      <p><strong>♛ Guaranteed:</strong> Full refund within 30 days of your purchase date. No complicated process. No questions asked.</p>
-    </div>
-  </div>
+      // Mobile nav
+      const burger = document.getElementById("navBurger");
+      const navLinks = document.getElementById("navLinks");
+      if (burger && navLinks) {
+        burger.addEventListener("click", () => {
+          navLinks.classList.toggle("open");
+          burger.innerHTML = navLinks.classList.contains("open")
+            ? '<i class="fas fa-times"></i>'
+            : '<i class="fas fa-bars"></i>';
+        });
+        navLinks.querySelectorAll("a").forEach((a) => {
+          a.addEventListener("click", () => {
+            navLinks.classList.remove("open");
+            burger.innerHTML = '<i class="fas fa-bars"></i>';
+          });
+        });
+      }
 
-  <div class="section-divider"></div>
-
-  <!-- 3. Eligibility -->
-  <div class="policy-section">
-    <div class="section-heading">
-      <span class="section-num">03</span>
-      <div class="section-line"></div>
-      <h2>REFUND ELIGIBILITY</h2>
-    </div>
-    <p>To be eligible for a refund, the following conditions must be met:</p>
-    <ul class="policy-list">
-      <li>Your request must be submitted <strong>within 30 days</strong> of the original purchase date</li>
-      <li>You must provide <strong>proof of payment</strong> (transaction hash or payment confirmation)</li>
-      <li>Your account must not have violated our Terms of Service</li>
-      <li>You have not shared or distributed access credentials to third parties</li>
-    </ul>
-  </div>
-
-  <div class="section-divider"></div>
-
-  <!-- 4. How to Request -->
-  <div class="policy-section">
-    <div class="section-heading">
-      <span class="section-num">04</span>
-      <div class="section-line"></div>
-      <h2>HOW TO REQUEST</h2>
-    </div>
-    <p>Follow these steps to submit your refund request:</p>
-    <ol class="policy-ol">
-      <li>Contact our support team at <a href="mailto:matchkingofficial@gmail.com">matchkingofficial@gmail.com</a> with the subject line <strong>"Refund Request"</strong></li>
-      <li>Provide the email address associated with your purchase and the date of purchase</li>
-      <li>Include your transaction hash or payment confirmation screenshot</li>
-      <li>Briefly explain your reason for the refund request</li>
-      <li>Our team will review your request and respond within <strong>3–5 business days</strong></li>
-    </ol>
-  </div>
-
-  <div class="section-divider"></div>
-
-  <!-- 5. Processing -->
-  <div class="policy-section">
-    <div class="section-heading">
-      <span class="section-num">05</span>
-      <div class="section-line"></div>
-      <h2>REFUND PROCESSING</h2>
-    </div>
-    <p>Once your refund request is approved, we will process the refund to the original payment address. Please note the following timelines:</p>
-    <ul class="policy-list">
-      <li><strong>USDT (TRC20) Refunds:</strong> 24–48 hours after approval</li>
-      <li><strong>Bank Transfer Refunds:</strong> 3–5 business days after approval</li>
-      <li>The refund will be sent to the wallet address from which the original payment originated</li>
-    </ul>
-  </div>
-
-  <div class="section-divider"></div>
-
-  <!-- 6. Non-Refundable -->
-  <div class="policy-section">
-    <div class="section-heading">
-      <span class="section-num">06</span>
-      <div class="section-line"></div>
-      <h2>NON-REFUNDABLE</h2>
-    </div>
-    <p>The following are not eligible for refund:</p>
-    <ul class="policy-list">
-      <li>Purchases made more than 30 days ago</li>
-      <li>Accounts suspended for Terms of Service violations</li>
-      <li>Duplicate or fraudulent transactions</li>
-      <li>Extended access plans purchased after the initial 30-day period</li>
-    </ul>
-  </div>
-
-  <div class="section-divider"></div>
-
-  <!-- 7. Account Deactivation -->
-  <div class="policy-section">
-    <div class="section-heading">
-      <span class="section-num">07</span>
-      <div class="section-line"></div>
-      <h2>ACCOUNT DEACTIVATION</h2>
-    </div>
-    <p>Upon successful refund processing, your MatchKing account will be automatically deactivated. All access to the tool will be revoked and you will no longer be able to log in or access any previously downloaded resources.</p>
-  </div>
-
-  <div class="section-divider"></div>
-
-  <!-- 8. Partial Refunds -->
-  <div class="policy-section">
-    <div class="section-heading">
-      <span class="section-num">08</span>
-      <div class="section-line"></div>
-      <h2>PARTIAL REFUNDS</h2>
-    </div>
-    <p>Partial refunds are only granted in the following circumstances:</p>
-    <ul class="policy-list">
-      <li>Duplicate charges detected on your account</li>
-      <li>Service unavailability due to technical issues for extended periods (more than 7 days)</li>
-      <li>At the sole discretion of our support team for exceptional circumstances</li>
-    </ul>
-  </div>
-
-  <div class="section-divider"></div>
-
-  <!-- 9. Disputes -->
-  <div class="policy-section">
-    <div class="section-heading">
-      <span class="section-num">09</span>
-      <div class="section-line"></div>
-      <h2>DISPUTES & CHARGEBACKS</h2>
-    </div>
-    <p>If you initiate a chargeback or dispute with your payment provider <strong>without contacting our support team first</strong>, your account will be permanently suspended and all access revoked immediately.</p>
-    <div class="policy-highlight">
-      <p><strong>We strongly recommend</strong> contacting us directly at <a href="mailto:matchkingofficial@gmail.com">matchkingofficial@gmail.com</a> or via WhatsApp before pursuing any chargeback action. We will always work with you to find a fair resolution.</p>
-    </div>
-  </div>
-
-  <div class="section-divider"></div>
-
-  <!-- 10. Contact -->
-  <div class="policy-section">
-    <div class="section-heading">
-      <span class="section-num">10</span>
-      <div class="section-line"></div>
-      <h2>CONTACT US</h2>
-    </div>
-    <p>If you have questions about this policy or need to submit a refund request, reach the MatchKing team through any of these channels:</p>
-    <div class="contact-grid">
-      <a href="mailto:matchkingofficial@gmail.com" class="contact-card">
-        <span class="contact-card-icon">📧</span>
-        <div class="contact-card-label">Email</div>
-        <div class="contact-card-val">matchkingofficial@gmail.com</div>
-      </a>
-      <a href="https://wa.me/+27810611435" target="_blank" class="contact-card">
-        <span class="contact-card-icon">💬</span>
-        <div class="contact-card-label">WhatsApp</div>
-        <div class="contact-card-val">+27810611435</div>
-      </a>
-      <a href="https://t.me/matchkingofficial" target="_blank" class="contact-card">
-        <span class="contact-card-icon">✈️</span>
-        <div class="contact-card-label">Telegram</div>
-        <div class="contact-card-val">@matchkingofficial</div>
-      </a>
-    </div>
-  </div>
-
-  <!-- Policy update notice -->
-  <div class="policy-update">
-    <p><strong>♛ Policy Updates:</strong> MatchKing reserves the right to update this refund policy at any time. Please check this page regularly for the latest information. Continued use of MatchKing constitutes acceptance of our current refund policy.</p>
-  </div>
-
-</div><!-- /policy-wrap -->
-
-<!-- ── FOOTER ── -->
-<footer class="site-footer">
-  <div class="footer-inner">
-    <span class="footer-brand">♛ MATCHKING</span>
-    <div class="footer-links">
-      <a href="mailto:matchkingofficial@gmail.com">Email</a>
-      <a href="https://wa.me/+27810611435" target="_blank">WhatsApp</a>
-      <a href="https://t.me/matchkingchannel" target="_blank">Telegram</a>
-      <a href="https://instagram.com/matchking.pro" target="_blank">Instagram</a>
-      <a href="/refund/">Refund Policy</a>
-    </div>
-    <span class="footer-copy">&copy; <span id="year"></span> MatchKing</span>
-  </div>
-</footer>
-
-<script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  // Mobile nav
-  const burger   = document.getElementById('navBurger');
-  const navLinks = document.getElementById('navLinks');
-  if (burger && navLinks) {
-    burger.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
-      burger.innerHTML = navLinks.classList.contains('open')
-        ? '<i class="fas fa-times"></i>'
-        : '<i class="fas fa-bars"></i>';
-    });
-    navLinks.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-        burger.innerHTML = '<i class="fas fa-bars"></i>';
+      // Navbar scroll effect
+      const nav = document.getElementById("mainNav");
+      window.addEventListener("scroll", () => {
+        nav.style.boxShadow =
+          window.scrollY > 40 ? "0 4px 24px rgba(0,0,0,0.8)" : "none";
       });
-    });
-  }
-
-  // Navbar scroll effect
-  const nav = document.getElementById('mainNav');
-  window.addEventListener('scroll', () => {
-    nav.style.boxShadow = window.scrollY > 40
-      ? '0 4px 24px rgba(0,0,0,0.8)'
-      : 'none';
-  });
-</script>
-</body>
+    </script>
+  </body>
 </html>
