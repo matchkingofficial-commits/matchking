@@ -3,14 +3,17 @@
 // ═══════════════════════════════════════════════════════════════════════════
 
 let derivWs;
-let marketsData = {};         
+let marketsData = {};
 let activeMarkets = ["R_100", "R_75", "R_50", "R_25", "R_10",  "1HZ10V", "1HZ15V", "1HZ30V", "1HZ50V", "1HZ75V", "1HZ90V", "1HZ100V"];
-let tickCount = 100;          
-let totalProcessedTicks = 0;  
-let predictionTimer = null;   
-let countdownSeconds = 0;     
+let tickCount = 100;
+let totalProcessedTicks = 0;
+let predictionTimer = null;
+let countdownSeconds = 0;
 let currentPrediction = null;
 let cooldownTimer = null;      // 60-second gap between predictions
+let reqIdSeq = 1;              // Unique id per ticks_history request (see requestTickHistory)
+let pollIntervalId = null;     // Re-fetches ticks_history on a timer (see startWebSocket)
+const POLL_INTERVAL_MS = 3000;
 
 // Simple tracking state derived from unified login system
 let isAuthenticated = false;
@@ -182,6 +185,7 @@ function clearLocalSession() {
     isAuthenticated = false;
     if (predictionTimer) { clearInterval(predictionTimer); predictionTimer = null; }
     if (cooldownTimer) { clearInterval(cooldownTimer); cooldownTimer = null; }
+    if (pollIntervalId) { clearInterval(pollIntervalId); pollIntervalId = null; }
 }
 
 /**
@@ -232,14 +236,27 @@ function initializeMarketData() {
 }
 
 /**
- * Establishes WebSockets connection using Public Non-OAuth channels
- * (Allows streaming structural ticks without Deriv individual user account tokens)
+ * Establishes WebSockets connection using Public Non-OAuth channels.
+ *
+ * Deriv's `ticks_history` endpoint only allows anonymous (non-authorized)
+ * connections to fetch a one-time historical snapshot -- adding
+ * `subscribe: 1` to open a live push stream requires an authorized
+ * connection (a real account token), and Deriv rejects it with a
+ * (misleadingly-worded) "InvalidSymbol" error otherwise. Since this app has
+ * no Deriv account token to authorize with, it can't hold real streaming
+ * subscriptions, so instead it re-fetches a fresh snapshot on an interval
+ * (see POLL_INTERVAL_MS) to approximate live updates.
  */
 function startWebSocket() {
     // Prevent stream access if local guard flags are invalid
     if (!isAuthenticated) {
         console.warn('⚠️ Cannot start stream processing without a valid local login session.');
         return false;
+    }
+
+    if (pollIntervalId) {
+        clearInterval(pollIntervalId);
+        pollIntervalId = null;
     }
 
     if (derivWs) {
@@ -254,9 +271,9 @@ function startWebSocket() {
     totalProcessedTicks = 0;
     updateTickCounter();
 
-    // Direct access to public infrastructure stream 
+    // Direct access to public infrastructure stream
     const wsEndpoint = 'wss://ws.derivws.com/websockets/v3?app_id=1089';
-    
+
     try {
         derivWs = new WebSocket(wsEndpoint);
         console.log(`🔗 Initializing real-time public data feed pipeline: ${wsEndpoint}`);
@@ -268,11 +285,16 @@ function startWebSocket() {
     derivWs.onopen = function () {
         console.log(`✅ Pipeline successfully locked onto feed data for ${activeMarkets.length} markets.`);
         updateConnectionStatus(true);
-        
-        // Request historical background feed ticks array matching selected parameters
+
+        // Fetch an initial snapshot now, then keep polling for fresh ticks
         activeMarkets.forEach(symbol => {
             requestTickHistory(symbol);
         });
+        pollIntervalId = setInterval(() => {
+            activeMarkets.forEach(symbol => {
+                requestTickHistory(symbol);
+            });
+        }, POLL_INTERVAL_MS);
     };
 
     derivWs.onmessage = function (event) {
@@ -286,7 +308,14 @@ function startWebSocket() {
 
             if (data.history) {
                 const symbol = data.echo_req.ticks_history;
-                marketsData[symbol].tickHistory = data.history.prices.map((price, index) => ({
+                const market = marketsData[symbol];
+                if (!market) return;
+
+                const previousLastTime = market.tickHistory.length
+                    ? market.tickHistory[market.tickHistory.length - 1].time
+                    : null;
+
+                market.tickHistory = data.history.prices.map((price, index) => ({
                     time: data.history.times[index],
                     quote: parseFloat(price)
                 }));
@@ -294,38 +323,24 @@ function startWebSocket() {
                 detectDecimalPlaces(symbol);
                 analyzeMarket(symbol);
                 updateAllDisplays();
-            }
 
-            if (data.tick) {
-                const symbol = data.tick.symbol;
-                let tickQuote = parseFloat(data.tick.quote);
-                
-                if (marketsData[symbol]) {
-                    marketsData[symbol].tickHistory.push({ 
-                        time: data.tick.epoch, 
-                        quote: tickQuote 
-                    });
-
-                    if (marketsData[symbol].tickHistory.length > tickCount) {
-                        marketsData[symbol].tickHistory.shift();
-                    }
-
-                    analyzeMarket(symbol);
-                    updateAllDisplays();
-                    
+                const latestTick = market.tickHistory[market.tickHistory.length - 1];
+                if (latestTick && latestTick.time !== previousLastTime) {
+                    // Only fires the "new tick" side effects when this poll
+                    // actually brought in a newer price than last time.
                     totalProcessedTicks++;
                     updateTickCounter();
 
                     // Bubble.io Application Integrations
-                    let lastDigit = getLastDigit(tickQuote, marketsData[symbol].decimalPlaces);
-                    let isEven = lastDigit % 2 === 0 ? 1 : 0;
-                    let isOdd = lastDigit % 2 !== 0 ? 1 : 0;
+                    const lastDigit = getLastDigit(latestTick.quote, market.decimalPlaces);
+                    const isEven = lastDigit % 2 === 0 ? 1 : 0;
+                    const isOdd = lastDigit % 2 !== 0 ? 1 : 0;
 
                     if (typeof window.bubble_fn_wsEvent1 === "function") {
                         window.bubble_fn_wsEvent1(lastDigit);
                     }
                     if (typeof window.bubble_fn_price1 === "function") {
-                        window.bubble_fn_price1(tickQuote.toFixed(marketsData[symbol].decimalPlaces));
+                        window.bubble_fn_price1(latestTick.quote.toFixed(market.decimalPlaces));
                     }
                     if (typeof window.bubble_fn_even === "function") {
                         window.bubble_fn_even(isEven);
@@ -349,11 +364,15 @@ function startWebSocket() {
     derivWs.onclose = function () {
         console.warn("⚠️ WebSocket Data Pipeline Connection Dropped");
         updateConnectionStatus(false);
+        if (pollIntervalId) {
+            clearInterval(pollIntervalId);
+            pollIntervalId = null;
+        }
         if (isAuthenticated) {
             setTimeout(startWebSocket, 5000);
         }
     };
-    
+
     return true;
 }
 
@@ -364,8 +383,7 @@ function requestTickHistory(symbol) {
             count: tickCount,
             end: "latest",
             style: "ticks",
-            req_id: 1, 
-            subscribe: 1
+            req_id: reqIdSeq++
         };
         derivWs.send(JSON.stringify(request));
     }
@@ -402,7 +420,6 @@ function updateAllDisplays() {
     updateMarketsList();
     updateAggregatedPrice();
     updatePredictionHighlights();
-    updateEvenOddPredictions();
 }
 
 function updateConnectionStatus(connected) {
@@ -590,11 +607,6 @@ function updatePredictionHighlights() {
         window.bubble_fn_predictions(JSON.stringify(predictionData));
     }
 }
-
-/**
- * Even/Odd Metric Evaluation Systems
- */
-
 
 // User Action Interface Callbacks
 window.updateSymbol = function (newSymbol) {
