@@ -364,7 +364,7 @@ function requestTickHistory(symbol) {
             count: tickCount,
             end: "latest",
             style: "ticks",
-            req_id: 1,
+            request_id: `history_${symbol}`,
             subscribe: 1
         };
         derivWs.send(JSON.stringify(request));
