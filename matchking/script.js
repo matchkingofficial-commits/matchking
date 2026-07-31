@@ -696,7 +696,6 @@ window.updateSymbol = function (newSymbol) {
       "1HZ10V",
       "1HZ50V",
       "1HZ75V",
-      ,
       "1HZ100V",
     ];
   } else {
