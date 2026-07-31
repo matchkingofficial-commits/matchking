@@ -4,7 +4,7 @@
 
 let derivWs;
 let marketsData = {};
-let activeMarkets = ["R_100", "R_75", "R_50", "R_25", "R_10",  "1HZ10V", "1HZ15V",  "1HZ50V", "1HZ75V", "1HZ100V"];
+let activeMarkets = ["R_100", "R_75", "R_50", "R_25", "R_10",  "1HZ10V", ,  "1HZ50V", "1HZ75V", "1HZ100V"];
 let tickCount = 100;
 let totalProcessedTicks = 0;
 let predictionTimer = null;
