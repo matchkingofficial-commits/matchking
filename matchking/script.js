@@ -218,7 +218,7 @@ function initializeTerminal() {
 // Market asset string labels
 const marketNames = {
     "R_100": "Volatility 100", "R_75": "Volatility 75", "R_50": "Volatility 50",
-    "R_25": "Volatility 25", "R_10": "Volatility 10", "1HZ10V": "Volatility 10(1s)", "1HZ15V": "volatility 15(1s)", "1HZ30V": "volatility 30(1s)", "1HZ50V": "Volatility 50(1s)", "1HZ75V": "Volatility 75(1s)", "1HZ90V": "Volatility 90(1s)", "1HZ100V": "Volatility 100(1s)",
+    "R_25": "Volatility 25", "R_10": "Volatility 10", "1HZ10V": "Volatility 10(1s)", "1HZ50V": "Volatility 50(1s)", "1HZ75V": "Volatility 75(1s)",  "1HZ100V": "Volatility 100(1s)",
 };
 
 function getMarketName(symbol) { return marketNames[symbol] || symbol; }
