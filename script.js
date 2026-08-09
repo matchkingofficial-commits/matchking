@@ -1,5 +1,5 @@
 // MatchKing Configuration
-const WHATSAPP_NUMBER = "t.me/matcchkingofficial";
+const WHATSAPP_NUMBER = "t.me/matchkingofficial";
 const USDT_ADDRESS = "TNbDnfW5D6TTBoW22AorR7tyS1n4qojfKY";
 
 // Track current purchase amount
