@@ -3,7 +3,7 @@ const WHATSAPP_NUMBER = "t.me/matchkingofficial";
 const USDT_ADDRESS = "TNbDnfW5D6TTBoW22AorR7tyS1n4qojfKY";
 
 // Track current purchase amount
-let currentPurchaseAmount = 199;
+let currentPurchaseAmount = 299;
 
 document.addEventListener("DOMContentLoaded", function () {
   // Set current year
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const pricingBuyPro = document.getElementById("pricingBuyPro");
 
   if (pricingBuyBasic) {
-    pricingBuyBasic.addEventListener("click", () => openBuyModal(199));
+    pricingBuyBasic.addEventListener("click", () => openBuyModal(299));
   }
   if (pricingBuyPro) {
     pricingBuyPro.addEventListener("click", () => openBuyModal(299));
