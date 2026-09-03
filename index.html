@@ -3246,8 +3246,20 @@
               I've Sent the Payment →
             </button>
             <button class="modal-form-btn ghost" onclick="openWhatsAppProof()">
-              <i class="fab fa-whatsapp"></i> &nbsp;Send Proof via WhatsApp
-            </button>
+    <i class="fab fa-whatsapp"></i> &nbsp;Send Proof via WhatsApp
+</button>
+
+<script>
+function openWhatsAppProof() {
+    const phoneNumber = "254100015047"; // Replace with your WhatsApp number
+    const message = "Hello matchking, here is my proof of payment.";
+    
+    window.open(
+        "https://wa.me/" + phoneNumber + "?text=" + encodeURIComponent(message),
+        "_blank"
+    );
+}
+</script>
             <div
               style="
                 border-top: 1px solid var(--border);
