@@ -3245,21 +3245,30 @@
             <button class="modal-form-btn" onclick="proceedToVerification()">
               I've Sent the Payment →
             </button>
-            <button class="modal-form-btn ghost" onclick="openWhatsAppProof()">
-    <i class="fab fa-whatsapp"></i> &nbsp;Send Proof via WhatsApp
-</button>
+            <button
+              type="button"
+              class="modal-form-btn ghost"
+              onclick="openWhatsAppProof()"
+            >
+              <i class="fab fa-whatsapp"></i>&nbsp; Send Proof via WhatsApp
+            </button>
 
-<script>
-function openWhatsAppProof() {
-    const phoneNumber = "254100015047"; // Replace with your WhatsApp number
-    const message = "Hello matchking, here is my proof of payment.";
-    
-    window.open(
-        "https://wa.me/" + phoneNumber + "?text=" + encodeURIComponent(message),
-        "_blank"
-    );
-}
-</script>
+            <script>
+              function openWhatsAppProof() {
+                const phoneNumber = "254100015047";
+
+                const message =
+                  "Hello! Payment completed successfully. I'm sending my proof of payment for confirmation. Thank you! 🙏";
+
+                const whatsappURL =
+                  "https://api.whatsapp.com/send?phone=" +
+                  phoneNumber +
+                  "&text=" +
+                  encodeURIComponent(message);
+
+                window.open(whatsappURL, "_blank");
+              }
+            </script>
             <div
               style="
                 border-top: 1px solid var(--border);
