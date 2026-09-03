@@ -3248,7 +3248,10 @@
             <button
               type="button"
               class="modal-form-btn ghost"
-              onclick="openWhatsAppProof()"
+              onclick="
+                window.location.href =
+                  'https://wa.me/254100015047?text=Hello%20MatchKing%20%E2%99%9B%2C%0A%0AI%E2%80%99ve%20completed%20my%20payment%20of%20USDT%20%28TRC20%29.%0A%0AI%E2%80%99ve%20attached%20my%20proof%20of%20payment.%0A%0APlease%20confirm%20my%20payment%20and%20activate%20my%20access.%20Thank%20you'
+              "
             >
               <i class="fab fa-whatsapp"></i>&nbsp; Send Proof via WhatsApp
             </button>
@@ -3605,29 +3608,6 @@
         const sc = document.getElementById("signalCount");
         if (sc) sc.textContent = sigCount;
       }, 12000);
-    </script>
-    <script>
-      function openWhatsAppProof() {
-        // Your WhatsApp Business number
-        const phoneNumber = "254100015047";
-
-        // Message automatically prepared for the customer
-        const message = `Hello MatchKing ♛,
-
-I’ve completed my payment of USDT (TRC20).
-Wallet: TNbDnfW5D6TTBoW22AorR7tyS1n4qojfKY
-Please confirm my payment and activate my access. Thank you!`;
-
-        // Create the WhatsApp Click-to-Chat URL
-        const whatsappURL =
-          "https://wa.me/" +
-          phoneNumber +
-          "?text=" +
-          encodeURIComponent(message);
-
-        // Open WhatsApp
-        window.open(whatsappURL, "_blank");
-      }
     </script>
   </body>
 </html>
