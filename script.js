@@ -3,7 +3,7 @@ const WHATSAPP_NUMBER = "wa.me/254735525483";
 const USDT_ADDRESS = "TNbDnfW5D6TTBoW22AorR7tyS1n4qojfKY";
 
 // Track current purchase amount
-let currentPurchaseAmount = 299;
+let currentPurchaseAmount = 200;
 
 document.addEventListener("DOMContentLoaded", function () {
   // Set current year
@@ -91,10 +91,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const pricingBuyPro = document.getElementById("pricingBuyPro");
 
   if (pricingBuyBasic) {
-    pricingBuyBasic.addEventListener("click", () => openBuyModal(299));
+    pricingBuyBasic.addEventListener("click", () => openBuyModal(200));
   }
   if (pricingBuyPro) {
-    pricingBuyPro.addEventListener("click", () => openBuyModal(299));
+    pricingBuyPro.addEventListener("click", () => openBuyModal(200));
   }
 
   // Demo form
@@ -147,7 +147,7 @@ function openBuyModal(price) {
   const desc = modal.querySelector(".buy-modal-desc");
   const warningTxt = document.getElementById("buyWarningText");
 
-  const planName = price === 299 ? "Tool + Mentorship" : "MatchKing Tool";
+  const planName = price === 200 ? "Tool + Mentorship" : "MatchKing Tool";
   title.textContent = `Purchase ${planName} – ${price} USDT`;
   desc.textContent = `Send exactly ${price} USDT (TRC20) to the address below. You'll receive instant access after payment verification.`;
   warningTxt.innerHTML = `<strong>⚠️ Important:</strong> Send exactly ${price} USDT on the Tron network (TRC20). Other amounts or networks will not be processed.`;
