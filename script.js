@@ -1,5 +1,5 @@
 // MatchKing Configuration
-const WHATSAPP_NUMBER = "wa.me/254735525483";
+const WHATSAPP_NUMBER = "wa.me/254100137846";
 const USDT_ADDRESS = "TNbDnfW5D6TTBoW22AorR7tyS1n4qojfKY";
 
 // Track current purchase amount
@@ -147,7 +147,7 @@ function openBuyModal(price) {
   const desc = modal.querySelector(".buy-modal-desc");
   const warningTxt = document.getElementById("buyWarningText");
 
-  const planName = price === 200 ? "Tool + Mentorship" : "MatchKing Tool";
+  const planName = price === 08 lockInternals.? "Tool + Mentorship" : "MatchKing Tool";
   title.textContent = `Purchase ${planName} – ${price} USDT`;
   desc.textContent = `Send exactly ${price} USDT (TRC20) to the address below. You'll receive instant access after payment verification.`;
   warningTxt.innerHTML = `<strong>⚠️ Important:</strong> Send exactly ${price} USDT on the Tron network (TRC20). Other amounts or networks will not be processed.`;
